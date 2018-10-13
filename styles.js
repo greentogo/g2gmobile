@@ -4,13 +4,14 @@ import { Constants } from 'expo';
 const primaryColor = '#628E86';
 // const primaryCream = '#F8F8F4';
 const primaryCream = '#f9f9e8';
+const secondaryColor = '#85A39C';
 // const primaryCream = 'rgb(248, 248, 244)';
 
 const styles = {
     primaryColor: primaryColor,
     primaryCream: primaryCream,
-    creamBackground: {
-        backgroundColor: primaryCream
+    transparentBackground: {
+        backgroundColor: 'rgba(0, 0, 0, 0.0)'
     },
     container: {
         flex: 1,
@@ -49,11 +50,27 @@ const styles = {
         fontSize: 20,
         textAlign: 'center'
     },
+    boldWhiteText: {
+        paddingTop: 5,
+        paddingBottom: 5,
+        color: 'white',
+        fontWeight: '800',
+        fontSize: 20,
+        textAlign: 'center'
+    },
     bottomFixed: {
         position: 'absolute',
         left: 0,
         right: 0,
         bottom: 0
+    },
+    loginInputStyle: {
+        color: 'white',
+    },
+    loginScreenButtonBar: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        backgroundColor: secondaryColor,
     },
     mapCalloutTitle: {
         flex: 1,
@@ -147,8 +164,8 @@ const styles = {
         width: 140
     },
     window: {
-       height: Dimensions.get('window').height,
-       width: Dimensions.get('window').width
+        height: Dimensions.get('window').height,
+        width: Dimensions.get('window').width
     }
 }
 

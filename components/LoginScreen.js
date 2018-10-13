@@ -5,10 +5,15 @@ import { WebView, Linking } from 'react-native';
 import {
     Text,
     View,
+    ScrollView,
+    ImageBackground,
+    KeyboardAvoidingView,
+    TextInput,
 } from "react-native";
 import {
     Container,
     Header,
+    Footer,
     Content,
     Form,
     Item,
@@ -162,145 +167,180 @@ class LoginScreen extends React.Component {
             );
         } else {
             return (
-                <Container style={styles.container}>
+                <KeyboardAvoidingView behavior="padding" style={styles.container}>
                     <Header style={{ backgroundColor: styles.primaryColor, marginTop: Constants.statusBarHeight }}>
                         <G2GTitleImage />
                     </Header>
-                    <Content style={{ alignContent: 'center' }}>
+                    <ImageBackground
+                        source={require('../assets/icons/loginscreen.jpg')}
+                        resizeMode='cover'
+                        style={{
+                            width: '100%',
+                            height: '100%',
+                            flex: 1,
+                            justifyContent: 'space-around'
+                        }}>
                         {this.state.type === 'login' ?
                             // Login form
                             <Form>
-                                <Item>
-                                    <Input placeholder="Username or Email"
-                                        autoCapitalize="none"
-                                        autoCorrect={false}
-                                        keyboardType="email-address"
-                                        onChangeText={(text) => this.setState({ username: text })}
-                                        onSubmitEditing={this.attemptLogin}
-                                        value={this.state.username}
-                                    />
-                                </Item>
-                                {this.state.error.username ? <Text style={styles.errorStyle}>{this.state.error.username}</Text> : <Text></Text>}
-                                <Item last>
-                                    <Input placeholder="Password"
-                                        secureTextEntry={true}
-                                        onSubmitEditing={this.attemptLogin}
-                                        onChangeText={(text) => this.setState({ password: text })}
-                                    />
-                                </Item>
-                                {errorMessages}
-                                {loadingSpinner}
-                                {this.state.error.password ? <Text style={styles.errorStyle}>{this.state.error.password}</Text> : <Text></Text>}
-                                <Button style={styles.creamBackground} full title="Login" onPress={this.attemptLogin}>
-                                    <Text style={styles.boldCenteredText}>Login</Text>
-                                </Button>
-                                <Button style={styles.creamBackground} full title="SignUp" onPress={this.switchType("signUp")}>
-                                    <Text style={styles.boldCenteredText}>Sign Up!</Text>
-                                </Button>
-                                <Button style={styles.creamBackground} full title="passwordReset" onPress={this.switchType("passwordReset")}>
-                                    <Text style={{ color: styles.primaryColor }}>Forgot Password?</Text>
-                                </Button>
+                                <ScrollView>
+                                    <Item>
+                                        <Input placeholder="Username or Email"
+                                            placeholderTextColor='white'
+                                            autoCapitalize="none"
+                                            autoCorrect={false}
+                                            keyboardType="email-address"
+                                            style={styles.loginInputStyle}
+                                            onChangeText={(text) => this.setState({ username: text })}
+                                            value={this.state.username}
+                                        />
+                                    </Item>
+                                    {this.state.error.username ? <Text style={styles.errorStyle}>{this.state.error.username}</Text> : <Text></Text>}
+                                    <Item last>
+                                        <Input placeholder="Password"
+                                            placeholderTextColor='white'
+                                            secureTextEntry={true}
+                                            onSubmitEditing={this.attemptLogin}
+                                            style={styles.loginInputStyle}
+                                            onChangeText={(text) => this.setState({ password: text })}
+                                        />
+                                    </Item>
+                                    {errorMessages}
+                                    {loadingSpinner}
+                                    {this.state.error.password ? <Text style={styles.errorStyle}>{this.state.error.password}</Text> : <Text></Text>}
+                                    <Button style={styles.transparentBackground} full title="passwordReset" onPress={this.switchType("passwordReset")}>
+                                        <Text style={styles.boldWhiteText}>Forgot Password?</Text>
+                                    </Button>
+                                </ScrollView>
                             </Form>
                             : this.state.type === 'signUp' ?
                                 // Sign up form below
                                 <Form>
-                                    <Item>
-                                        <Input placeholder="Username"
-                                            autoCapitalize="none"
-                                            secureTextEntry={false}
-                                            autoCorrect={false}
-                                            onChangeText={(text) => this.setState({ username: text })}
-                                        />
-                                    </Item>
-                                    {this.state.error.username ? <Text style={styles.errorStyle}>{this.state.error.username}</Text> : <Text></Text>}
-                                    <Item>
-                                        <Input placeholder="Email"
-                                            autoCapitalize="none"
-                                            secureTextEntry={false}
-                                            autoCorrect={false}
-                                            keyboardType="email-address"
-                                            onChangeText={(text) => this.setState({ email: text })}
-                                        />
-                                    </Item>
-                                    {this.state.error.email ? <Text style={styles.errorStyle}>{this.state.error.email}</Text> : <Text></Text>}
-                                    <Item>
-                                        <Input placeholder="Confirm Email"
-                                            autoCapitalize="none"
-                                            secureTextEntry={false}
-                                            autoCorrect={false}
-                                            keyboardType="email-address"
-                                            onChangeText={(text) => this.setState({ email2: text })}
-                                        />
-                                    </Item>
-                                    {this.state.error.email2 ? <Text style={styles.errorStyle}>{this.state.error.email2}</Text> : <Text></Text>}
-                                    <Item>
-                                        <Input placeholder="Password"
-                                            secureTextEntry={true}
-                                            onSubmitEditing={() => this.attemptSignUp()}
-                                            onChangeText={(text) => this.setState({ password1: text })}
-                                        />
-                                    </Item>
-                                    {this.state.error.password1 ? <Text style={styles.errorStyle}>{this.state.error.password1}</Text> : <Text></Text>}
-                                    <Item last>
-                                        <Input placeholder="Confirm Password"
-                                            secureTextEntry={true}
-                                            onSubmitEditing={() => this.attemptSignUp()}
-                                            onChangeText={(text) => this.setState({ password2: text })}
-                                        />
-                                    </Item>
-                                    {this.state.error.password2 ? <Text style={styles.errorStyle}>{this.state.error.password2}</Text> : <Text></Text>}
-                                    {errorMessages}
-                                    {loadingSpinner}
-                                    <Button style={styles.creamBackground} full title="Login" onPress={this.attemptSignUp}>
-                                        <Text style={styles.boldCenteredText}>Sign Up</Text>
-                                    </Button>
-                                    <Button style={styles.creamBackground} full title="SignUp" onPress={this.switchType("login")}>
-                                        <Text style={styles.boldCenteredText}>Go to Login</Text>
-                                    </Button>
+                                    <ScrollView>
+                                        <Item>
+                                            <Input placeholder="Username"
+                                                placeholderTextColor='white'
+                                                autoCapitalize="none"
+                                                secureTextEntry={false}
+                                                autoCorrect={false}
+                                                style={styles.loginInputStyle}
+                                                onChangeText={(text) => this.setState({ username: text })}
+                                            />
+                                        </Item>
+                                        {this.state.error.username ? <Text style={styles.errorStyle}>{this.state.error.username}</Text> : <Text></Text>}
+                                        <Item>
+                                            <Input placeholder="Email"
+                                                placeholderTextColor='white'
+                                                autoCapitalize="none"
+                                                secureTextEntry={false}
+                                                autoCorrect={false}
+                                                keyboardType="email-address"
+                                                style={styles.loginInputStyle}
+                                                onChangeText={(text) => this.setState({ email: text })}
+                                            />
+                                        </Item>
+                                        {this.state.error.email ? <Text style={styles.errorStyle}>{this.state.error.email}</Text> : <Text></Text>}
+                                        <Item>
+                                            <Input placeholder="Confirm Email"
+                                                placeholderTextColor='white'
+                                                autoCapitalize="none"
+                                                secureTextEntry={false}
+                                                autoCorrect={false}
+                                                keyboardType="email-address"
+                                                style={styles.loginInputStyle}
+                                                onChangeText={(text) => this.setState({ email2: text })}
+                                            />
+                                        </Item>
+                                        {this.state.error.email2 ? <Text style={styles.errorStyle}>{this.state.error.email2}</Text> : <Text></Text>}
+                                        <Item>
+                                            <Input placeholder="Password"
+                                                placeholderTextColor='white'
+                                                secureTextEntry={true}
+                                                style={styles.loginInputStyle}
+                                                onChangeText={(text) => this.setState({ password1: text })}
+                                            />
+                                        </Item>
+                                        {this.state.error.password1 ? <Text style={styles.errorStyle}>{this.state.error.password1}</Text> : <Text></Text>}
+                                        <Item last>
+                                            <Input placeholder="Confirm Password"
+                                                placeholderTextColor='white'
+                                                secureTextEntry={true}
+                                                onSubmitEditing={this.attemptSignUp}
+                                                style={styles.loginInputStyle}
+                                                onChangeText={(text) => this.setState({ password2: text })}
+                                            />
+                                        </Item>
+                                        {this.state.error.password2 ? <Text style={styles.errorStyle}>{this.state.error.password2}</Text> : <Text></Text>}
+                                        {errorMessages}
+                                        {loadingSpinner}
+                                    </ScrollView>
                                 </Form>
-                                : this.state.type === 'signUpSuccess' ?
-                                    // Sign up form below
-                                    <View style={{ flex: 1, paddingTop: 140, alignItems: 'center' }}>
-                                        <Text style={{ color: styles.primaryColor }}>Sign Up successful! Now, sign in at our secure web portal and purchase a subscription so that you can use the GreenToGo service!</Text>
-                                        <Button style={styles.creamBackground} full onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/new/' }) }}>
-                                            <Text style={styles.boldCenteredText}>Purchase a subscription</Text>
+                                : this.state.type === 'passwordReset' ?
+                                    <Form>
+                                        <Item>
+                                            <Input placeholder="Username or Email"
+                                                placeholderTextColor='white'
+                                                autoCapitalize="none"
+                                                autoCorrect={false}
+                                                keyboardType="email-address"
+                                                style={styles.loginInputStyle}
+                                                onChangeText={(text) => this.setState({ username: text })}
+                                                onSubmitEditing={this.attemptPasswordReset}
+                                                value={this.state.username}
+                                            />
+                                        </Item>
+                                        {errorMessages}
+                                        {loadingSpinner}
+                                    </Form>
+                                    : <Text style={styles.boldWhiteText}>{this.state.msg}</Text>
+                        }
+                        <View style={styles.bottomFixed}>
+                            {this.state.type === 'login' ?
+                                <View style={styles.loginScreenButtonBar}>
+                                    <Button style={styles.transparentBackground} full title="SignUp" onPress={this.switchType("signUp")}>
+                                        <Text style={styles.boldWhiteText}>Sign Up!</Text>
+                                    </Button>
+                                    <Button style={styles.transparentBackground} full title="Login" onPress={this.attemptLogin}>
+                                        <Text style={styles.boldWhiteText}>Login</Text>
+                                    </Button>
+                                </View>
+                                : this.state.type === 'signUp' ?
+                                    <View style={styles.loginScreenButtonBar}>
+                                        <Button style={styles.transparentBackground} full title="SignUp" onPress={this.switchType("login")}>
+                                            <Text style={styles.boldWhiteText}>Go to Login</Text>
                                         </Button>
-                                        <Button style={styles.creamBackground} full title="SignUp" onPress={this.switchType("login")}>
-                                            <Text style={styles.boldCenteredText}>Go to Login</Text>
+                                        <Button style={styles.transparentBackground} full title="Login" onPress={this.attemptSignUp}>
+                                            <Text style={styles.boldWhiteText}>Sign Up</Text>
                                         </Button>
                                     </View>
-                                    : this.state.type === 'passwordResetSuccess' ?
-                                        <View style={{ flex: 1, paddingTop: 140, alignItems: 'center' }}>
-                                            <Text style={{ color: styles.primaryColor }}>{this.state.msg}</Text>
-                                            <Button style={styles.creamBackground} full title="SignUp" onPress={this.switchType("login")}>
-                                                <Text style={styles.boldCenteredText}>Go to Login</Text>
+                                    : this.state.type === 'passwordReset' ?
+                                        <View style={styles.loginScreenButtonBar}>
+                                            <Button style={styles.transparentBackground} light full title="SignUp" onPress={this.switchType("login")}>
+                                                <Text style={styles.boldWhiteText}>Go to Login</Text>
+                                            </Button>
+                                            <Button style={styles.transparentBackground} light full title="resetPassword" onPress={this.attemptPasswordReset}>
+                                                <Text style={styles.boldWhiteText}>Reset Password</Text>
                                             </Button>
                                         </View>
-
-                                        // Password reset form
-                                        : <Form>
-                                            <Item>
-                                                <Input placeholder="Username or Email"
-                                                    autoCapitalize="none"
-                                                    autoCorrect={false}
-                                                    keyboardType="email-address"
-                                                    onChangeText={(text) => this.setState({ username: text })}
-                                                    onSubmitEditing={this.attemptPasswordReset}
-                                                    value={this.state.username}
-                                                />
-                                            </Item>
-                                            {errorMessages}
-                                            {loadingSpinner}
-                                            <Button style={styles.creamBackground} light full title="resetPassword" onPress={this.attemptPasswordReset}>
-                                                <Text style={styles.boldCenteredText}>Reset Password</Text>
-                                            </Button>
-                                            <Button style={styles.creamBackground} light full title="SignUp" onPress={this.switchType("login")}>
-                                                <Text style={styles.boldCenteredText}>Go to Login</Text>
-                                            </Button>
-                                        </Form>
-                        }
-                    </Content>
-                </Container>
+                                        : this.state.type === 'signUpSuccess' ?
+                                            <View style={styles.loginScreenButtonBar}>
+                                                <Button style={styles.transparentBackground} full title="SignUp" onPress={this.switchType("login")}>
+                                                    <Text style={styles.boldWhiteText}>Go to Login</Text>
+                                                </Button>
+                                                <Button style={styles.transparentBackground} full onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/new/' }) }}>
+                                                    <Text style={styles.boldWhiteText}>Purchase a subscription</Text>
+                                                </Button>
+                                            </View>
+                                            :
+                                            <View style={styles.loginScreenButtonBar}>
+                                                <Button style={styles.transparentBackground} full title="SignUp" onPress={this.switchType("login")}>
+                                                    <Text style={styles.boldWhiteText}>Go to Login</Text>
+                                                </Button>
+                                            </View>
+                            }
+                        </View>
+                    </ImageBackground>
+                </KeyboardAvoidingView>
             )
         }
     }
