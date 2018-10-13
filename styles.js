@@ -64,6 +64,12 @@ const styles = {
         right: 0,
         bottom: 0
     },
+    loginBackgroundImage: {
+        width: '100%',
+        height: '100%',
+        flex: 1,
+        justifyContent: 'space-around',
+    },
     loginInputStyle: {
         color: 'white',
     },

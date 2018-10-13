@@ -8,13 +8,9 @@ import {
     ScrollView,
     ImageBackground,
     KeyboardAvoidingView,
-    TextInput,
 } from "react-native";
 import {
-    Container,
     Header,
-    Footer,
-    Content,
     Form,
     Item,
     Input,
@@ -144,12 +140,12 @@ class LoginScreen extends React.Component {
 
     render() {
         let loadingSpinner = this.state.loading ?
-            <Spinner color={styles.primaryColor} />
+            <Spinner color={styles.primaryCream} />
             : null;
         let errorMessages = null;
         if (this.state.error[0] !== undefined) {
             errorMessages = this.state.error.map((error, index) => {
-                return <Text key={index} style={{ color: 'red', textAlign: 'center' }}>{error}</Text>;
+                return <Text key={index} style={styles.errorStyle}>{error}</Text>;
             });
         }
         if (this.state.redirectToWeb) {
@@ -174,12 +170,7 @@ class LoginScreen extends React.Component {
                     <ImageBackground
                         source={require('../assets/icons/loginscreen.jpg')}
                         resizeMode='cover'
-                        style={{
-                            width: '100%',
-                            height: '100%',
-                            flex: 1,
-                            justifyContent: 'space-around'
-                        }}>
+                        style={styles.loginBackgroundImage}>
                         {this.state.type === 'login' ?
                             // Login form
                             <Form>
