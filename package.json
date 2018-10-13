@@ -25,6 +25,7 @@
     "rollbar-react-native": "^0.3.1"
   },
   "scripts": {
-    "start": "exp start"
+    "start": "expo start",
+    "setup": "npm install -g expo-cli"
   }
 }
