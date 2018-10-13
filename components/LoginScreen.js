@@ -8,6 +8,7 @@ import {
     ScrollView,
     ImageBackground,
     KeyboardAvoidingView,
+    TouchableOpacity,
 } from "react-native";
 import {
     Header,
@@ -177,7 +178,7 @@ class LoginScreen extends React.Component {
                                 <ScrollView>
                                     <Item>
                                         <Input placeholder="Username or Email"
-                                            placeholderTextColor='white'
+                                            placeholderTextColor={styles.lightGrey}
                                             autoCapitalize="none"
                                             autoCorrect={false}
                                             keyboardType="email-address"
@@ -189,7 +190,7 @@ class LoginScreen extends React.Component {
                                     {this.state.error.username ? <Text style={styles.errorStyle}>{this.state.error.username}</Text> : <Text></Text>}
                                     <Item last>
                                         <Input placeholder="Password"
-                                            placeholderTextColor='white'
+                                            placeholderTextColor={styles.lightGrey}
                                             secureTextEntry={true}
                                             onSubmitEditing={this.attemptLogin}
                                             style={styles.loginInputStyle}
@@ -199,9 +200,9 @@ class LoginScreen extends React.Component {
                                     {errorMessages}
                                     {loadingSpinner}
                                     {this.state.error.password ? <Text style={styles.errorStyle}>{this.state.error.password}</Text> : <Text></Text>}
-                                    <Button style={styles.transparentBackground} full title="passwordReset" onPress={this.switchType("passwordReset")}>
+                                    <TouchableOpacity style={styles.loginButton} onPress={this.switchType("passwordReset")}>
                                         <Text style={styles.boldWhiteText}>Forgot Password?</Text>
-                                    </Button>
+                                    </TouchableOpacity>
                                 </ScrollView>
                             </Form>
                             : this.state.type === 'signUp' ?
@@ -210,7 +211,7 @@ class LoginScreen extends React.Component {
                                     <ScrollView>
                                         <Item>
                                             <Input placeholder="Username"
-                                                placeholderTextColor='white'
+                                                placeholderTextColor={styles.lightGrey}
                                                 autoCapitalize="none"
                                                 secureTextEntry={false}
                                                 autoCorrect={false}
@@ -221,7 +222,7 @@ class LoginScreen extends React.Component {
                                         {this.state.error.username ? <Text style={styles.errorStyle}>{this.state.error.username}</Text> : <Text></Text>}
                                         <Item>
                                             <Input placeholder="Email"
-                                                placeholderTextColor='white'
+                                                placeholderTextColor={styles.lightGrey}
                                                 autoCapitalize="none"
                                                 secureTextEntry={false}
                                                 autoCorrect={false}
@@ -233,7 +234,7 @@ class LoginScreen extends React.Component {
                                         {this.state.error.email ? <Text style={styles.errorStyle}>{this.state.error.email}</Text> : <Text></Text>}
                                         <Item>
                                             <Input placeholder="Confirm Email"
-                                                placeholderTextColor='white'
+                                                placeholderTextColor={styles.lightGrey}
                                                 autoCapitalize="none"
                                                 secureTextEntry={false}
                                                 autoCorrect={false}
@@ -245,7 +246,7 @@ class LoginScreen extends React.Component {
                                         {this.state.error.email2 ? <Text style={styles.errorStyle}>{this.state.error.email2}</Text> : <Text></Text>}
                                         <Item>
                                             <Input placeholder="Password"
-                                                placeholderTextColor='white'
+                                                placeholderTextColor={styles.lightGrey}
                                                 secureTextEntry={true}
                                                 style={styles.loginInputStyle}
                                                 onChangeText={(text) => this.setState({ password1: text })}
@@ -254,7 +255,7 @@ class LoginScreen extends React.Component {
                                         {this.state.error.password1 ? <Text style={styles.errorStyle}>{this.state.error.password1}</Text> : <Text></Text>}
                                         <Item last>
                                             <Input placeholder="Confirm Password"
-                                                placeholderTextColor='white'
+                                                placeholderTextColor={styles.lightGrey}
                                                 secureTextEntry={true}
                                                 onSubmitEditing={this.attemptSignUp}
                                                 style={styles.loginInputStyle}
@@ -270,7 +271,7 @@ class LoginScreen extends React.Component {
                                     <Form>
                                         <Item>
                                             <Input placeholder="Username or Email"
-                                                placeholderTextColor='white'
+                                                placeholderTextColor={styles.lightGrey}
                                                 autoCapitalize="none"
                                                 autoCorrect={false}
                                                 keyboardType="email-address"
@@ -288,45 +289,45 @@ class LoginScreen extends React.Component {
                         <View style={styles.bottomFixed}>
                             {this.state.type === 'login' ?
                                 <View style={styles.loginScreenButtonBar}>
-                                    <Button style={styles.transparentBackground} full title="SignUp" onPress={this.switchType("signUp")}>
+                                    <TouchableOpacity style={styles.loginButton} onPress={this.switchType("signUp")}>
                                         <Text style={styles.boldWhiteText}>Sign Up!</Text>
-                                    </Button>
-                                    <Button style={styles.transparentBackground} full title="Login" onPress={this.attemptLogin}>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.loginButton} onPress={this.attemptLogin}>
                                         <Text style={styles.boldWhiteText}>Login</Text>
-                                    </Button>
+                                    </TouchableOpacity>
                                 </View>
                                 : this.state.type === 'signUp' ?
                                     <View style={styles.loginScreenButtonBar}>
-                                        <Button style={styles.transparentBackground} full title="SignUp" onPress={this.switchType("login")}>
+                                        <TouchableOpacity style={styles.loginButton} onPress={this.switchType("login")}>
                                             <Text style={styles.boldWhiteText}>Go to Login</Text>
-                                        </Button>
-                                        <Button style={styles.transparentBackground} full title="Login" onPress={this.attemptSignUp}>
+                                        </TouchableOpacity>
+                                        <TouchableOpacity style={styles.loginButton} onPress={this.attemptSignUp}>
                                             <Text style={styles.boldWhiteText}>Sign Up</Text>
-                                        </Button>
+                                        </TouchableOpacity>
                                     </View>
                                     : this.state.type === 'passwordReset' ?
                                         <View style={styles.loginScreenButtonBar}>
-                                            <Button style={styles.transparentBackground} light full title="SignUp" onPress={this.switchType("login")}>
+                                            <TouchableOpacity style={styles.loginButton} onPress={this.switchType("login")}>
                                                 <Text style={styles.boldWhiteText}>Go to Login</Text>
-                                            </Button>
-                                            <Button style={styles.transparentBackground} light full title="resetPassword" onPress={this.attemptPasswordReset}>
+                                            </TouchableOpacity>
+                                            <TouchableOpacity style={styles.loginButton} onPress={this.attemptPasswordReset}>
                                                 <Text style={styles.boldWhiteText}>Reset Password</Text>
-                                            </Button>
+                                            </TouchableOpacity>
                                         </View>
                                         : this.state.type === 'signUpSuccess' ?
                                             <View style={styles.loginScreenButtonBar}>
-                                                <Button style={styles.transparentBackground} full title="SignUp" onPress={this.switchType("login")}>
+                                                <TouchableOpacity style={styles.loginButton} onPress={this.switchType("login")}>
                                                     <Text style={styles.boldWhiteText}>Go to Login</Text>
-                                                </Button>
-                                                <Button style={styles.transparentBackground} full onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/new/' }) }}>
+                                                </TouchableOpacity>
+                                                <TouchableOpacity style={styles.loginButton} onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/new/' }) }}>
                                                     <Text style={styles.boldWhiteText}>Purchase a subscription</Text>
-                                                </Button>
+                                                </TouchableOpacity>
                                             </View>
                                             :
                                             <View style={styles.loginScreenButtonBar}>
-                                                <Button style={styles.transparentBackground} full title="SignUp" onPress={this.switchType("login")}>
+                                                <TouchableOpacity style={styles.loginButton} onPress={this.switchType("login")}>
                                                     <Text style={styles.boldWhiteText}>Go to Login</Text>
-                                                </Button>
+                                                </TouchableOpacity>
                                             </View>
                             }
                         </View>

@@ -3,16 +3,15 @@ import { Constants } from 'expo';
 
 const primaryColor = '#628E86';
 // const primaryCream = '#F8F8F4';
-const primaryCream = '#f9f9e8';
-const secondaryColor = '#85A39C';
+const primaryCream = '#F9F9E8';
 // const primaryCream = 'rgb(248, 248, 244)';
+const secondaryColor = '#85A39C';
+const lightGrey = '#D3D3D3';
 
 const styles = {
     primaryColor: primaryColor,
     primaryCream: primaryCream,
-    transparentBackground: {
-        backgroundColor: 'rgba(0, 0, 0, 0.0)'
-    },
+    lightGrey: lightGrey,
     container: {
         flex: 1,
         backgroundColor: primaryCream
@@ -69,6 +68,11 @@ const styles = {
         height: '100%',
         flex: 1,
         justifyContent: 'space-around',
+    },
+    loginButton: {
+        flex: 1,
+        paddingTop: 10,
+        paddingBottom: 10,
     },
     loginInputStyle: {
         color: 'white',
