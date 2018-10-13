@@ -63,6 +63,12 @@ const styles = {
         right: 0,
         bottom: 0
     },
+    loginSignupMargin: {
+        marginBottom: 40,
+    },
+    loginLabelStyle: {
+        color: lightGrey,
+    },
     loginBackgroundImage: {
         width: '100%',
         height: '100%',

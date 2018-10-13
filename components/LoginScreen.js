@@ -15,7 +15,7 @@ import {
     Form,
     Item,
     Input,
-    Button,
+    Label,
     Spinner,
 } from "native-base";
 import styles from "../styles";
@@ -176,9 +176,9 @@ class LoginScreen extends React.Component {
                             // Login form
                             <Form>
                                 <ScrollView>
-                                    <Item>
-                                        <Input placeholder="Username or Email"
-                                            placeholderTextColor={styles.lightGrey}
+                                    <Item floatingLabel>
+                                        <Label style={styles.loginLabelStyle}>Username/Email</Label>
+                                        <Input
                                             autoCapitalize="none"
                                             autoCorrect={false}
                                             keyboardType="email-address"
@@ -188,9 +188,9 @@ class LoginScreen extends React.Component {
                                         />
                                     </Item>
                                     {this.state.error.username ? <Text style={styles.errorStyle}>{this.state.error.username}</Text> : <Text></Text>}
-                                    <Item last>
-                                        <Input placeholder="Password"
-                                            placeholderTextColor={styles.lightGrey}
+                                    <Item floatingLabel last>
+                                        <Label style={styles.loginLabelStyle}>Password</Label>
+                                        <Input
                                             secureTextEntry={true}
                                             onSubmitEditing={this.attemptLogin}
                                             style={styles.loginInputStyle}
@@ -207,11 +207,11 @@ class LoginScreen extends React.Component {
                             </Form>
                             : this.state.type === 'signUp' ?
                                 // Sign up form below
-                                <Form>
+                                <Form style={styles.loginSignupMargin}>
                                     <ScrollView>
-                                        <Item>
-                                            <Input placeholder="Username"
-                                                placeholderTextColor={styles.lightGrey}
+                                        <Item floatingLabel>
+                                            <Label style={styles.loginLabelStyle}>Username</Label>
+                                            <Input
                                                 autoCapitalize="none"
                                                 secureTextEntry={false}
                                                 autoCorrect={false}
@@ -220,9 +220,9 @@ class LoginScreen extends React.Component {
                                             />
                                         </Item>
                                         {this.state.error.username ? <Text style={styles.errorStyle}>{this.state.error.username}</Text> : <Text></Text>}
-                                        <Item>
-                                            <Input placeholder="Email"
-                                                placeholderTextColor={styles.lightGrey}
+                                        <Item floatingLabel>
+                                            <Label style={styles.loginLabelStyle}>Email</Label>
+                                            <Input
                                                 autoCapitalize="none"
                                                 secureTextEntry={false}
                                                 autoCorrect={false}
@@ -232,9 +232,9 @@ class LoginScreen extends React.Component {
                                             />
                                         </Item>
                                         {this.state.error.email ? <Text style={styles.errorStyle}>{this.state.error.email}</Text> : <Text></Text>}
-                                        <Item>
-                                            <Input placeholder="Confirm Email"
-                                                placeholderTextColor={styles.lightGrey}
+                                        <Item floatingLabel>
+                                            <Label style={styles.loginLabelStyle}>Confirm Email</Label>
+                                            <Input
                                                 autoCapitalize="none"
                                                 secureTextEntry={false}
                                                 autoCorrect={false}
@@ -244,18 +244,18 @@ class LoginScreen extends React.Component {
                                             />
                                         </Item>
                                         {this.state.error.email2 ? <Text style={styles.errorStyle}>{this.state.error.email2}</Text> : <Text></Text>}
-                                        <Item>
-                                            <Input placeholder="Password"
-                                                placeholderTextColor={styles.lightGrey}
+                                        <Item floatingLabel>
+                                            <Label style={styles.loginLabelStyle}>Password</Label>
+                                            <Input
                                                 secureTextEntry={true}
                                                 style={styles.loginInputStyle}
                                                 onChangeText={(text) => this.setState({ password1: text })}
                                             />
                                         </Item>
                                         {this.state.error.password1 ? <Text style={styles.errorStyle}>{this.state.error.password1}</Text> : <Text></Text>}
-                                        <Item last>
-                                            <Input placeholder="Confirm Password"
-                                                placeholderTextColor={styles.lightGrey}
+                                        <Item floatingLabel last>
+                                            <Label style={styles.loginLabelStyle}>Confirm Password</Label>
+                                            <Input
                                                 secureTextEntry={true}
                                                 onSubmitEditing={this.attemptSignUp}
                                                 style={styles.loginInputStyle}
@@ -269,9 +269,9 @@ class LoginScreen extends React.Component {
                                 </Form>
                                 : this.state.type === 'passwordReset' ?
                                     <Form>
-                                        <Item>
-                                            <Input placeholder="Username or Email"
-                                                placeholderTextColor={styles.lightGrey}
+                                        <Item floatingLabel>
+                                            <Label style={styles.loginLabelStyle}>Username/Email</Label>
+                                            <Input
                                                 autoCapitalize="none"
                                                 autoCorrect={false}
                                                 keyboardType="email-address"
