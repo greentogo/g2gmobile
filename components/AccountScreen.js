@@ -1,17 +1,13 @@
 import React from 'react';
 import {
-    View,
-    Image,
     WebView,
-    Linking
+    Linking,
 } from 'react-native';
 import { inject, observer } from "mobx-react";
 import styles from "../styles";
-import axios from '../apiClient';
 import {
     Content,
     List,
-    Text
 } from "native-base";
 import ListMenuItem from './subcomponents/ListMenuItem';
 import SubscriptionBanner from './subcomponents/SubscriptionBanner';
@@ -57,8 +53,7 @@ class AccountScreen extends React.Component {
                         <ListMenuItem
                             icon="person"
                             text="View/Edit Name and Email"
-                            // onPress={this.goToNameAndEmail}
-                            onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/account/' }) }}
+                            onPress={this.goToNameAndEmail}
                         />
                         <ListMenuItem
                             icon="card"
