@@ -56,12 +56,12 @@ class AccountScreen extends React.Component {
                             onPress={this.goToNameAndEmail}
                         />
                         <ListMenuItem
-                            icon="card"
+                            icon="credit-card"
                             text="Update payment method"
                             onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/account/change_payment_method/' }) }}
                         />
                         <ListMenuItem
-                            icon="document"
+                            icon="inbox"
                             text="View/Edit Subscriptions"
                             onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/' }) }}
                         />

@@ -54,12 +54,16 @@ class HomeScreen extends React.Component {
                     <G2GVideo />
                     <List>
                         <ListMenuItem
-                            icon="log-out"
+                            icon="swap-horiz"
+                            color={styles.primaryCream}
+                            backgroundColor="green"
                             text="Check In/Out container"
                             onPress={this.goToScanQRCode}
                         />
                         <ListMenuItem
                             icon="map"
+                            color={styles.primaryCream}
+                            backgroundColor="red"
                             text="Map of restaurants"
                             onPress={this.goToMap}
                         />
