@@ -41,6 +41,13 @@ const styles = {
         color: 'red',
         textAlign: 'center'
     },
+    centeredText: {
+        paddingTop: 5,
+        paddingBottom: 5,
+        color: primaryColor,
+        fontSize: 16,
+        textAlign: 'center'
+    },
     boldCenteredText: {
         paddingTop: 5,
         paddingBottom: 5,
@@ -65,6 +72,8 @@ const styles = {
     },
     loginSignupMargin: {
         marginBottom: 40,
+        paddingLeft: '5%',
+        paddingRight: '10%',
     },
     loginLabelStyle: {
         color: lightGrey,

@@ -174,7 +174,7 @@ class LoginScreen extends React.Component {
                         style={styles.loginBackgroundImage}>
                         {this.state.type === 'login' ?
                             // Login form
-                            <Form>
+                            <Form style={styles.loginSignupMargin}>
                                 <ScrollView>
                                     <Item floatingLabel>
                                         <Label style={styles.loginLabelStyle}>Username/Email</Label>
@@ -188,7 +188,7 @@ class LoginScreen extends React.Component {
                                         />
                                     </Item>
                                     {this.state.error.username ? <Text style={styles.errorStyle}>{this.state.error.username}</Text> : <Text></Text>}
-                                    <Item floatingLabel last>
+                                    <Item floatingLabel>
                                         <Label style={styles.loginLabelStyle}>Password</Label>
                                         <Input
                                             secureTextEntry={true}
@@ -201,7 +201,7 @@ class LoginScreen extends React.Component {
                                     {loadingSpinner}
                                     {this.state.error.password ? <Text style={styles.errorStyle}>{this.state.error.password}</Text> : <Text></Text>}
                                     <TouchableOpacity style={styles.loginButton} onPress={this.switchType("passwordReset")}>
-                                        <Text style={styles.boldWhiteText}>Forgot Password?</Text>
+                                        <Text style={{...styles.centeredText, color:'white'}}>Forgot Password?</Text>
                                     </TouchableOpacity>
                                 </ScrollView>
                             </Form>
@@ -253,7 +253,7 @@ class LoginScreen extends React.Component {
                                             />
                                         </Item>
                                         {this.state.error.password1 ? <Text style={styles.errorStyle}>{this.state.error.password1}</Text> : <Text></Text>}
-                                        <Item floatingLabel last>
+                                        <Item floatingLabel>
                                             <Label style={styles.loginLabelStyle}>Confirm Password</Label>
                                             <Input
                                                 secureTextEntry={true}
@@ -268,7 +268,7 @@ class LoginScreen extends React.Component {
                                     </ScrollView>
                                 </Form>
                                 : this.state.type === 'passwordReset' ?
-                                    <Form>
+                                    <Form style={styles.loginSignupMargin}>
                                         <Item floatingLabel>
                                             <Label style={styles.loginLabelStyle}>Username/Email</Label>
                                             <Input
