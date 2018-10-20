@@ -36,7 +36,7 @@ class EditNameEmailScreen extends React.Component {
     };
 
     attemptEdit() {
-        this.setState({ error: [], loading: true }, () => {
+        this.setState({ error: [], message: undefined, loading: true }, () => {
             let body = {
                 name: this.state.nameInput,
                 email: this.state.emailInput,
