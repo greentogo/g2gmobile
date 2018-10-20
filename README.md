@@ -13,3 +13,6 @@ For local development, You will need to download and run the GreenToGo Web appli
 
 `ngrok http 8000` to start ngrok
 then, get the ngrok http address, and replace `url` in ./apiClient.js with the ngrok address.
+
+
+For Android Push Notifications, this project uses FCM (Firebase cloud messaging)

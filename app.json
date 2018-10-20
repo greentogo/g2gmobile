@@ -32,6 +32,7 @@
     },
     "android": {
       "versionCode": 7,
+      "googleServicesFile": "./google-services.json",
       "package": "com.greentogo.greentogoapp",
       "config": {
         "googleMaps": {
