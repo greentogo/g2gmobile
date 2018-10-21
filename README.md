@@ -16,3 +16,7 @@ then, get the ngrok http address, and replace `url` in ./apiClient.js with the n
 
 
 For Android Push Notifications, this project uses FCM (Firebase cloud messaging)
+
+Remember, when deploying to IOS, make sure Advertising Identifier (IDFA) is checked as 'YES' and check the following checkboxes:
+* Attribute this app installation to a previously served advertisement
+* Attribute an action taken within this app to a previously served advertisement
