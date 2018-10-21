@@ -12,6 +12,7 @@ import ListMenuItem from './subcomponents/ListMenuItem';
 import SubscriptionBanner from './subcomponents/SubscriptionBanner';
 import G2GTitleImage from "./subcomponents/G2GTitleImage";
 import G2GVideo from "./subcomponents/G2GVideo";
+import registerForPushNotificationsAsync from "./subcomponents/pushNotification";
 
 
 @inject("appStore")
@@ -26,6 +27,10 @@ class HomeScreen extends React.Component {
     static navigationOptions = {
         headerTitle: <G2GTitleImage />,
     };
+
+    componentDidMount() {
+        registerForPushNotificationsAsync(this.props.appStore);
+    }
 
     goToMap = () => {
         this.props.navigation.navigate('map');
