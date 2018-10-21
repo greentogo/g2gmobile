@@ -27,7 +27,8 @@
       "infoPlist": {
         "NSLocationWhenInUseUsageDescription": "Your location is used in the map view screen to allow you to see where you are in relation to locations that use the GreenToGo service",
         "NSLocationAlwaysUsageDescription": "Your location is used in the map view screen to allow you to see where you are in relation to locations that use the GreenToGo service",
-        "NSCameraUsageDescription": "The camera is used to capture relevant QR codes that our service uses to check in and check out containers"
+        "NSCameraUsageDescription": "The camera is used to capture relevant QR codes that our service uses to check in and check out containers",
+        "UIBackgroundModes": ["remote-notification"]
       }
     },
     "android": {
