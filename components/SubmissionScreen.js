@@ -122,6 +122,8 @@ class SubmissionScreen extends React.Component {
     }
 
     submit = () => {
+        // uncomment to skip
+        // this.props.navigation.navigate('containerSuccessScreen', { boxCount: this.state.boxCount, locationData: this.state.locationData });
         if (!this.state.loadingSubmit){
             this.setState({ loadingSubmit: true }, () => {
                 let config = {
