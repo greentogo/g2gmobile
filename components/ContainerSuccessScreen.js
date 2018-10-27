@@ -1,4 +1,6 @@
 import React from 'react';
+import axios from '../apiClient';
+import appJson from '../app.json';
 import {
     Text,
     View,
@@ -6,6 +8,7 @@ import {
     TouchableOpacity,
     ScrollView,
 } from 'react-native';
+import { MaterialIcons } from '@expo/vector-icons';
 import styles from "../styles";
 import { inject } from "mobx-react";
 import CommunityBoxes from "./subcomponents/CommunityBoxes";
@@ -17,6 +20,8 @@ class ContainerSuccessScreen extends React.Component {
         this.state = {
             boxCount: this.props.navigation.state.params.boxCount,
             service: this.props.navigation.state.params.locationData.service,
+            rating: -1,
+            ratingSubmitted: false,
             time: new Date()
         }
         this.props.appStore.getUserData()
@@ -32,7 +37,28 @@ class ContainerSuccessScreen extends React.Component {
         }
     };
 
+    rateApp = (rating) => () => {
+        this.setState({ rating, ratingSubmitted: true });
+        axios.post('/rate/', { rating, version: appJson.expo.version }, {
+            headers: {
+                'Authorization': `Token ${this.props.appStore.authToken}`
+            }
+        })
+    }
+
+
     render() {
+        const text = this.state.ratingSubmitted ? 'Thank you!' : 'Rate your experience with GreenToGo!';
+        let rating = null;
+        if (this.state.service === "OUT") {
+            rating = [1, 2, 3, 4, 5].map((num) => {
+                const color = num <= this.state.rating ? 'gold' : 'white';
+                const pressAction = this.state.ratingSubmitted ? null : this.rateApp(num);
+                return <TouchableOpacity key={num}>
+                    <MaterialIcons style={{ color: color }} onPress={pressAction} size={45} name={'star'} />
+                </TouchableOpacity>
+            })
+        }
         return (
             <ScrollView style={styles.successTopContainer}>
                 <View>
@@ -59,6 +85,10 @@ class ContainerSuccessScreen extends React.Component {
                             style={styles.successImage}
                         />
                     </View>
+                </View>
+                <Text style={styles.successDateTimeText}>{text}</Text>
+                <View style={styles.centeredRow}>
+                    {rating}
                 </View>
                 <CommunityBoxes color={'white'} background={styles.primaryColor} />
             </ScrollView>
