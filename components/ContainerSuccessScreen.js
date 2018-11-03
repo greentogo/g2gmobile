@@ -48,9 +48,10 @@ class ContainerSuccessScreen extends React.Component {
 
 
     render() {
-        const text = this.state.ratingSubmitted ? 'Thank you!' : 'Rate your experience with GreenToGo!';
+        let text = null;
         let rating = null;
         if (this.state.service === "OUT") {
+            text = this.state.ratingSubmitted ? 'Thank you!' : 'Rate your experience with GreenToGo!';
             rating = [1, 2, 3, 4, 5].map((num) => {
                 const color = num <= this.state.rating ? 'gold' : 'white';
                 const pressAction = this.state.ratingSubmitted ? null : this.rateApp(num);
