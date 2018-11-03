@@ -31,12 +31,10 @@ export default async function registerForPushNotificationsAsync(appStore) {
             }).then((response) => {
                 return;
             }).catch((error) => {
-                axios.post('/log/', { 'context': 'pushNotification.js patch user', 'error': error, 'message': error.message, 'stack': error.stack });
                 return;
             });
         }
     } catch (error) {
-        axios.post('/log/', { 'context': 'pushNotification.js getExpoPushTokenAsync', 'error': error, 'message': error.message, 'stack': error.stack });
         return;
     }
     return;
