@@ -1,5 +1,4 @@
-import { StyleSheet, Dimensions } from 'react-native';
-import { Constants } from 'expo';
+import { Dimensions } from 'react-native';
 
 const primaryColor = '#628E86';
 // const primaryCream = '#F8F8F4';
@@ -9,44 +8,49 @@ const secondaryColor = '#85A39C';
 const lightGrey = '#D3D3D3';
 
 const styles = {
-    primaryColor: primaryColor,
-    primaryCream: primaryCream,
-    lightGrey: lightGrey,
+    primaryColor,
+    primaryCream,
+    lightGrey,
     container: {
         flex: 1,
-        backgroundColor: primaryCream
+        backgroundColor: primaryCream,
     },
     popToTopStyle: {
         fontSize: 40,
         color: 'white',
         paddingTop: 5,
-        paddingLeft: 5
+        paddingLeft: 5,
     },
     centeredRow: {
         flexDirection: 'row',
         justifyContent: 'center',
         marginTop: 5,
-        marginBottom: 5
+        marginBottom: 5,
+    },
+    centeredRowNoPadding: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     pickerStyle: {
         borderWidth: 1,
-        borderColor: '#000000'
+        borderColor: '#000000',
     },
     loadingContainer: {
         flex: 1,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
     },
     errorStyle: {
         color: 'red',
-        textAlign: 'center'
+        textAlign: 'center',
     },
     centeredText: {
         paddingTop: 5,
         paddingBottom: 5,
         color: primaryColor,
         fontSize: 16,
-        textAlign: 'center'
+        textAlign: 'center',
     },
     boldCenteredText: {
         paddingTop: 5,
@@ -54,7 +58,7 @@ const styles = {
         color: primaryColor,
         fontWeight: '800',
         fontSize: 20,
-        textAlign: 'center'
+        textAlign: 'center',
     },
     boldWhiteText: {
         paddingTop: 5,
@@ -62,13 +66,13 @@ const styles = {
         color: 'white',
         fontWeight: '800',
         fontSize: 20,
-        textAlign: 'center'
+        textAlign: 'center',
     },
     bottomFixed: {
         position: 'absolute',
         left: 0,
         right: 0,
-        bottom: 0
+        bottom: 0,
     },
     loginSignupMargin: {
         marginBottom: 40,
@@ -105,12 +109,12 @@ const styles = {
     },
     mapCalloutText: {
         flex: 1,
-        textAlign: 'left'
+        textAlign: 'left',
     },
     mapCalloutDirections: {
         flex: 1,
         textAlign: 'left',
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     subscriptionBanner: {
         paddingTop: 10,
@@ -132,13 +136,13 @@ const styles = {
         color: 'white',
         textAlign: 'center',
         width: 50,
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     submissionBoxCountStyle: {
         marginLeft: 10,
         marginRight: 10,
         fontSize: 30,
-        alignSelf: 'center'
+        alignSelf: 'center',
     },
     submissionSubmitButton: {
         paddingRight: 20,
@@ -146,9 +150,9 @@ const styles = {
         paddingTop: 20,
         paddingBottom: 20,
         backgroundColor: '#5fb75f',
-        borderRadius: 10
+        borderRadius: 10,
         // borderWidth: 1,
-        // borderColor: '#fff'
+        // borderColor: '#fff',
     },
     submissionSubmitButtonBlocked: {
         paddingRight: 20,
@@ -156,13 +160,13 @@ const styles = {
         paddingTop: 20,
         paddingBottom: 20,
         backgroundColor: '#808080',
-        borderRadius: 10
+        borderRadius: 10,
         // borderWidth: 1,
-        // borderColor: '#fff'
+        // borderColor: '#fff',
     },
     submissionSubmitTextStyle: {
         fontSize: 30,
-        color: 'white'
+        color: 'white',
     },
     successTopContainer: {
         backgroundColor: primaryColor,
@@ -172,28 +176,42 @@ const styles = {
     successText: {
         color: 'white',
         textAlign: 'center',
-        fontSize: 45
+        fontSize: 45,
     },
     successDateTimeText: {
         color: 'white',
         textAlign: 'center',
-        fontSize: 30
+        fontSize: 30,
     },
     successImageContainer: {
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop: 50
+        marginTop: 50,
     },
     successImage: {
         height: 140,
-        width: 140
+        width: 140,
+    },
+    communityBoxesText: {
+        textAlign: 'center',
+        fontWeight: 'bold',
+        fontSize: 26,
+    },
+    communityBoxesView: {
+        flex: 1,
+        justifyContent: 'center',
+        paddingTop: 10,
+    },
+    communityBoxesBoxImg: {
+        height: 35,
+        width: 35,
+        marginRight: 3,
+        marginLeft: 10,
     },
     window: {
         height: Dimensions.get('window').height,
-        width: Dimensions.get('window').width
-    }
-}
-
-// const stylesheet = StyleSheet.create(styles)
+        width: Dimensions.get('window').width,
+    },
+};
 
 export default styles;
