@@ -14,21 +14,18 @@ export class AppStore {
     @observable authToken = '';
     @observable user = {};
     @observable currentRoute = 'home';
-    @observable resturants = undefined;
+    @observable resturants = null;
 
     constructor() {
         // console.log('appStore constructor')
         simpleStore.get('authToken').then(token => {
             // console.log('stored token', token || 'not found')
             this.authToken = token
-        })
+        });
         simpleStore.get('user').then(user => {
             // console.log('user store', user || 'not found')
             this.user = user
-        })
-        simpleStore.get('resturants').then(resturants => {
-            this.resturants = resturants
-        })
+        });
     }
 
     reduceBoxes(subscriptions, type) {
@@ -37,15 +34,15 @@ export class AppStore {
 
     @action setAuthToken(token) {
         // console.log('setting authToken', token)
-        this.authToken = token
-        simpleStore.save('authToken', token)
+        this.authToken = token;
+        simpleStore.save('authToken', token);
     }
 
     @action clearAuthToken() {
         // console.log('clearing authToken')
-        this.authToken = null
-        simpleStore.save('authToken', null)
-        simpleStore.save('user', null)
+        this.authToken = null;
+        simpleStore.save('authToken', null);
+        simpleStore.save('user', null);
     }
 
     @action setCurrentRoute(navState) {
@@ -73,11 +70,16 @@ export class AppStore {
         // Get the restaurant data on load
         try {
             const response = await axios.get('/restaurants/');
-            simpleStore.save('resturants', response.data.data);
+            this.resturants = response.data.data;
             return response.data.data;
         } catch (error) {
             axios.post('/log/', { 'context': 'stores.js getResturantData', 'error': error, 'message': error.message, 'stack': error.stack });
         }
+    }
+
+    @action clearAndGetResturantData() {
+        this.resturants = null;
+        this.getResturantData();
     }
 
     @action setUserData(data) {
