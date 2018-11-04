@@ -11,9 +11,10 @@ enableLogging({
 });
 
 export class AppStore {
-    @observable authToken = ''
-    @observable user = {}
-    @observable currentRoute = 'home'
+    @observable authToken = '';
+    @observable user = {};
+    @observable currentRoute = 'home';
+    @observable resturants = undefined;
 
     constructor() {
         // console.log('appStore constructor')
@@ -68,14 +69,15 @@ export class AppStore {
         })
     }
 
-    @action getResturantData() {
+    @action async getResturantData() {
         // Get the restaurant data on load
-        axios.get('/restaurants/')
-            .then((json) => {
-                simpleStore.save('resturants', json.data.data)
-            }).catch((error) => {
-                axios.post('/log/', { 'context': 'stores.js getResturantData', 'error': error, 'message': error.message, 'stack': error.stack });
-            })
+        try {
+            const response = await axios.get('/restaurants/');
+            simpleStore.save('resturants', response.data.data);
+            return response.data.data;
+        } catch (error) {
+            axios.post('/log/', { 'context': 'stores.js getResturantData', 'error': error, 'message': error.message, 'stack': error.stack });
+        }
     }
 
     @action setUserData(data) {

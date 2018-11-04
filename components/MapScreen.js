@@ -14,6 +14,7 @@ class MapScreen extends React.Component {
         super(props);
         this.state = {
             mapType: "OUT",
+            resturants: this.props.appStore.resturants,
             currentLocation: false,
         }
     }
@@ -21,7 +22,7 @@ class MapScreen extends React.Component {
     static navigationOptions = ({ navigation }) => {
         const { state } = navigation;
         let titleText = "Participating Restaurants";
-        if (state.params && state.params.title){
+        if (state.params && state.params.title) {
             titleText = state.params.title;
         }
         return {
@@ -30,9 +31,10 @@ class MapScreen extends React.Component {
         }
     };
 
-    componentDidMount() {
+    async componentDidMount() {
         this._getCurrentLocation();
-        this.props.appStore.getResturantData();
+        const resturants = await this.props.appStore.getResturantData();
+        this.setState({ resturants });
         // this._interval = setInterval(() => {
         //     this._getCurrentLocation();
         // }, 5000);
@@ -53,15 +55,15 @@ class MapScreen extends React.Component {
     }
 
     _switchService = (type, titleText) => () => {
-        this.setState({ mapType: type })
+        this.setState({ mapType: type });
         const { setParams } = this.props.navigation;
-        setParams({ title: titleText })
+        setParams({ title: titleText });
     }
 
     render() {
         let markers = [];
-        if (this.props.appStore.resturants) {
-            this.props.appStore.resturants.map((marker, i) => {
+        if (this.state.resturants) {
+            this.state.resturants.map((marker, i) => {
                 if (marker.address && marker.latitude && marker.longitude && marker.service === this.state.mapType) {
                     markers.push(
                         <MapView.Marker

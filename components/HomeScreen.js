@@ -20,8 +20,8 @@ import registerForPushNotificationsAsync from "./subcomponents/pushNotification"
 class HomeScreen extends React.Component {
     constructor(props) {
         super(props)
-        this.props.appStore.getUserData()
-        this.props.appStore.getResturantData()
+        this.props.appStore.getUserData();
+        this.props.appStore.getResturantData();
     }
 
     static navigationOptions = {
@@ -49,7 +49,7 @@ class HomeScreen extends React.Component {
     }
 
     logOut = () => {
-        this.props.appStore.clearAuthToken()
+        this.props.appStore.clearAuthToken();
     }
 
     render() {
