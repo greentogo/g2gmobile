@@ -109,16 +109,16 @@ class SubmissionScreen extends React.Component {
         if (!this.state.loadingSubmit) {
             try {
                 this.setState({ loadingSubmit: true }, async () => {
-                    const config = {
-                        headers: {
-                            Authorization: `Token ${this.props.appStore.authToken}`,
-                        },
-                    };
                     const body = {
                         subscription: this.state.subscriptionId,
                         location: this.state.locationData.code,
                         action: this.state.locationData.service,
                         number_of_boxes: this.state.boxCount,
+                    };
+                    const config = {
+                        headers: {
+                            Authorization: `Token ${this.props.appStore.authToken}`,
+                        },
                     };
                     await axios.post('/tag/', body, config);
                     this.props.navigation.navigate('containerSuccessScreen', { boxCount: this.state.boxCount, locationData: this.state.locationData });
