@@ -36,20 +36,22 @@ class EditNameEmailScreen extends React.Component {
     }
 
     attemptEdit() {
-        this.setState({ error: [], message: undefined, loading: true }, () => {
-            const body = {
-                name: this.state.nameInput,
-                email: this.state.emailInput,
-            };
-            axios.patch('/me/', body, {
-                headers: {
-                    Authorization: `Token ${this.props.appStore.authToken}`,
-                },
-            }).then((response) => {
+        this.setState({ error: [], message: undefined, loading: true }, async () => {
+            try {
+                const body = {
+                    name: this.state.nameInput,
+                    email: this.state.emailInput,
+                };
+                const config = {
+                    headers: {
+                        Authorization: `Token ${this.props.appStore.authToken}`,
+                    },
+                };
+                const response = await axios.patch('/me/', body, config);
                 this.props.appStore.setUserData(response.data.data);
                 this.setState({ loading: false, message: 'Information Updated!' });
-            }).catch((error) => {
-                if (error.response.data && error.response.data.data && error.response.data.data.error) {
+            } catch (error) {
+                if (error.response && error.response.data && error.response.data.data && error.response.data.data.error) {
                     this.setState({ error: [error.response.data.data.error], loading: false });
                 } else {
                     axios.post('/log/', {
@@ -57,7 +59,7 @@ class EditNameEmailScreen extends React.Component {
                     });
                     this.setState({ error: ['We are sorry, we are having trouble processing your request. Please try again later.'], loading: false });
                 }
-            });
+            }
         });
     }
 
