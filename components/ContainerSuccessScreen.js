@@ -1,6 +1,4 @@
 import React from 'react';
-import axios from '../apiClient';
-import appJson from '../app.json';
 import {
     Text,
     View,
@@ -9,65 +7,69 @@ import {
     ScrollView,
 } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons';
-import styles from "../styles";
-import { inject } from "mobx-react";
-import CommunityBoxes from "./subcomponents/CommunityBoxes";
+import { inject } from 'mobx-react';
+import axios from '../apiClient';
+import appJson from '../app.json';
+import styles from '../styles';
+import CommunityBoxes from './subcomponents/CommunityBoxes';
 
-@inject("appStore")
+@inject('appStore')
 class ContainerSuccessScreen extends React.Component {
+    static navigationOptions = ({ navigation }) => ({
+        title: 'Check In/Out Success!',
+        headerTitleStyle: { width: 300 },
+        headerLeft: (
+            <TouchableOpacity><Text style={styles.popToTopStyle} onPress={() => navigation.popToTop()}>X</Text></TouchableOpacity>
+        ),
+    });
+
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             boxCount: this.props.navigation.state.params.boxCount,
             service: this.props.navigation.state.params.locationData.service,
             rating: -1,
             ratingSubmitted: false,
-            time: new Date()
-        }
-        this.props.appStore.getUserData()
+            time: new Date(),
+        };
+        this.props.appStore.getUserData();
     }
 
-    static navigationOptions = ({ navigation }) => {
-        return {
-            title: 'Check In/Out Success!',
-            headerTitleStyle: { width: 300 },
-            headerLeft: (
-                <TouchableOpacity><Text style={styles.popToTopStyle} onPress={() => navigation.popToTop()}>X</Text></TouchableOpacity>
-            )
-        }
-    };
-
-    rateApp = (rating) => () => {
+    rateApp = rating => () => {
         this.setState({ rating, ratingSubmitted: true });
         axios.post('/rate/', { rating, version: appJson.expo.version }, {
             headers: {
-                'Authorization': `Token ${this.props.appStore.authToken}`
-            }
-        })
+                Authorization: `Token ${this.props.appStore.authToken}`,
+            },
+        });
     }
 
 
     render() {
         let text = null;
         let rating = null;
-        if (this.state.service === "OUT") {
+        if (this.state.service === 'OUT') {
             text = this.state.ratingSubmitted ? 'Thank you!' : 'Rate your experience with GreenToGo!';
             rating = [1, 2, 3, 4, 5].map((num) => {
                 const color = num <= this.state.rating ? 'gold' : 'white';
                 const pressAction = this.state.ratingSubmitted ? null : this.rateApp(num);
-                return <TouchableOpacity key={num}>
-                    <MaterialIcons style={{ color: color }} onPress={pressAction} size={45} name={'star'} />
-                </TouchableOpacity>
-            })
+                return (
+                    <TouchableOpacity key={num}>
+                        <MaterialIcons style={{ color }} onPress={pressAction} size={45} name="star" />
+                    </TouchableOpacity>
+                );
+            });
         }
         return (
             <ScrollView style={styles.successTopContainer}>
                 <View>
                     <Text style={styles.successText}>
-                        Checked {this.state.service.toLowerCase()}
+                        Checked
+                        {' '}
+                        {this.state.service.toLowerCase()}
                     </Text>
                     <Text style={styles.successText}>
-                        {this.state.boxCount === 1 ? "1 box" : `${this.state.boxCount} boxes`}
+                        {this.state.boxCount === 1 ? '1 box' : `${this.state.boxCount} boxes`}
                     </Text>
                     {/* TODO: Give location name on successful checkOut and set it to state */
                     }
@@ -75,10 +77,10 @@ class ContainerSuccessScreen extends React.Component {
                     {this.state.location ? "from " + this.state.location : ""}
                     </Text> */}
                     <Text style={styles.successDateTimeText}>
-                        {this.state.time ? this.state.time.toLocaleTimeString() : ""}
+                        {this.state.time ? this.state.time.toLocaleTimeString() : ''}
                     </Text>
                     <Text style={styles.successDateTimeText}>
-                        {this.state.time ? this.state.time.toLocaleDateString() : ""}
+                        {this.state.time ? this.state.time.toLocaleDateString() : ''}
                     </Text>
                     <View style={styles.successImageContainer}>
                         <Image
@@ -91,9 +93,9 @@ class ContainerSuccessScreen extends React.Component {
                 <View style={styles.centeredRow}>
                     {rating}
                 </View>
-                <CommunityBoxes color={'white'} background={styles.primaryColor} />
+                <CommunityBoxes color="white" background={styles.primaryColor} />
             </ScrollView>
-        )
+        );
     }
 }
 
