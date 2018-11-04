@@ -2,15 +2,9 @@ import React from 'react';
 import {
     Image,
     TouchableOpacity,
-    Dimensions
+    Dimensions,
 } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import styles from "../../styles";
-import {
-    Content,
-    List,
-    Text
-} from "native-base";
 import { Video } from 'expo';
 import VideoPlayer from './VideoPlayer';
 import BaseScreen from './BaseScreen';
@@ -19,17 +13,17 @@ import BaseScreen from './BaseScreen';
 @observer
 class G2GVideo extends BaseScreen {
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             mute: false,
             shouldPlay: false,
             videoStarted: false,
-        }
+        };
     }
 
     handlePlayAndPause = () => {
         this.setState(prevState => ({
-            shouldPlay: !prevState.shouldPlay
+            shouldPlay: !prevState.shouldPlay,
         }));
     }
 
@@ -41,8 +35,8 @@ class G2GVideo extends BaseScreen {
 
 
     changeRate(rate) {
-        this._playbackInstance.setStatusAsync({
-            rate: rate,
+        this.playbackInstance.setStatusAsync({
+            rate,
             shouldCorrectPitch: true,
         });
     }
@@ -54,7 +48,8 @@ class G2GVideo extends BaseScreen {
                 if (!this.state.videoStarted) {
                     this.setState({ videoStarted: true, shouldPlay: true });
                 }
-            }}>
+            }}
+            >
                 {this.state.videoStarted ? (
                     <VideoPlayer
                         videoProps={{
@@ -64,17 +59,17 @@ class G2GVideo extends BaseScreen {
                             style: {
                                 alignSelf: 'stretch',
                                 width: win.width,
-                                height: (win.width / 2)
+                                height: (win.width / 2),
                             },
-                            ref: component => {
-                                this._playbackInstance = component;
+                            ref: (component) => {
+                                this.playbackInstance = component;
                             },
                         }}
                         currentRoute={this.props.appStore.currentRoute}
-                        showControlsOnLoad={true}
+                        showControlsOnLoad
                         isPortrait={this.state.isPortrait}
-                        switchToLandscape={this.switchToLandscape.bind(this)}
-                        switchToPortrait={this.switchToPortrait.bind(this)}
+                        switchToLandscape={this.switchToLandscape}
+                        switchToPortrait={this.switchToPortrait}
                         playFromPositionMillis={0}
                     />
                     /* <Video
@@ -90,17 +85,17 @@ class G2GVideo extends BaseScreen {
                         source={require('../../assets/icons/how-2-gtg.mp4')}
                     /> */
                 ) : (
-                        <Image
-                            source={require('../../assets/icons/VideoHolder.png')}
-                            style={{
-                                alignSelf: 'stretch',
-                                width: win.width,
-                                height: win.width / 2
-                            }}
-                        />
-                    )}
+                    <Image
+                        source={require('../../assets/icons/VideoHolder.png')}
+                        style={{
+                            alignSelf: 'stretch',
+                            width: win.width,
+                            height: win.width / 2,
+                        }}
+                    />
+                )}
             </TouchableOpacity>
-        )
+        );
     }
 }
 
