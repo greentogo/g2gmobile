@@ -3,30 +3,30 @@ import {
     View,
     ScrollView,
 } from 'react-native';
-import { inject, observer } from "mobx-react";
-import styles from "../styles";
+import { inject, observer } from 'mobx-react';
 import {
     List,
-} from "native-base";
+} from 'native-base';
+import styles from '../styles';
 import ListMenuItem from './subcomponents/ListMenuItem';
 import SubscriptionBanner from './subcomponents/SubscriptionBanner';
-import G2GTitleImage from "./subcomponents/G2GTitleImage";
-import G2GVideo from "./subcomponents/G2GVideo";
-import registerForPushNotificationsAsync from "./subcomponents/pushNotification";
+import G2GTitleImage from './subcomponents/G2GTitleImage';
+import G2GVideo from './subcomponents/G2GVideo';
+import registerForPushNotificationsAsync from './subcomponents/pushNotification';
 
 
-@inject("appStore")
+@inject('appStore')
 @observer
 class HomeScreen extends React.Component {
-    constructor(props) {
-        super(props)
-        this.props.appStore.getUserData();
-        this.props.appStore.getResturantData();
-    }
-
     static navigationOptions = {
         headerTitle: <G2GTitleImage />,
     };
+
+    constructor(props) {
+        super(props);
+        this.props.appStore.getUserData();
+        this.props.appStore.clearAndGetResturantData();
+    }
 
     componentDidMount() {
         registerForPushNotificationsAsync(this.props.appStore);
@@ -88,7 +88,7 @@ class HomeScreen extends React.Component {
                     <SubscriptionBanner />
                 </View>
             </View>
-        )
+        );
     }
 }
 
