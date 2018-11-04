@@ -85,7 +85,7 @@ class CommunityBoxes extends React.Component {
                 {this.state.totalUserBoxesReturned && (
                     <View style={{ backgroundColor: this.state.background, ...styles.communityBoxesView }}>
                         <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>
-                            You've saved
+                            You{'\''}ve saved
                         </Text>
                         <View style={styles.centeredRowNoPadding}>
                             <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>
@@ -95,9 +95,7 @@ class CommunityBoxes extends React.Component {
                                 source={require('../../assets/icons/GTG-Box-App.png')}
                                 style={styles.communityBoxesBoxImg}
                             />
-                            <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>
-                                s
-                            </Text>
+                            <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>s</Text>
                         </View>
                     </View>
                 )
