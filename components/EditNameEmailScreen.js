@@ -2,9 +2,7 @@ import React from 'react';
 import {
     TouchableOpacity,
 } from 'react-native';
-import { inject, observer } from "mobx-react";
-import styles from "../styles";
-import axios from '../apiClient';
+import { inject, observer } from 'mobx-react';
 import {
     Content,
     Text,
@@ -13,39 +11,40 @@ import {
     Input,
     Label,
     Spinner,
-} from "native-base";
+} from 'native-base';
+import styles from '../styles';
+import axios from '../apiClient';
 
-@inject("appStore")
+@inject('appStore')
 @observer
 class EditNameEmailScreen extends React.Component {
+    static navigationOptions = {
+        title: 'Edit Name and Email',
+        headerTitleStyle: { width: 300 },
+    };
+
     constructor(props) {
-        super(props)
+        super(props);
         this.state = {
             ...this.props.appStore.user,
             emailInput: this.props.appStore.user.email,
             nameInput: this.props.appStore.user.name,
             error: [],
             message: undefined,
-        }
+        };
         this.attemptEdit = this.attemptEdit.bind(this);
     }
 
-    static navigationOptions = {
-        title: 'Edit Name and Email',
-        headerTitleStyle: { width: 300 }
-    };
-
     attemptEdit() {
         this.setState({ error: [], message: undefined, loading: true }, () => {
-            let body = {
+            const body = {
                 name: this.state.nameInput,
                 email: this.state.emailInput,
-            }
-            let authToken = this.props.appStore.authToken;
+            };
             axios.patch('/me/', body, {
                 headers: {
-                    'Authorization': `Token ${authToken}`
-                }
+                    Authorization: `Token ${this.props.appStore.authToken}`,
+                },
             }).then((response) => {
                 this.props.appStore.setUserData(response.data.data);
                 this.setState({ loading: false, message: 'Information Updated!' });
@@ -53,25 +52,25 @@ class EditNameEmailScreen extends React.Component {
                 if (error.response.data && error.response.data.data && error.response.data.data.error) {
                     this.setState({ error: [error.response.data.data.error], loading: false });
                 } else {
-                    axios.post('/log/', { 'context': 'EditNameEmailScreen.js attemptEdit', 'error': error, 'message': error.message, 'stack': error.stack });
-                    this.setState({ error: ["We are sorry, we are having trouble processing your request. Please try again later."], loading: false });
+                    axios.post('/log/', {
+                        context: 'EditNameEmailScreen.js attemptEdit', error, message: error.message, stack: error.stack,
+                    });
+                    this.setState({ error: ['We are sorry, we are having trouble processing your request. Please try again later.'], loading: false });
                 }
             });
         });
     }
 
     render() {
-        let loadingSpinner = this.state.loading ?
-            <Spinner color={styles.primaryColor} />
+        const loadingSpinner = this.state.loading
+            ? <Spinner color={styles.primaryColor} />
             : null;
         let errorMessages = null;
         if (this.state.error[0] !== undefined) {
-            errorMessages = this.state.error.map((error, index) => {
-                return <Text key={index} style={styles.errorStyle}>{error}</Text>;
-            });
+            errorMessages = this.state.error.map(error => <Text key={`${error.trim()}`} style={styles.errorStyle}>{error}</Text>);
         }
-        let message = this.state.message ?
-            <Text style={styles.centeredText}>{this.state.message}</Text>
+        const message = this.state.message
+            ? <Text style={styles.centeredText}>{this.state.message}</Text>
             : null;
         return (
             <Content style={styles.container}>
@@ -82,7 +81,7 @@ class EditNameEmailScreen extends React.Component {
                             autoCapitalize="none"
                             autoCorrect={false}
                             keyboardType="email-address"
-                            onChangeText={(text) => this.setState({ emailInput: text })}
+                            onChangeText={text => this.setState({ emailInput: text })}
                             value={this.state.emailInput}
                         />
                     </Item>
@@ -91,7 +90,7 @@ class EditNameEmailScreen extends React.Component {
                         <Input
                             autoCapitalize="none"
                             autoCorrect={false}
-                            onChangeText={(text) => this.setState({ nameInput: text })}
+                            onChangeText={text => this.setState({ nameInput: text })}
                             value={this.state.nameInput}
                         />
                     </Item>
@@ -103,7 +102,7 @@ class EditNameEmailScreen extends React.Component {
                     </TouchableOpacity>
                 </Form>
             </Content>
-        )
+        );
     }
 }
 
