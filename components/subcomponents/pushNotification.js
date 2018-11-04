@@ -14,21 +14,19 @@ export default async function registerForPushNotificationsAsync(appStore) {
         finalStatus = status;
     }
 
-    // Stop here if the user did not grant permissions
-    if (finalStatus !== 'granted') {
-        return;
-    }
-
-    // Get the token that uniquely identifies this device
-    const expoPushToken = await Notifications.getExpoPushTokenAsync();
-    if (appStore.user.expoPushToken !== expoPushToken) {
-        // PATCH the token to your backend server from where you can retrieve it to send push notifications.
-        const body = { expoPushToken };
-        const config = {
-            headers: {
-                Authorization: `Token ${appStore.authToken}`,
-            },
-        };
-        axios.patch('/me/', body, config);
+    // Contiune if the user did granted permissions
+    if (finalStatus === 'granted') {
+        // Get the token that uniquely identifies this device
+        const expoPushToken = await Notifications.getExpoPushTokenAsync();
+        if (appStore.user.expoPushToken !== expoPushToken) {
+            // PATCH the token to your backend server from where you can retrieve it to send push notifications.
+            const body = { expoPushToken };
+            const config = {
+                headers: {
+                    Authorization: `Token ${appStore.authToken}`,
+                },
+            };
+            axios.patch('/me/', body, config);
+        }
     }
 }
