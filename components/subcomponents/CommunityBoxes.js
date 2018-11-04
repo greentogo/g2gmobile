@@ -24,31 +24,33 @@ class CommunityBoxes extends React.Component {
         };
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         const color = this.props.color || styles.primaryColor;
         const background = this.props.background || styles.primaryCream;
-        axios.get(`/stats/${this.props.appStore.user.username}/`, {
+        const config = {
             headers: {
                 Authorization: `Token ${this.props.appStore.authToken}`,
             },
-        }).then((response) => {
+        };
+        try {
+            const response = await axios.get(`/stats/${this.props.appStore.user.username}/`, config);
             if (response.data && response.data.data) {
-                let userBoxes = false;
-                if (response.data.data.total_user_boxes_returned && response.data.data.total_user_boxes_returned > 0) {
-                    userBoxes = response.data.data.total_user_boxes_returned;
+                let totalUserBoxesReturned = false;
+                if (response.data.data.total_user_boxes_returned && response.data.data.total_user_boxes_returned) {
+                    totalUserBoxesReturned = response.data.data.total_user_boxes_returned;
                 }
                 this.setState({
-                    totalUserBoxesReturned: userBoxes, totalBoxesReturned: response.data.data.total_boxes_returned, color, background,
+                    totalUserBoxesReturned, totalBoxesReturned: response.data.data.total_boxes_returned, color, background,
                 });
             }
-        }).catch((error) => {
+        } catch (error) {
             axios.post('/log/', {
                 context: 'CommunityBoxes.js', error, message: error.message, stack: error.stack,
             });
             if ((error.status && error.status === 401) || (error.response && error.response.status && error.response.status === 401)) {
                 this.props.appStore.clearAuthToken();
             }
-        });
+        }
     }
 
     render() {
