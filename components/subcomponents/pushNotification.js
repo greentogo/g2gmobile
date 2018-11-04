@@ -12,30 +12,23 @@ export default async function registerForPushNotificationsAsync(appStore) {
         // install, so this will only ask on iOS
         const { status } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
         finalStatus = status;
-    };
+    }
 
     // Stop here if the user did not grant permissions
     if (finalStatus !== 'granted') {
         return;
     }
 
-    try {
-        // Get the token that uniquely identifies this device
-        const expoPushToken = await Notifications.getExpoPushTokenAsync();
-        if (appStore.user.expoPushToken !== expoPushToken) {
-            // PATCH the token to your backend server from where you can retrieve it to send push notifications.
-            axios.patch('/me/', { expoPushToken }, {
-                headers: {
-                    'Authorization': `Token ${appStore.authToken}`
-                }
-            }).then((response) => {
-                return;
-            }).catch((error) => {
-                return;
-            });
-        }
-    } catch (error) {
-        return;
+    // Get the token that uniquely identifies this device
+    const expoPushToken = await Notifications.getExpoPushTokenAsync();
+    if (appStore.user.expoPushToken !== expoPushToken) {
+        // PATCH the token to your backend server from where you can retrieve it to send push notifications.
+        const body = { expoPushToken };
+        const config = {
+            headers: {
+                Authorization: `Token ${appStore.authToken}`,
+            },
+        };
+        axios.patch('/me/', body, config);
     }
-    return;
 }
