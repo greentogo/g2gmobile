@@ -34,13 +34,13 @@ class BarCodeScannerReader extends React.Component {
                             'Authorization': `Token ${authToken}`
                         }
                     }).then((response) => {
-                        if (response.data && response.data.data && response.data.data.code){
+                        if (response.data && response.data.data && response.data.data.code) {
                             this.props.navigateNext(response.data.data);
                         } else {
                             this.setState({ barCodeScanned: false });
                         }
                     }).catch((error) => {
-                        axios.post('/log/', {'context': 'BarCodeScannerReader.js', 'error': error, 'message': error.message, 'stack': error.stack});
+                        axios.post('/log/', { 'context': 'BarCodeScannerReader.js', 'error': error, 'message': error.message, 'stack': error.stack });
                         this.setState({ barCodeScanned: false });
                     })
                 } else {

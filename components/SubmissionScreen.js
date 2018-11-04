@@ -53,7 +53,7 @@ class SubmissionScreen extends React.Component {
             })
         }).catch((error) => {
             this.props.appStore.clearAuthToken();
-            axios.post('/log/', {'context': 'SubmissionScreen.js componentDidMount', 'error': error, 'message': error.message, 'stack': error.stack});
+            axios.post('/log/', { 'context': 'SubmissionScreen.js componentDidMount', 'error': error, 'message': error.message, 'stack': error.stack });
         })
     }
 
@@ -124,7 +124,7 @@ class SubmissionScreen extends React.Component {
     submit = () => {
         // uncomment to skip
         // this.props.navigation.navigate('containerSuccessScreen', { boxCount: this.state.boxCount, locationData: this.state.locationData });
-        if (!this.state.loadingSubmit){
+        if (!this.state.loadingSubmit) {
             this.setState({ loadingSubmit: true }, () => {
                 let config = {
                     headers: {
@@ -140,7 +140,7 @@ class SubmissionScreen extends React.Component {
                 axios.post('/tag/', body, config).then((response) => {
                     this.props.navigation.navigate('containerSuccessScreen', { boxCount: this.state.boxCount, locationData: this.state.locationData });
                 }).catch((error) => {
-                    axios.post('/log/', {'context': 'SubmissionScreen.js Submit Tag', 'error': error, 'message': error.message, 'stack': error.stack});
+                    axios.post('/log/', { 'context': 'SubmissionScreen.js Submit Tag', 'error': error, 'message': error.message, 'stack': error.stack });
                     this.setState({ loadingSubmit: false });
                 });
             })
@@ -217,21 +217,21 @@ class SubmissionScreen extends React.Component {
                                                 <Text style={styles.submissionSubmitTextStyle}>Cannot Check {this.state.locationData.service.toLowerCase()}</Text>
                                             </TouchableOpacity>
                                         ) : (
-                                            <TouchableOpacity style={styles.submissionSubmitButton} onPress={this.submit}>
-                                                <Text style={styles.submissionSubmitTextStyle}>Check {this.state.locationData.service.toLowerCase()}</Text>
-                                            </TouchableOpacity>
+                                                <TouchableOpacity style={styles.submissionSubmitButton} onPress={this.submit}>
+                                                    <Text style={styles.submissionSubmitTextStyle}>Check {this.state.locationData.service.toLowerCase()}</Text>
+                                                </TouchableOpacity>
                                             )}
                                     </View>
                                 </View>
                             </View>
                         ) : (
-                            <View style={styles.container}>
-                                <Button light full onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/new/' }) }}>
-                                    <Text style={styles.boldCenteredText}>
-                                        Your account has no subscriptions. Tap here to add a subscription.
+                                <View style={styles.container}>
+                                    <Button light full onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/new/' }) }}>
+                                        <Text style={styles.boldCenteredText}>
+                                            Your account has no subscriptions. Tap here to add a subscription.
                                     </Text>
-                                </Button>
-                            </View>
+                                    </Button>
+                                </View>
                             )
                     )
             )

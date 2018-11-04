@@ -201,7 +201,7 @@ class LoginScreen extends React.Component {
                                     {loadingSpinner}
                                     {this.state.error.password ? <Text style={styles.errorStyle}>{this.state.error.password}</Text> : <Text></Text>}
                                     <TouchableOpacity style={styles.loginButton} onPress={this.switchType("passwordReset")}>
-                                        <Text style={{...styles.centeredText, color:'white'}}>Forgot Password?</Text>
+                                        <Text style={{ ...styles.centeredText, color: 'white' }}>Forgot Password?</Text>
                                     </TouchableOpacity>
                                 </ScrollView>
                             </Form>

@@ -28,10 +28,10 @@ class CommunityBoxes extends React.Component {
     componentDidMount() {
         let color = styles.primaryColor;
         let background = styles.primaryCream;
-        if (this.props.color){
+        if (this.props.color) {
             color = this.props.color;
         }
-        if (this.props.background){
+        if (this.props.background) {
             background = this.props.background;
         }
         let authToken = this.props.appStore.authToken;
@@ -42,13 +42,13 @@ class CommunityBoxes extends React.Component {
         }).then((response) => {
             if (response.data && response.data.data) {
                 let userBoxes = false;
-                if (response.data.data.total_user_boxes_returned && response.data.data.total_user_boxes_returned > 0){
+                if (response.data.data.total_user_boxes_returned && response.data.data.total_user_boxes_returned > 0) {
                     userBoxes = response.data.data.total_user_boxes_returned;
                 }
                 this.setState({ totalUserBoxesReturned: userBoxes, totalBoxesReturned: response.data.data.total_boxes_returned, color, background });
             }
         }).catch((error) => {
-            axios.post('/log/', {'context': 'CommunityBoxes.js', 'error': error, 'message': error.message, 'stack': error.stack});
+            axios.post('/log/', { 'context': 'CommunityBoxes.js', 'error': error, 'message': error.message, 'stack': error.stack });
             if ((error.status && error.status === 401) || (error.response && error.response.status && error.response.status === 401)) {
                 this.props.appStore.clearAuthToken();
             }

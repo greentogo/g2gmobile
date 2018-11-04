@@ -71,8 +71,8 @@ class AccountScreen extends React.Component {
                             onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/account/change_password/' }) }}
                         />
                     </List>
-                    <SubscriptionBanner/>
-                    <CommunityBoxes/>
+                    <SubscriptionBanner />
+                    <CommunityBoxes />
                 </Content>
             )
         }
