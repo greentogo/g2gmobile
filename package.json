@@ -25,6 +25,16 @@
   },
   "scripts": {
     "start": "expo start",
-    "setup": "npm install -g expo-cli"
+    "setup": "npm install -g expo-cli",
+    "lint": "./node_modules/.bin/eslint ./components",
+    "fix": "./node_modules/.bin/eslint ./components --fix"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1"
   }
 }
