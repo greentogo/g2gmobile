@@ -10,18 +10,20 @@ class ScanQRCode extends React.Component {
         title: 'Scan QR Code',
     };
 
+    // uncomment to skip
+    // componentDidMount() {
+    //     this.props.navigation.navigate('submission', {
+    //         locationData: {
+    //             code: 'GW6VRU',
+    //             service: 'OUT',
+    //             name: "Rose's Noodles, Dumplings & Sweets",
+    //         },
+    //     });
+    // }
+
     navigateNext = (locationData) => {
         this.props.navigation.navigate('submission', { locationData });
     };
-
-    // uncomment to skip
-    // componentDidMount() {
-    //     this.props.navigation.navigate('submission', { locationData: {
-    //         code: 'GW6VRU',
-    //         service: 'OUT',
-    //         name: "Rose's Noodles, Dumplings & Sweets"
-    //     } });
-    // }
 
     render() {
         return (
