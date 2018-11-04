@@ -13,7 +13,8 @@ class BarCodeScannerReader extends React.Component {
     constructor(props) {
         super(props)
         this.state = {
-            barCodeScanned: false
+            barCodeScanned: false,
+            hasCameraPermission: false,
         }
     }
 
