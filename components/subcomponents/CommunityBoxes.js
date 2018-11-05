@@ -33,6 +33,7 @@ class CommunityBoxes extends React.Component {
             },
         };
         try {
+            // TODO Is this axios call really necessary?
             const response = await axios.get(`/stats/${this.props.appStore.user.username}/`, config);
             if (response.data && response.data.data) {
                 let totalUserBoxesReturned = false;
