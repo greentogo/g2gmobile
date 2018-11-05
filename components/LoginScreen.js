@@ -38,60 +38,43 @@ class LoginScreen extends React.Component {
             type: 'login',
             redirectToWeb: false,
         };
-        this.attemptLogin = this.attemptLogin.bind(this);
-        this.attemptSignUp = this.attemptSignUp.bind(this);
-        this.attemptPasswordReset = this.attemptPasswordReset.bind(this);
     }
 
     switchType = type => () => {
         this.setState({ type, error: [], msg: null });
     }
 
-    attemptLogin() {
+    attemptLogin = async () => {
         if (this.state.username && this.state.password) {
             this.setState({ error: [], loading: true });
             const body = {
                 username: this.state.username,
                 password: this.state.password,
             };
-            axios.post('/auth/login/', body).then((loginResponse) => {
-                // Get the user data after successful login
-                axios.get('/me/', {
+            try {
+                const loginResponse = await axios.post('/auth/login/', body);
+                const config = {
                     headers: {
                         Authorization: `Token ${loginResponse.data.auth_token}`,
                     },
-                }).then((meResponse) => {
-                    this.setState({ loading: false });
-                    this.props.store.setUserData(meResponse.data.data);
-                    this.props.store.setAuthToken(loginResponse.data.auth_token);
-                }).catch((error) => {
-                    axios.post('/log/', {
-                        context: 'LoginScreen.js me', error, message: error.message, stack: error.stack,
-                    });
-                    this.setState({ error: ['We are sorry, we are having trouble processing your request. Please try again later.'], loading: false });
-                    this.props.store.clearAuthToken();
-                });
-            }).catch((error) => {
-                // TODO
-                // HANDLE THESE LOCALLY
+                };
+                const meResponse = await axios.get('/me/', config);
+                this.setState({ loading: false });
+                this.props.store.setUserData(meResponse.data.data);
+                this.props.store.setAuthToken(loginResponse.data.auth_token);
+            } catch (error) {
                 if (error.response && error.response.data && error.response.data.non_field_errors) {
-                    this.setState({ error: error.response.data.non_field_errors, loading: false });
-                } else if (error.response.data.password || error.response.data.username) {
-                    const tempErrors = {};
-                    if (error.response.data.username && error.response.data.username[0] === 'This field may not be null.') {
-                        tempErrors.username = 'Username cannot be empty.';
-                    }
-                    if (error.response.data.password && error.response.data.password[0] === 'This field may not be null.') {
-                        tempErrors.password = 'Password cannot be empty.';
-                    }
-                    this.setState({ error: tempErrors, loading: false });
+                    this.setState({ loading: false, error: error.response.data.non_field_errors });
+                } else if (error.response && error.response.data && (error.response.data.password || error.response.data.username)) {
+                    this.setState({ loading: false, error: error.response.data });
                 } else {
+                    this.setState({ loading: false, error: ['We are sorry, we are having trouble processing your request. Please try again later.'] });
+                    this.props.store.clearAuthToken();
                     axios.post('/log/', {
-                        context: 'LoginScreen.js auth login', error, message: error.message, stack: error.stack,
+                        context: 'LoginScreen.js attemptLogin', error, message: error.message, stack: error.stack,
                     });
-                    this.setState({ error: ['We are sorry, we are having trouble processing your request. Please try again later.'], loading: false });
                 }
-            });
+            }
         } else {
             const tempErrors = {};
             if (!this.state.username) {
@@ -100,12 +83,12 @@ class LoginScreen extends React.Component {
             if (!this.state.password) {
                 tempErrors.password = 'Password cannot be empty.';
             }
-            this.setState({ error: tempErrors, loading: false });
+            this.setState({ loading: false, error: tempErrors });
         }
     }
 
-    attemptSignUp() {
-        this.setState({ error: [], loading: true }, () => {
+    attemptSignUp = async () => {
+        this.setState({ error: [], loading: true }, async () => {
             const body = {
                 username: this.state.username,
                 password1: this.state.password1,
@@ -113,42 +96,44 @@ class LoginScreen extends React.Component {
                 email: this.state.email,
                 email2: this.state.email2,
             };
-            axios.post('/register/', body).then((response) => {
+            try {
+                const response = await axios.post('/register/', body);
                 this.setState({
                     loading: false, type: 'signUpSuccess', username: null, msg: response.data.data,
                 });
-            }).catch((error) => {
+            } catch (error) {
                 if (error.response.data.data) {
-                    this.setState({ error: error.response.data.data, loading: false });
+                    this.setState({ loading: false, error: error.response.data.data });
                 } else {
+                    this.setState({ loading: false, error: ['We are sorry, we are having trouble processing your request. Please try again later.'] });
                     axios.post('/log/', {
                         context: 'LoginScreen.js attemptSignUp', error, message: error.message, stack: error.stack,
                     });
-                    this.setState({ error: ['We are sorry, we are having trouble processing your request. Please try again later.'], loading: false });
                 }
-            });
+            }
         });
     }
 
-    attemptPasswordReset() {
-        this.setState({ loading: true }, () => {
+    attemptPasswordReset = async () => {
+        this.setState({ loading: true }, async () => {
             const body = {
                 userString: this.state.username,
             };
-            axios.post('/password/reset/', body).then((response) => {
+            try {
+                const response = await axios.post('/password/reset/', body);
                 this.setState({
                     loading: false, type: 'passwordResetSuccess', username: null, msg: response.data.data,
                 });
-            }).catch((error) => {
+            } catch (error) {
                 if (error.response.data && error.response.data.data && error.response.data.data.error) {
                     this.setState({ loading: false, error: [error.response.data.data.error] });
                 } else {
+                    this.setState({ loading: false, error: ['We are sorry, we are having trouble processing your request. Please try again later.'] });
                     axios.post('/log/', {
                         context: 'LoginScreen.js password reset', error, message: error.message, stack: error.stack,
                     });
-                    this.setState({ loading: false, error: ['We are sorry, we are having trouble processing your request. Please try again later.'] });
                 }
-            });
+            }
         });
     }
 
