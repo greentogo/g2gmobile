@@ -5,20 +5,39 @@ import {
     Dimensions,
 } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { Video } from 'expo';
+import { ScreenOrientation, Video } from 'expo';
 import VideoPlayer from './VideoPlayer';
-import BaseScreen from './BaseScreen';
 
 @inject('appStore')
 @observer
-class G2GVideo extends BaseScreen {
+class G2GVideo extends React.Component {
+    static navigationOptions = ({ navigation }) => ({
+        header: null,
+        tabBarVisible:
+            !(navigation.state.params && navigation.state.params.tabBarHidden),
+    });
+
     constructor(props) {
         super(props);
         this.state = {
             mute: false,
             shouldPlay: false,
             videoStarted: false,
+            isPortrait: true,
         };
+    }
+
+    componentDidMount() {
+        ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT_UP); // Use This to get it to work: // ScreenOrientation.allow(ScreenOrientation.Orientation.ALL);
+        Dimensions.addEventListener(
+            'change',
+            this.orientationChangeHandler.bind(this),
+        );
+    }
+
+    componentWillUnmount() {
+        ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT);
+        Dimensions.removeEventListener('change', this.orientationChangeHandler);
     }
 
     handlePlayAndPause = () => {
@@ -33,6 +52,22 @@ class G2GVideo extends BaseScreen {
         }));
     }
 
+    switchToLandscape = () => {
+        ScreenOrientation.allow(ScreenOrientation.Orientation.LANDSCAPE);
+    }
+
+    switchToPortrait = () => {
+        ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT);
+    }
+
+    orientationChangeHandler(dims) {
+        const { width, height } = dims.window;
+        const isLandscape = width > height;
+        this.setState({ isPortrait: !isLandscape });
+        // this.props.navigation.setParams({ tabBarHidden: isLandscape });
+        ScreenOrientation.allow(ScreenOrientation.Orientation.ALL);
+    }
+
 
     changeRate(rate) {
         this.playbackInstance.setStatusAsync({
@@ -43,6 +78,41 @@ class G2GVideo extends BaseScreen {
 
     render() {
         const win = Dimensions.get('window');
+        let body = (
+            <Image
+                source={require('../../assets/icons/VideoHolder.png')}
+                style={{
+                    alignSelf: 'stretch',
+                    width: win.width,
+                    height: win.width / 2,
+                }}
+            />
+        );
+        if (this.state.videoStarted) {
+            body = (
+                <VideoPlayer
+                    videoProps={{
+                        shouldPlay: this.state.shouldPlay,
+                        resizeMode: Video.RESIZE_MODE_CONTAIN,
+                        isMuted: false,
+                        style: {
+                            alignSelf: 'stretch',
+                            width: win.width,
+                            height: (win.width / 2),
+                        },
+                        ref: (component) => {
+                            this.playbackInstance = component;
+                        },
+                    }}
+                    currentRoute={this.props.appStore.currentRoute}
+                    showControlsOnLoad
+                    isPortrait={this.state.isPortrait}
+                    switchToLandscape={this.switchToLandscape}
+                    switchToPortrait={this.switchToPortrait}
+                    playFromPositionMillis={0}
+                />
+            );
+        }
         return (
             <TouchableOpacity onPress={() => {
                 if (!this.state.videoStarted) {
@@ -50,50 +120,7 @@ class G2GVideo extends BaseScreen {
                 }
             }}
             >
-                {this.state.videoStarted ? (
-                    <VideoPlayer
-                        videoProps={{
-                            shouldPlay: this.state.shouldPlay,
-                            resizeMode: Video.RESIZE_MODE_CONTAIN,
-                            isMuted: false,
-                            style: {
-                                alignSelf: 'stretch',
-                                width: win.width,
-                                height: (win.width / 2),
-                            },
-                            ref: (component) => {
-                                this.playbackInstance = component;
-                            },
-                        }}
-                        currentRoute={this.props.appStore.currentRoute}
-                        showControlsOnLoad
-                        isPortrait={this.state.isPortrait}
-                        switchToLandscape={this.switchToLandscape}
-                        switchToPortrait={this.switchToPortrait}
-                        playFromPositionMillis={0}
-                    />
-                    /* <Video
-                        resizeMode="cover"
-                        shouldPlay={this.state.shouldPlay}
-                        isMuted={this.state.mute}
-                        style={{
-                            alignSelf: 'stretch',
-                            width: win.width,
-                            height: win.width / 2
-                        }}
-                        ignoreSilentSwitch="ignore"
-                        source={require('../../assets/icons/how-2-gtg.mp4')}
-                    /> */
-                ) : (
-                    <Image
-                        source={require('../../assets/icons/VideoHolder.png')}
-                        style={{
-                            alignSelf: 'stretch',
-                            width: win.width,
-                            height: win.width / 2,
-                        }}
-                    />
-                )}
+                {body}
             </TouchableOpacity>
         );
     }
