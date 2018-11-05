@@ -38,12 +38,12 @@ class MapScreen extends React.Component {
         try {
             this.getCurrentLocation();
             const resturants = this.props.appStore.resturants || await this.props.appStore.getResturantData();
-            return this.setState({ resturants });
+            this.setState({ resturants });
         } catch (error) {
+            this.setState({ error: true });
             axios.post('/log/', {
                 context: 'MapScreen.js componentDidMount', error, message: error.message, stack: error.stack,
             });
-            return this.setState({ error: true });
         }
         // this._interval = setInterval(() => {
         //     this.getCurrentLocation();
