@@ -20,9 +20,6 @@
         "react/destructuring-assignment": [
             "off"
         ],
-        "react/prop-types": [
-            "off"
-        ],
         "max-len": [
             "off"
         ],
