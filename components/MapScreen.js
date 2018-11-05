@@ -67,7 +67,9 @@ class MapScreen extends React.Component {
     }
 
     goToLocation = (latitude, longitude, title) => () => {
-        openMap({ latitude, longitude, query: title });
+        openMap({
+            latitude, longitude, query: title, end: title,
+        });
     }
 
     render() {
