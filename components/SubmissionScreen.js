@@ -124,10 +124,10 @@ class SubmissionScreen extends React.Component {
                     this.props.navigation.navigate('containerSuccessScreen', { boxCount: this.state.boxCount, locationData: this.state.locationData });
                 });
             } catch (error) {
+                this.setState({ loadingSubmit: false });
                 axios.post('/log/', {
                     context: 'SubmissionScreen.js Submit Tag', error, message: error.message, stack: error.stack,
                 });
-                this.setState({ loadingSubmit: false });
             }
         }
     }
