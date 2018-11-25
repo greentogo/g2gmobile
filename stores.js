@@ -7,29 +7,39 @@ enableLogging({
     action: false,
     reaction: false,
     transaction: false,
-    compute: false
+    compute: false,
 });
+
+/* eslint-disable import/prefer-default-export */
 
 export class AppStore {
     @observable authToken = '';
+
     @observable user = {};
+
     @observable currentRoute = 'home';
+
     @observable resturants = null;
 
     constructor() {
         // console.log('appStore constructor')
-        simpleStore.get('authToken').then(token => {
+        simpleStore.get('authToken').then((token) => {
             // console.log('stored token', token || 'not found')
-            this.authToken = token
+            this.authToken = token;
         });
-        simpleStore.get('user').then(user => {
+        simpleStore.get('user').then((user) => {
             // console.log('user store', user || 'not found')
-            this.user = user
+            this.user = user;
         });
     }
 
     reduceBoxes(subscriptions, type) {
-        return subscriptions.reduce((sum, subscription) => sum + subscription[type], 0)
+        return subscriptions.reduce((sum, subscription) => {
+            if (subscription.is_active) {
+                return sum + subscription[type];
+            }
+            return sum;
+        }, 0)
     }
 
     @action setAuthToken(token) {
@@ -46,24 +56,30 @@ export class AppStore {
     }
 
     @action setCurrentRoute(navState) {
-        if (navState.hasOwnProperty('routes') && navState.hasOwnProperty('index') && navState.routes[navState.index].hasOwnProperty('routeName')) {
+        if (navState && typeof navState.index === 'number'
+            && navState.routes
+            && navState.routes[navState.index]
+            && navState.routes[navState.index].routeName) {
             this.currentRoute = navState.routes[navState.index].routeName;
         }
     }
 
-    @action getUserData() {
+    @action async getUserData() {
         // Get the user data after successful login
-        axios.get('/me/', {
-            headers: {
-                'Authorization': `Token ${this.authToken}`
-            }
-        }).then((response) => {
+        try {
+            const config = {
+                headers: {
+                    Authorization: `Token ${this.authToken}`,
+                },
+            };
+            const response = await axios.get('/me/', config);
             this.setUserData(response.data.data);
-        }).catch((error) => {
-            axios.post('/log/', { 'context': 'stores.js getUserData', 'error': error, 'message': error.message, 'stack': error.stack });
+        } catch (error) {
+            axios.post('/log/', {
+                context: 'stores.js getUserData', error, message: error.message, stack: error.stack,
+            });
             this.clearAuthToken();
-            // console.log(this.clearAuthToken());
-        })
+        }
     }
 
     @action async getResturantData() {
@@ -73,7 +89,10 @@ export class AppStore {
             this.resturants = response.data.data;
             return response.data.data;
         } catch (error) {
-            axios.post('/log/', { 'context': 'stores.js getResturantData', 'error': error, 'message': error.message, 'stack': error.stack });
+            axios.post('/log/', {
+                context: 'stores.js getResturantData', error, message: error.message, stack: error.stack,
+            });
+            throw error;
         }
     }
 
@@ -85,8 +104,8 @@ export class AppStore {
     @action setUserData(data) {
         this.user = data;
         if (data.subscriptions) {
-            this.user.maxBoxes = this.reduceBoxes(data.subscriptions, "max_boxes");
-            this.user.availableBoxes = this.reduceBoxes(data.subscriptions, "available_boxes");
+            this.user.maxBoxes = this.reduceBoxes(data.subscriptions, 'max_boxes');
+            this.user.availableBoxes = this.reduceBoxes(data.subscriptions, 'available_boxes');
         }
         simpleStore.save('user', data);
     }
