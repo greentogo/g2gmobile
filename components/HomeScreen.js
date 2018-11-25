@@ -52,6 +52,8 @@ class HomeScreen extends React.Component {
         this.props.appStore.clearAuthToken();
     }
 
+    // Profile, Rewards, Big button for scanning, Map/Locations List, Help
+
     render() {
         return (
             <View style={{ ...styles.container, paddingBottom: 50 }}>
