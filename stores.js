@@ -1,14 +1,6 @@
 import { observable, action } from 'mobx';
-import { enableLogging } from 'mobx-logger';
 import simpleStore from 'react-native-simple-store';
 import axios from './apiClient';
-
-enableLogging({
-    action: false,
-    reaction: false,
-    transaction: false,
-    compute: false,
-});
 
 /* eslint-disable import/prefer-default-export */
 

@@ -14,7 +14,6 @@
     "babel-preset-expo": "^5.0.0",
     "expo": "^31.0.4",
     "mobx": "^3.1.16",
-    "mobx-logger": "^0.6.0",
     "mobx-react": "^4.1.8",
     "native-base": "^2.8.1",
     "react": "16.5.0",
