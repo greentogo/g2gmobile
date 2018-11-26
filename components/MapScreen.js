@@ -60,6 +60,7 @@ class MapScreen extends React.Component {
         }));
     }
 
+    // switchService = type => () => { this.setState({ mapType: type }); };
     switchService = (type, titleText) => () => {
         this.setState({ mapType: type });
         const { setParams } = this.props.navigation;
