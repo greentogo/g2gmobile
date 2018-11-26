@@ -1,8 +1,13 @@
 {
-  "presets": ["babel-preset-expo", "react-native-stage-0/decorator-support"],
+  "presets": ["babel-preset-expo"],
   "env": {
     "development": {
-      "plugins": ["transform-react-jsx-source", "transform-decorators-legacy"]
+      "plugins": [
+        "@babel/plugin-transform-flow-strip-types",
+        "@babel/plugin-transform-react-jsx-source",
+        ["@babel/plugin-proposal-decorators", { "legacy": true }],
+        ["@babel/plugin-proposal-class-properties", { "loose" : true }]
+      ]
     }
   }
 }

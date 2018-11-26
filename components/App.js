@@ -1,7 +1,7 @@
 import React from 'react';
-import { Constants } from 'expo';
-import { observer, Provider } from 'mobx-react';
-import { createStackNavigator } from 'react-navigation';
+import { Constants, ScreenOrientation } from 'expo';
+import { inject, observer, Provider } from 'mobx-react';
+import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import styles from '../styles';
 import LoginScreen from './LoginScreen';
 import HomeScreen from './HomeScreen';
@@ -12,7 +12,7 @@ import ContainerSuccessScreen from './ContainerSuccessScreen';
 import AccountScreen from './AccountScreen';
 import SubscriptionScreen from './SubscriptionScreen';
 import EditNameEmailScreen from './EditNameEmailScreen';
-
+// import { MaterialIcons } from '@expo/vector-icons';
 
 const RootStack = createStackNavigator(
     {
@@ -27,7 +27,7 @@ const RootStack = createStackNavigator(
     },
     {
         initialRouteName: 'home',
-        navigationOptions: {
+        defaultNavigationOptions: {
             headerStyle: {
                 backgroundColor: styles.primaryColor,
             },
@@ -42,10 +42,64 @@ const RootStack = createStackNavigator(
     },
 );
 
+// const RootStack = createBottomTabNavigator(
+//     {
+//         home: HomeScreen,
+//         map: MapScreen,
+//         scanQRCode: ScanQRCode,
+//         submission: SubmissionScreen,
+//         containerSuccessScreen: ContainerSuccessScreen,
+//         account: AccountScreen,
+//         subscription: SubscriptionScreen,
+//         editnameemail: EditNameEmailScreen,
+//     },
+//     {
+//         initialRouteName: 'scanQRCode',
+//         order: ['account', 'scanQRCode', 'map'],
+//         tabBarOptions: {
+//             activeTintColor: '#e91e63',
+//             tintColor: 'white',
+//             inactiveTintColor: 'white',
+//             labelStyle: {
+//                 fontSize: 12,
+//             },
+//             style: {
+//                 backgroundColor: styles.primaryColor,
+//             },
+//         },
+//         defaultNavigationOptions: ({ navigation }) => ({
+//             tabBarIcon: ({ focused, tintColor }) => {
+//                 console.log(navigation);
+//                 // You can return any component that you like here! We usually use an
+//                 // icon component from react-native-vector-icons
+//                 return <MaterialIcons name='map' size={25} color='white' />;
+//             },
+//             headerStyle: {
+//                 backgroundColor: styles.primaryColor,
+//             },
+//             headerTintColor: '#ffffff',
+//             tintColor: styles.primaryCream,
+//             borderTopWidth: Constants.statusBarHeight,
+//             headerTitleStyle: {
+//                 color: '#ffffff',
+//                 fontWeight: 'bold',
+//             },
+//         }),
+//     },
+// );
+
+const AppNav = createAppContainer(RootStack);
+
 @observer
 class App extends React.Component {
-    componentDidMount() {
-        Expo.ScreenOrientation.allow(Expo.ScreenOrientation.Orientation.PORTRAIT_UP); // eslint-disable-line no-undef
+    // constructor(props) {
+    //     super(props);
+    //     this.props.appStore.getUserData();
+    //     this.props.appStore.clearAndGetResturantData();
+    // }
+
+    async componentDidMount() {
+        await ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT_UP);
     }
 
     render() {
@@ -55,7 +109,7 @@ class App extends React.Component {
         }
         return (
             <Provider appStore={store}>
-                <RootStack
+                <AppNav
                     onNavigationStateChange={(prevState, newState) => {
                         store.setCurrentRoute(newState);
                     }}

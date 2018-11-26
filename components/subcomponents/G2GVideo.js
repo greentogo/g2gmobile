@@ -27,16 +27,16 @@ class G2GVideo extends React.Component {
         };
     }
 
-    componentDidMount() {
-        ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT_UP); // Use This to get it to work: // ScreenOrientation.allow(ScreenOrientation.Orientation.ALL);
+    async componentDidMount() {
+        await ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT_UP); // Use This to get it to work: // ScreenOrientation.allowAsync(ScreenOrientation.Orientation.ALL);
         Dimensions.addEventListener(
             'change',
             this.orientationChangeHandler.bind(this),
         );
     }
 
-    componentWillUnmount() {
-        ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT);
+    async componentWillUnmount() {
+        await ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
         Dimensions.removeEventListener('change', this.orientationChangeHandler);
     }
 
@@ -52,20 +52,20 @@ class G2GVideo extends React.Component {
         }));
     }
 
-    switchToLandscape = () => {
-        ScreenOrientation.allow(ScreenOrientation.Orientation.LANDSCAPE);
+    switchToLandscape = async () => {
+        await ScreenOrientation.allowAsync(ScreenOrientation.Orientation.LANDSCAPE);
     }
 
-    switchToPortrait = () => {
-        ScreenOrientation.allow(ScreenOrientation.Orientation.PORTRAIT);
+    switchToPortrait = async () => {
+        await ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
     }
 
-    orientationChangeHandler(dims) {
+    async orientationChangeHandler(dims) {
         const { width, height } = dims.window;
         const isLandscape = width > height;
         this.setState({ isPortrait: !isLandscape });
         // this.props.navigation.setParams({ tabBarHidden: isLandscape });
-        ScreenOrientation.allow(ScreenOrientation.Orientation.ALL);
+        await ScreenOrientation.allowAsync(ScreenOrientation.Orientation.ALL);
     }
 
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Expo from 'expo';
+import { AppLoading, registerRootComponent } from 'expo';
 import { observer } from 'mobx-react';
 import App from './components/App';
 import { AppStore } from './stores';
@@ -13,7 +13,7 @@ const store = new AppStore();
     // state = { loaded: false };
 
     // async componentDidMount() {
-    //     await Expo.Font.loadAsync({
+    //     await Font.loadAsync({
     //         Roboto: require('native-base/Fonts/Roboto.ttf'),
     //         Roboto_medium: require('native-base/Fonts/Roboto_medium.ttf'),
     //     });
@@ -26,8 +26,8 @@ const store = new AppStore();
                 <App store={store} />
             );
         }
-        return <Expo.AppLoading />;
+        return <AppLoading />;
     }
 }
 
-Expo.registerRootComponent(GreenToGo);
+registerRootComponent(GreenToGo);
