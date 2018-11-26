@@ -1,6 +1,6 @@
 import React from 'react';
 import { Constants, ScreenOrientation } from 'expo';
-import { inject, observer, Provider } from 'mobx-react';
+import { observer, Provider } from 'mobx-react';
 import { createStackNavigator, createBottomTabNavigator, createAppContainer } from 'react-navigation';
 import styles from '../styles';
 import LoginScreen from './LoginScreen';
