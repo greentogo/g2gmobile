@@ -9,7 +9,7 @@ class SubscriptionBanner extends React.Component {
     render() {
         let boxesAvailableBanner = '';
         if (this.props.appStore && this.props.appStore.user && this.props.appStore.user.subscriptions) {
-            if (this.props.appStore.user.availableBoxes
+            if (this.props.appStore.user.maxBoxes
                 && this.props.appStore.user.subscriptions.length > 0) {
                 boxesAvailableBanner = `${this.props.appStore.user.availableBoxes} / ${this.props.appStore.user.maxBoxes} boxes available`;
             } else if (this.props.appStore.user.subscriptions.length === 0) {
