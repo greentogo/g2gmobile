@@ -60,7 +60,7 @@ class BarCodeScannerReader extends React.Component {
             return (
                 <View style={{ flex: 1 }}>
                     <BarCodeScanner
-                        onBarCodeRead={this.handleBarCodeRead}
+                        onBarCodeScanned={this.handleBarCodeRead}
                         style={StyleSheet.absoluteFill}
                     />
                 </View>
