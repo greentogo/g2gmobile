@@ -32,9 +32,13 @@
       }
     },
     "android": {
-      "versionCode": 11,
-      "googleServicesFile": "./google-services.json",
+      "versionCode": 12,
       "package": "com.greentogo.greentogoapp",
+      "permissions": [
+        "CAMERA",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION"
+      ],
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyA8f-lwu4sdv3PmLXfOyHXR-1iBAeWMf08"
