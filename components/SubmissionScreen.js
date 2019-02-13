@@ -59,7 +59,7 @@ class SubmissionScreen extends React.Component {
     add = () => {
         const maxReturnableBoxes = this.state.selectedSubscription.max_boxes - this.state.selectedSubscription.available_boxes;
         if (this.state.locationData.service === 'IN') {
-            if (!this.state.boxCount < maxReturnableBoxes) {
+            if (this.state.boxCount < maxReturnableBoxes) {
                 this.setState(prevState => ({ boxCount: prevState.boxCount + 1 }));
             }
         } else if (this.state.locationData.service === 'OUT') {
