@@ -1,3 +1,4 @@
+/* eslint-disable */
 import React from 'react';
 import { Audio, Video } from 'expo';
 import {
@@ -628,6 +629,7 @@ export default class VideoPlayer extends React.Component {
                     }}>
                     <Video
                         source={require('../../assets/icons/how-2-gtg.mp4')}
+                        // source={{ uri: 'https://535c3fc5.ngrok.io/static/how-2-g2g.mp4' }}
                         ref={component => {
                             this._playbackInstance = component;
                             ref && ref(component);
