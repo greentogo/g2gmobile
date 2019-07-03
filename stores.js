@@ -65,12 +65,12 @@ export class AppStore {
                 },
             };
             const response = await axios.get('/me/', config);
-            this.setUserData(response.data.data);
+            return this.setUserData(response.data.data);
         } catch (error) {
             axios.post('/log/', {
                 context: 'stores.js getUserData', error, message: error.message, stack: error.stack,
             });
-            this.clearAuthToken();
+            return this.clearAuthToken();
         }
     }
 
@@ -93,12 +93,13 @@ export class AppStore {
         this.getResturantData();
     }
 
-    @action setUserData(data) {
+    @action async setUserData(data) {
         this.user = data;
         if (data.subscriptions) {
             this.user.maxBoxes = this.reduceBoxes(data.subscriptions, 'max_boxes');
             this.user.availableBoxes = this.reduceBoxes(data.subscriptions, 'available_boxes');
         }
         simpleStore.save('user', data);
+        return data;
     }
 }

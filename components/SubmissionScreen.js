@@ -37,22 +37,12 @@ class SubmissionScreen extends React.Component {
         };
     }
 
-    componentDidMount() {
-        axios.get('/me/', {
-            headers: {
-                Authorization: `Token ${this.props.appStore.authToken}`,
-            },
-        }).then((response) => {
-            this.setState({ subscriptions: response.data.data.subscriptions, loading: false }, () => {
-                if (this.state.subscriptions.length > 0) {
-                    this.subscriptionChange(this.state.subscriptions[0].id);
-                }
-            });
-        }).catch((error) => {
-            this.props.appStore.clearAuthToken();
-            axios.post('/log/', {
-                context: 'SubmissionScreen.js componentDidMount', error, message: error.message, stack: error.stack,
-            });
+    async componentDidMount() {
+        const { subscriptions } = await this.props.appStore.getUserData();
+        this.setState({ subscriptions, loading: false }, () => {
+            if (this.state.subscriptions.length > 0) {
+                this.subscriptionChange(this.state.subscriptions[0].id);
+            }
         });
     }
 
