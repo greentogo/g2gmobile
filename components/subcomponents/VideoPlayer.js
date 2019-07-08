@@ -1,6 +1,6 @@
 /* eslint-disable */
 import React from 'react';
-import { Audio, Video } from 'expo';
+import { Audio, Video } from 'expo-av';
 import {
     View,
     Dimensions,
@@ -201,6 +201,8 @@ export default class VideoPlayer extends React.Component {
                 playsInSilentModeIOS: true,
                 shouldDuckAndroid: true,
                 interruptionModeAndroid: Audio.INTERRUPTION_MODE_ANDROID_DO_NOT_MIX,
+                staysActiveInBackground: true,
+                playThroughEarpieceAndroid: true,
             });
         } catch (e) {
             this.props.errorCallback({

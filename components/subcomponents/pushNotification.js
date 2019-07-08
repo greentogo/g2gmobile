@@ -1,4 +1,5 @@
-import { Permissions, Notifications } from 'expo';
+import { Notifications } from 'expo';
+import * as Permissions from 'expo-permissions';
 import axios from '../../apiClient';
 
 export default async function registerForPushNotificationsAsync(appStore) {

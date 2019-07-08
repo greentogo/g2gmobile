@@ -5,7 +5,8 @@ import {
     Dimensions,
 } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { ScreenOrientation, Video } from 'expo';
+import { ScreenOrientation } from 'expo';
+import { Video } from 'expo-av';
 import VideoPlayer from './VideoPlayer';
 
 @inject('appStore')
@@ -28,7 +29,7 @@ class G2GVideo extends React.Component {
     }
 
     async componentDidMount() {
-        await ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT_UP); // Use This to get it to work: // ScreenOrientation.allowAsync(ScreenOrientation.Orientation.ALL);
+        await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT_UP); // Use This to get it to work: // ScreenOrientation.lockAsync(ScreenOrientation.Orientation.ALL);
         Dimensions.addEventListener(
             'change',
             this.orientationChangeHandler.bind(this),
@@ -36,7 +37,7 @@ class G2GVideo extends React.Component {
     }
 
     async componentWillUnmount() {
-        await ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
+        await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT);
         Dimensions.removeEventListener('change', this.orientationChangeHandler);
     }
 
@@ -53,11 +54,11 @@ class G2GVideo extends React.Component {
     }
 
     switchToLandscape = async () => {
-        await ScreenOrientation.allowAsync(ScreenOrientation.Orientation.LANDSCAPE);
+        await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.LANDSCAPE);
     }
 
     switchToPortrait = async () => {
-        await ScreenOrientation.allowAsync(ScreenOrientation.Orientation.PORTRAIT);
+        await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT);
     }
 
     async orientationChangeHandler(dims) {
@@ -65,7 +66,7 @@ class G2GVideo extends React.Component {
         const isLandscape = width > height;
         this.setState({ isPortrait: !isLandscape });
         // this.props.navigation.setParams({ tabBarHidden: isLandscape });
-        await ScreenOrientation.allowAsync(ScreenOrientation.Orientation.ALL);
+        // await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.ALL);
     }
 
 

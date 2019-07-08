@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { Permissions, BarCodeScanner } from 'expo';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import * as Permissions from 'expo-permissions';
 import {
     Text,
 } from 'native-base';

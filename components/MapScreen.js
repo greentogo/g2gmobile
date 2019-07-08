@@ -3,7 +3,7 @@ import {
     Platform, ImageBackground, Text, View, TouchableOpacity, ActivityIndicator,
 } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { MapView } from 'expo';
+import MapView from 'react-native-maps';
 import openMap from 'react-native-open-maps';
 import Flashing from './subcomponents/Flashing';
 import styles from '../styles';
