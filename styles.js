@@ -208,6 +208,10 @@ const styles = {
         marginRight: 3,
         marginLeft: 10,
     },
+    space: {
+        paddingTop: 30,
+        paddingBottom: 30,
+    },
     window: {
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width,

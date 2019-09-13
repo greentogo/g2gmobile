@@ -315,8 +315,7 @@ class LoginScreen extends React.Component {
                                 {this.state.error.password2 ? <Text style={styles.errorStyle}>{this.state.error.password2}</Text> : <Text />}
                                 {errorMessages}
                                 {loadingSpinner}
-                                <br />
-                                <br />
+                                <Text style={styles.space}></Text>
                             </ScrollView>
                         </Form>
                     )}
