@@ -1,14 +1,18 @@
 import axios from 'axios';
+import { NGROKHOST } from 'react-native-dotenv';
 
-const url = 'https://app.durhamgreentogo.com/api/v1'; // Production
-// const url = 'https://g2g.dreisbach.us/api/v1'; // Staging
-// const url = 'https://d2e64d37.ngrok.io/api/v1'; // Testing
-// TODO:
-// curl --silent --show-error http://127.0.0.1:4040/api/tunnels | sed -nE 's/.*public_url":"https:..([^"]*).*/\1/p'
-// Then get it from process.env
+const prodHost = 'https://app.durhamgreentogo.com';
+// const url = 'https://g2g.dreisbach.us'; // Staging
+// const url = 'https://c1ad61be.ngrok.io'; // Testing
+
+function getNgrokUrl() {
+    return NGROKHOST || prodHost;
+}
+
+const host = __DEV__ ? getNgrokUrl() : prodHost;
 
 const instance = axios.create({
-    baseURL: url,
+    baseURL: `${host}/api/v1`,
     timeout: 10000,
     headers: {
         Accept: 'application/json',
