@@ -17,6 +17,14 @@ const styles = {
         justifyContent: 'center',
         alignItems: 'center',
     },
+    overlayDark: {
+        flex: 1,
+        position: 'relative',
+        justifyContent: 'center',
+        alignItems: 'center',
+        opacity: 0.6,
+        backgroundColor: 'black',
+    },
     qrCodeScanner: {
         color: 'gold',
         opacity: 0.6,
