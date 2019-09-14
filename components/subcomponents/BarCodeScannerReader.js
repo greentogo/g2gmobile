@@ -1,11 +1,12 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { BarCodeScanner } from 'expo-barcode-scanner';
+import { Camera } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 import * as Permissions from 'expo-permissions';
 import {
     Text,
+    Spinner,
 } from 'native-base';
 import axios from '../../apiClient';
 import styles from '../../styles';
@@ -62,12 +63,13 @@ class BarCodeScannerReader extends React.Component {
         if (this.state.hasCameraPermission) {
             return (
                 <View style={{ flex: 1 }}>
-                    <BarCodeScanner
+                    <Camera
                         onBarCodeScanned={this.handleBarCodeRead}
                         style={StyleSheet.absoluteFill}
                     />
-                    <View style={styles.overlay}>
-                        <Ionicons style={styles.qrCodeScanner} size={280} name="ios-qr-scanner" />
+
+                    <View style={this.state.barCodeScanned ? styles.overlayDark : styles.overlay}>
+                        {this.state.barCodeScanned ? (<Spinner color="blue" />) : (<Ionicons style={styles.qrCodeScanner} size={280} name="ios-qr-scanner" />)}
                     </View>
                 </View>
             );
