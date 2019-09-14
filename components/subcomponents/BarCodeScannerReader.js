@@ -2,11 +2,13 @@ import React from 'react';
 import { StyleSheet, View } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { BarCodeScanner } from 'expo-barcode-scanner';
+import { Ionicons } from '@expo/vector-icons';
 import * as Permissions from 'expo-permissions';
 import {
     Text,
 } from 'native-base';
 import axios from '../../apiClient';
+import styles from '../../styles';
 
 @inject('appStore')
 @observer
@@ -64,6 +66,9 @@ class BarCodeScannerReader extends React.Component {
                         onBarCodeScanned={this.handleBarCodeRead}
                         style={StyleSheet.absoluteFill}
                     />
+                    <View style={styles.overlay}>
+                        <Ionicons style={styles.qrCodeScanner} size={280} name="ios-qr-scanner" />
+                    </View>
                 </View>
             );
         }

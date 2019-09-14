@@ -11,6 +11,16 @@ const styles = {
     primaryColor,
     primaryCream,
     lightGrey,
+    overlay: {
+        flex: 1,
+        position: 'relative',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    qrCodeScanner: {
+        color: 'gold',
+        opacity: 0.6,
+    },
     container: {
         flex: 1,
         backgroundColor: primaryCream,
