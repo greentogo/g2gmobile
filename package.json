@@ -23,6 +23,7 @@
     "react": "16.8.3",
     "react-mixin": "^5.0.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-34.0.1.tar.gz",
+    "react-native-dotenv": "^0.2.0",
     "react-native-gesture-handler": "^1.4.1",
     "react-native-maps": "^0.24.2",
     "react-native-open-maps": "^0.3.3",
@@ -35,16 +36,18 @@
   "scripts": {
     "start": "expo start -c",
     "setup": "npm install -g expo-cli && npm install",
+    "ngrok": "node ngrok.js",
     "lint": "./node_modules/.bin/eslint ./components",
     "fix": "./node_modules/.bin/eslint ./components --fix"
   },
   "devDependencies": {
     "babel-eslint": "^10.0.3",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb": "^17.1.1",
+    "eslint": "^6.4.0",
+    "eslint-config-airbnb": "^18.0.1",
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.14.3",
-    "expo-cli": "^2.21.2"
+    "expo-cli": "^2.21.2",
+    "ngrok": "^3.2.5"
   }
 }
