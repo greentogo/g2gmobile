@@ -36,12 +36,14 @@ export class AppStore {
 
     @action setAuthToken(token) {
         // console.log('setting authToken', token)
+        axios.defaults.headers.common.Authorization = `Token ${token}`;
         this.authToken = token;
         simpleStore.save('authToken', token);
     }
 
     @action clearAuthToken() {
         // console.log('clearing authToken')
+        axios.defaults.headers.common.Authorization = '';
         this.authToken = null;
         simpleStore.save('authToken', null);
         simpleStore.save('user', null);
