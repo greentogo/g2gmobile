@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { Camera } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
@@ -19,18 +19,20 @@ class BarCodeScannerReader extends React.Component {
         this.state = {
             barCodeScanned: false,
             hasCameraPermission: false,
+            flashMode: 'off',
         };
+        this.toggleFlashMode = this.toggleFlashMode.bind(this);
+        this.checkCameraPermissions = this.checkCameraPermissions.bind(this);
     }
 
     async componentDidMount() {
-        const { status } = await Permissions.askAsync(Permissions.CAMERA);
-        this.setState({ hasCameraPermission: status === 'granted' });
+        await this.checkCameraPermissions();
     }
 
     handleBarCodeRead = (data) => {
         if (!this.state.barCodeScanned) {
             const barcodeUrl = JSON.stringify(data.data);
-            this.setState({ barCodeScanned: true }, async () => {
+            this.setState({ barCodeScanned: true, flashMode: 'off' }, async () => {
                 const locationUrl = /(\/locations\/)([A-Z0-9]{6})/.exec(barcodeUrl);
                 if (locationUrl && locationUrl[1] && locationUrl[2]) {
                     try {
@@ -59,17 +61,39 @@ class BarCodeScannerReader extends React.Component {
         }
     }
 
+    async checkCameraPermissions() {
+        const { status } = await Permissions.askAsync(Permissions.CAMERA);
+        return this.setState({ hasCameraPermission: status === 'granted' });
+    }
+
+    toggleFlashMode() {
+        if (this.state.flashMode === 'off') {
+            return this.setState({ flashMode: Camera.Constants.FlashMode.torch });
+        }
+        return this.setState({ flashMode: 'off' });
+    }
+
     render() {
         if (this.state.hasCameraPermission) {
             return (
                 <View style={{ flex: 1 }}>
                     <Camera
                         onBarCodeScanned={this.handleBarCodeRead}
+                        flashMode={this.state.flashMode}
                         style={StyleSheet.absoluteFill}
                     />
 
                     <View style={this.state.barCodeScanned ? styles.overlayDark : styles.overlay}>
                         {this.state.barCodeScanned ? (<Spinner color="blue" />) : (<Ionicons style={styles.qrCodeScanner} size={280} name="ios-qr-scanner" />)}
+                    </View>
+                    <View style={styles.loginScreenButtonBar}>
+                        <TouchableOpacity style={styles.loginButton} onPress={this.toggleCameraMode}>
+                            <Text style={styles.boldWhiteText}>Enter Code</Text>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.loginButton} onPress={this.toggleFlashMode}>
+                            {/* <Ionicons style={{ color: styles.primaryColor }} size={50} name="md-flashlight" /> */}
+                            <Text style={styles.boldWhiteText}>Toggle Flash</Text>
+                        </TouchableOpacity>
                     </View>
                 </View>
             );
