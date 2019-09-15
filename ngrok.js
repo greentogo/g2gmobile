@@ -1,5 +1,5 @@
 const ngrok = require('ngrok');
-const https = require('https');
+const http = require('http');
 const fs = require('fs');
 
 const greenToGoServerPort = 8000;
@@ -28,7 +28,7 @@ function testConnection(url) {
             path: '/',
             method: 'GET',
         };
-        const req = https.request(options, (res) => {
+        const req = http.request(options, (res) => {
             console.log(`statusCode from GreenToGo Server Test: ${res.statusCode}`);
             if (res.statusCode < 400) {
                 resolve(res.status);
