@@ -1,11 +1,18 @@
 import React from 'react';
-import { StyleSheet, View, TouchableOpacity, TextInput } from 'react-native';
+import {
+    StyleSheet,
+    View,
+    TouchableOpacity,
+    TextInput,
+} from 'react-native';
 import { inject, observer } from 'mobx-react';
 import { Camera } from 'expo-camera';
 import { Ionicons } from '@expo/vector-icons';
 import * as Permissions from 'expo-permissions';
 import {
     Text,
+    Container,
+    Content,
     Spinner,
 } from 'native-base';
 import axios from '../../apiClient';
@@ -17,12 +24,18 @@ class BarCodeScannerReader extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            cameraMode: true,
+            error: undefined,
+            codeInput: '',
             barCodeScanned: false,
             hasCameraPermission: false,
             flashMode: 'off',
         };
         this.toggleFlashMode = this.toggleFlashMode.bind(this);
+        this.toggleCameraMode = this.toggleCameraMode.bind(this);
         this.checkCameraPermissions = this.checkCameraPermissions.bind(this);
+        this.checkCode = this.checkCode.bind(this);
+        this.handleCodeSubmit = this.handleCodeSubmit.bind(this);
     }
 
     async componentDidMount() {
@@ -32,32 +45,48 @@ class BarCodeScannerReader extends React.Component {
     handleBarCodeRead = (data) => {
         if (!this.state.barCodeScanned) {
             const barcodeUrl = JSON.stringify(data.data);
-            this.setState({ barCodeScanned: true, flashMode: 'off' }, async () => {
+            this.setState({ barCodeScanned: true, flashMode: 'off', error: undefined }, async () => {
                 const locationUrl = /(\/locations\/)([A-Z0-9]{6})/.exec(barcodeUrl);
                 if (locationUrl && locationUrl[1] && locationUrl[2]) {
-                    try {
-                        const url = `${locationUrl[1]}${locationUrl[2]}`;
-                        const config = {
-                            headers: {
-                                Authorization: `Token ${this.props.appStore.authToken}`,
-                            },
-                        };
-                        const response = await axios.get(url, config);
-                        if (response.data && response.data.data && response.data.data.code) {
-                            this.props.navigateNext(response.data.data);
-                        } else {
-                            this.setState({ barCodeScanned: false });
-                        }
-                    } catch (error) {
-                        this.setState({ barCodeScanned: false });
-                        axios.post('/log/', {
-                            context: 'BarCodeScannerReader.js', error, message: error.message, stack: error.stack,
-                        });
-                    }
+                    this.checkCode(locationUrl[2]);
                 } else {
-                    this.setState({ barCodeScanned: false });
+                    this.setState({ barCodeScanned: false, error: 'Invalid Code' });
                 }
             });
+        }
+    }
+
+    handleCodeSubmit() {
+        if (this.state.codeInput && this.state.codeInput.length > 0) {
+            this.setState({ barCodeScanned: true, flashMode: 'off', error: undefined }, async () => {
+                this.checkCode(this.state.codeInput);
+            });
+        }
+    }
+
+    async checkCode(code) {
+        try {
+            const url = `/locations/${code}`;
+            const config = {
+                headers: {
+                    Authorization: `Token ${this.props.appStore.authToken}`,
+                },
+            };
+            const response = await axios.get(url, config);
+            if (response.data && response.data.data && response.data.data.code) {
+                this.props.navigateNext(response.data.data);
+            } else {
+                this.setState({ barCodeScanned: false, error: 'Invalid Code' });
+            }
+        } catch (error) {
+            if (error.response.status !== 404) {
+                this.setState({ barCodeScanned: false, error: 'Error reading code' });
+                axios.post('/log/', {
+                    context: 'BarCodeScannerReader.js', error, message: error.message, stack: error.stack,
+                });
+            } else {
+                this.setState({ barCodeScanned: false, error: 'Invalid Code' });
+            }
         }
     }
 
@@ -73,10 +102,15 @@ class BarCodeScannerReader extends React.Component {
         return this.setState({ flashMode: 'off' });
     }
 
+    async toggleCameraMode() {
+        await this.checkCameraPermissions();
+        this.setState((prevState) => ({ cameraMode: !prevState.cameraMode }));
+    }
+
     render() {
-        if (this.state.hasCameraPermission) {
+        if (this.state.hasCameraPermission && this.state.cameraMode) {
             return (
-                <View style={{ flex: 1 }}>
+                <Container style={{ flex: 1 }}>
                     <Camera
                         onBarCodeScanned={this.handleBarCodeRead}
                         flashMode={this.state.flashMode}
@@ -95,10 +129,38 @@ class BarCodeScannerReader extends React.Component {
                             <Text style={styles.boldWhiteText}>Toggle Flash</Text>
                         </TouchableOpacity>
                     </View>
-                </View>
+                </Container>
             );
         }
-        return <Text> No camera view. Please give GreenToGo permission to access your camera so we can read QR codes! </Text>;
+        return (
+            <Container style={{ flex: 1 }}>
+                <Content contentContainerStyle={styles.overlay}>
+                    <Text style={styles.errorStyle}>{this.state.error}</Text>
+                    <TextInput
+                        style={styles.barCodeInput}
+                        placeholder="Enter code"
+                        autoCapitalize="characters"
+                        onChangeText={(text) => this.setState({ codeInput: text.toUpperCase() })}
+                        value={this.state.codeInput}
+                    />
+                    {this.state.barCodeScanned && (<Spinner color="blue" />)}
+                    <TouchableOpacity
+                        style={this.state.codeInput && this.state.codeInput.length > 0 ? styles.submissionSubmitButton : styles.submissionSubmitButtonBlocked}
+                        onPress={this.state.codeInput && this.state.codeInput.length > 0 ? this.handleCodeSubmit : null}
+                    >
+                        <Text style={styles.submissionSubmitTextStyle}>
+                            Submit
+                        </Text>
+                    </TouchableOpacity>
+                    {!this.state.hasCameraPermission && (<Text>No camera view. Please give GreenToGo permission to access your camera so we can read QR codes!</Text>)}
+                </Content>
+                <View style={styles.loginScreenButtonBar}>
+                    <TouchableOpacity style={styles.loginButton} onPress={this.toggleCameraMode}>
+                        <Text style={styles.boldWhiteText}>Use Camera</Text>
+                    </TouchableOpacity>
+                </View>
+            </Container>
+        );
     }
 }
 

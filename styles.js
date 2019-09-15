@@ -29,6 +29,13 @@ const styles = {
         color: 'gold',
         opacity: 0.6,
     },
+    barCodeInput: {
+        fontSize: 40,
+        borderColor: 'black',
+        borderWidth: 2,
+        width: 250,
+        textAlign: 'center',
+    },
     container: {
         flex: 1,
         backgroundColor: primaryCream,
