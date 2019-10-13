@@ -4,7 +4,7 @@
     "description": "GreenToGo is a service that makes returnable and reusable takeout containers a reality! Our goal is to help the community reduce waste by making reusable takeout containers a convenient part of the Durham infrastructure.",
     "slug": "GreenToGo",
     "privacy": "public",
-    "sdkVersion": "34.0.0",
+    "sdkVersion": "35.0.0",
     "version": "0.75.0",
     "orientation": "portrait",
     "primaryColor": "#F8F8F4",
@@ -28,7 +28,9 @@
         "NSLocationWhenInUseUsageDescription": "Your location is used in the map view screen to allow you to see where you are in relation to locations that use the GreenToGo service",
         "NSLocationAlwaysUsageDescription": "Your location is used in the map view screen to allow you to see where you are in relation to locations that use the GreenToGo service",
         "NSCameraUsageDescription": "The camera is used to capture relevant QR codes that our service uses to check in and check out containers",
-        "UIBackgroundModes": ["remote-notification"]
+        "UIBackgroundModes": [
+          "remote-notification"
+        ]
       }
     },
     "android": {
@@ -45,6 +47,10 @@
           "apiKey": "AIzaSyA8f-lwu4sdv3PmLXfOyHXR-1iBAeWMf08"
         }
       }
-    }
+    },
+    "platforms": [
+      "android",
+      "ios"
+    ]
   }
 }
