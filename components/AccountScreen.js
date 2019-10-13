@@ -1,8 +1,8 @@
 import React from 'react';
 import {
-    WebView,
     Linking,
 } from 'react-native';
+import { WebView } from 'react-native-webview';
 import { inject, observer } from 'mobx-react';
 import {
     Content,
