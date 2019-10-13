@@ -2,9 +2,7 @@ import React from 'react';
 import { AppLoading, registerRootComponent } from 'expo';
 import { observer } from 'mobx-react';
 import App from './components/App';
-import { AppStore } from './stores';
-
-const store = new AppStore();
+import store from './stores';
 
 @observer class GreenToGo extends React.Component {
     state = { loaded: true };

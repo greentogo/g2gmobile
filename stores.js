@@ -2,9 +2,7 @@ import { observable, action } from 'mobx';
 import simpleStore from 'react-native-simple-store';
 import axios from './apiClient';
 
-/* eslint-disable import/prefer-default-export */
-
-export class AppStore {
+class AppStore {
     @observable authToken = '';
 
     @observable user = {};
@@ -102,3 +100,5 @@ export class AppStore {
         return data;
     }
 }
+
+export default new AppStore();

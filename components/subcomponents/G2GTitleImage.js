@@ -3,7 +3,6 @@ import { Image, View } from 'react-native';
 import styles from '../../styles';
 
 // PureComponents dont render as often as stateless functions, and are therefore faster
-/* eslint-disable react/prefer-stateless-function */
 class G2GTitleImage extends React.PureComponent {
     render() {
         return (

@@ -14,7 +14,6 @@ import { MaterialIcons } from '@expo/vector-icons';
 import styles from '../../styles';
 
 // PureComponents dont render as often as stateless functions, and are therefore faster
-/* eslint-disable react/prefer-stateless-function */
 class ListMenuItem extends React.PureComponent {
     render() {
         const iconColor = this.props.color || styles.primaryColor;
