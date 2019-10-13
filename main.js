@@ -5,10 +5,12 @@ import App from './components/App';
 import store from './stores';
 
 @observer class GreenToGo extends React.Component {
-    state = { loaded: true };
-
-    // Uncomment for font loading
-    // state = { loaded: false };
+    constructor() {
+        super();
+        this.state = { loaded: true };
+        // Uncomment for font loading
+        // this.state = { loaded: false };
+    }
 
     // async componentDidMount() {
     //     await Font.loadAsync({

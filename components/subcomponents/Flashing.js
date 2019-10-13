@@ -2,8 +2,11 @@ import React from 'react';
 import { Animated } from 'react-native';
 
 export default class Flashing extends React.Component {
-    state = {
-        fadeAnim: new Animated.Value(0), // Initial value for opacity: 0
+    constructor() {
+        super();
+        this.state = {
+            fadeAnim: new Animated.Value(0), // Initial value for opacity: 0
+        };
     }
 
     componentDidMount() {
