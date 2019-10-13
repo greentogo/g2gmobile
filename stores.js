@@ -69,9 +69,7 @@ export class AppStore {
             const response = await axios.get('/me/', config);
             return this.setUserData(response.data.data);
         } catch (error) {
-            axios.post('/log/', {
-                context: 'stores.js getUserData', error, message: error.message, stack: error.stack,
-            });
+            axios.log('stores.js getUserData', error);
             return this.clearAuthToken();
         }
     }
@@ -83,9 +81,7 @@ export class AppStore {
             this.resturants = response.data.data;
             return response.data.data;
         } catch (error) {
-            axios.post('/log/', {
-                context: 'stores.js getResturantData', error, message: error.message, stack: error.stack,
-            });
+            axios.log('stores.js getResturantData', error);
             throw error;
         }
     }

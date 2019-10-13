@@ -17,4 +17,10 @@ const instance = axios.create({
 
 instance.defaults.headers.post['Content-Type'] = 'application/json';
 
+instance.log = (context, error) => {
+    instance.post('/log/', {
+        context, message: error.message, stack: error.stack, error,
+    });
+};
+
 export default instance;

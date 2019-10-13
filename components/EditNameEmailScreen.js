@@ -55,9 +55,7 @@ class EditNameEmailScreen extends React.Component {
                     this.setState({ error: [error.response.data.data.error], loading: false });
                 } else {
                     this.setState({ error: ['We are sorry, we are having trouble processing your request. Please try again later.'], loading: false });
-                    axios.post('/log/', {
-                        context: 'EditNameEmailScreen.js attemptEdit', error, message: error.message, stack: error.stack,
-                    });
+                    axios.log('EditNameEmailScreen.js attemptEdit', error);
                 }
             }
         });

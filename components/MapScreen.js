@@ -41,9 +41,7 @@ class MapScreen extends React.Component {
             this.setState({ resturants });
         } catch (error) {
             this.setState({ error: true });
-            axios.post('/log/', {
-                context: 'MapScreen.js componentDidMount', error, message: error.message, stack: error.stack,
-            });
+            axios.log('MapScreen.js componentDidMount', error);
         }
         // this._interval = setInterval(() => {
         //     this.getCurrentLocation();

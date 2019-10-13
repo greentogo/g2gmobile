@@ -82,9 +82,7 @@ class BarCodeScannerReader extends React.Component {
         } catch (error) {
             if (error.response.status !== 404) {
                 this.setState({ barCodeScanned: false, error: 'Error reading code' });
-                axios.post('/log/', {
-                    context: 'BarCodeScannerReader.js', error, message: error.message, stack: error.stack,
-                });
+                axios.log('BarCodeScannerReader.js', error);
             } else {
                 this.setState({ barCodeScanned: false, error: 'Invalid Code' });
             }

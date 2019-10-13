@@ -45,9 +45,7 @@ class CommunityBoxes extends React.Component {
                 });
             }
         } catch (error) {
-            axios.post('/log/', {
-                context: 'CommunityBoxes.js', error, message: error.message, stack: error.stack,
-            });
+            axios.log('CommunityBoxes.js', error);
             if ((error.status && error.status === 401) || (error.response && error.response.status && error.response.status === 401)) {
                 this.props.appStore.clearAuthToken();
             }

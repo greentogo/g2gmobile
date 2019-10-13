@@ -39,8 +39,6 @@ export default async function registerForPushNotificationsAsync(appStore) {
             }
         }
     } catch (error) {
-        axios.post('/log/', {
-            context: 'registerForPushNotificationsAsync', error, message: error.message, stack: error.stack,
-        });
+        axios.log('registerForPushNotificationsAsync', error);
     }
 }

@@ -115,9 +115,7 @@ class SubmissionScreen extends React.Component {
                 });
             } catch (error) {
                 this.setState({ loadingSubmit: false });
-                axios.post('/log/', {
-                    context: 'SubmissionScreen.js Submit Tag', error, message: error.message, stack: error.stack,
-                });
+                axios.log('SubmissionScreen.js Submit Tag', error);
             }
         }
     }
