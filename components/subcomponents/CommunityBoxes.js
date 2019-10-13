@@ -27,14 +27,9 @@ class CommunityBoxes extends React.Component {
     async componentDidMount() {
         const color = this.props.color || styles.primaryColor;
         const background = this.props.background || styles.primaryCream;
-        const config = {
-            headers: {
-                Authorization: `Token ${this.props.appStore.authToken}`,
-            },
-        };
         try {
             // TODO Is this axios call really necessary?
-            const response = await axios.get(`/stats/${this.props.appStore.user.username}/`, config);
+            const response = await axios.get(`/stats/${this.props.appStore.user.username}/`);
             if (response.data && response.data.data) {
                 let totalUserBoxesReturned = false;
                 if (response.data.data.total_user_boxes_returned && response.data.data.total_user_boxes_returned) {

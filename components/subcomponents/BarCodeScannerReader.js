@@ -68,12 +68,7 @@ class BarCodeScannerReader extends React.Component {
     async checkCode(code) {
         try {
             const url = `/locations/${code}`;
-            const config = {
-                headers: {
-                    Authorization: `Token ${this.props.appStore.authToken}`,
-                },
-            };
-            const response = await axios.get(url, config);
+            const response = await axios.get(url);
             if (response.data && response.data.data && response.data.data.code) {
                 this.props.navigateNext(response.data.data);
             } else {

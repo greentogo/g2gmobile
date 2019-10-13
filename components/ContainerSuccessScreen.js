@@ -35,13 +35,9 @@ class ContainerSuccessScreen extends React.Component {
         this.props.appStore.getUserData();
     }
 
-    rateApp = rating => () => {
+    rateApp = (rating) => () => {
         this.setState({ rating, ratingSubmitted: true });
-        axios.post('/rate/', { rating, version: appJson.expo.version }, {
-            headers: {
-                Authorization: `Token ${this.props.appStore.authToken}`,
-            },
-        });
+        axios.post('/rate/', { rating, version: appJson.expo.version });
     }
 
 

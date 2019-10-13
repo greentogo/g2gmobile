@@ -17,6 +17,7 @@ export class AppStore {
         // console.log('appStore constructor')
         simpleStore.get('authToken').then((token) => {
             // console.log('stored token', token || 'not found')
+            this.setAuthToken(token);
             this.authToken = token;
         });
         simpleStore.get('user').then((user) => {

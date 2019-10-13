@@ -42,12 +42,7 @@ class EditNameEmailScreen extends React.Component {
                     name: this.state.nameInput,
                     email: this.state.emailInput,
                 };
-                const config = {
-                    headers: {
-                        Authorization: `Token ${this.props.appStore.authToken}`,
-                    },
-                };
-                const response = await axios.patch('/me/', body, config);
+                const response = await axios.patch('/me/', body);
                 this.props.appStore.setUserData(response.data.data);
                 this.setState({ loading: false, message: 'Information Updated!' });
             } catch (error) {

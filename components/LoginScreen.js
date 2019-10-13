@@ -53,12 +53,7 @@ class LoginScreen extends React.Component {
             };
             try {
                 const loginResponse = await axios.post('/auth/login/', body);
-                const config = {
-                    headers: {
-                        Authorization: `Token ${loginResponse.data.auth_token}`,
-                    },
-                };
-                const meResponse = await axios.get('/me/', config);
+                const meResponse = await axios.get('/me/');
                 this.setState({ loading: false });
                 this.props.store.setUserData(meResponse.data.data);
                 this.props.store.setAuthToken(loginResponse.data.auth_token);

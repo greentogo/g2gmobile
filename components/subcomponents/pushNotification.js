@@ -30,12 +30,7 @@ export default async function registerForPushNotificationsAsync(appStore) {
             if (appStore.user.expoPushToken !== expoPushToken) {
                 // PATCH the token to your backend server from where you can retrieve it to send push notifications.
                 const body = { expoPushToken };
-                const config = {
-                    headers: {
-                        Authorization: `Token ${appStore.authToken}`,
-                    },
-                };
-                axios.patch('/me/', body, config);
+                axios.patch('/me/', body);
             }
         }
     } catch (error) {

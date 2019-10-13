@@ -105,12 +105,7 @@ class SubmissionScreen extends React.Component {
                         action: this.state.locationData.service,
                         number_of_boxes: this.state.boxCount,
                     };
-                    const config = {
-                        headers: {
-                            Authorization: `Token ${this.props.appStore.authToken}`,
-                        },
-                    };
-                    await axios.post('/tag/', body, config);
+                    await axios.post('/tag/', body);
                     this.props.navigation.replace('containerSuccessScreen', { boxCount: this.state.boxCount, locationData: this.state.locationData });
                 });
             } catch (error) {
