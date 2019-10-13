@@ -17,6 +17,7 @@ import styles from '../../styles';
 class ListMenuItem extends React.PureComponent {
     render() {
         const iconColor = this.props.color || styles.primaryColor;
+        // eslint-disable-next-line func-names
         const onPress = this.props.onPress || function () { };
         const background = this.props.backgroundColor
             ? {
