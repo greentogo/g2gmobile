@@ -97,7 +97,7 @@ class App extends React.Component {
     // constructor(props) {
     //     super(props);
     //     this.props.appStore.getUserData();
-    //     this.props.appStore.clearAndGetResturantData();
+    //     this.props.appStore.getResturantData();
     // }
 
     async componentDidMount() {

@@ -5,22 +5,22 @@ import axios from './apiClient';
 class AppStore {
     @observable authToken = '';
 
-    @observable user = {};
+    @observable user = null;
 
     @observable currentRoute = 'home';
 
     @observable resturants = null;
 
     constructor() {
-        // console.log('appStore constructor')
         simpleStore.get('authToken').then((token) => {
-            // console.log('stored token', token || 'not found')
             this.setAuthToken(token);
             this.authToken = token;
         });
         simpleStore.get('user').then((user) => {
-            // console.log('user store', user || 'not found')
             this.user = user;
+        });
+        simpleStore.get('resturants').then((resturants) => {
+            this.resturants = resturants;
         });
     }
 
@@ -34,16 +34,15 @@ class AppStore {
     }
 
     @action async setAuthToken(token) {
-        // console.log('setting authToken', token)
         axios.defaults.headers.common.Authorization = `Token ${token}`;
         this.authToken = token;
         await simpleStore.save('authToken', token);
     }
 
     @action clearAuthToken() {
-        // console.log('clearing authToken')
         axios.defaults.headers.common.Authorization = '';
         this.authToken = null;
+        this.user = null;
         simpleStore.save('authToken', null);
         simpleStore.save('user', null);
     }
@@ -58,31 +57,30 @@ class AppStore {
     }
 
     @action async getUserData() {
-        // Get the user data after successful login
         try {
             const response = await axios.get('/me/');
             return this.setUserData(response.data.data);
         } catch (error) {
             axios.log('stores.js getUserData', error);
+            if (error.code === 'ECONNABORTED' && this.user) {
+                return this.user;
+            }
             return this.clearAuthToken();
         }
     }
 
     @action async getResturantData() {
-        // Get the restaurant data on load
         try {
             const response = await axios.get('/restaurants/');
             this.resturants = response.data.data;
             return response.data.data;
         } catch (error) {
             axios.log('stores.js getResturantData', error);
-            throw error;
+            if (error.code === 'ECONNABORTED' && this.resturants) {
+                return this.resturants;
+            }
+            return error;
         }
-    }
-
-    @action clearAndGetResturantData() {
-        this.resturants = null;
-        this.getResturantData();
     }
 
     @action async setUserData(data) {
