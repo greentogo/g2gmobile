@@ -138,8 +138,7 @@ class MapScreen extends React.Component {
                                         />
                                     </Flashing>
                                 </MapView.Marker>
-                            )
-                        }
+                            )}
                         {markers}
                     </MapView>
                     <View style={styles.bottomFixed}>

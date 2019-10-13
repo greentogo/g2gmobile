@@ -62,7 +62,7 @@ class EditNameEmailScreen extends React.Component {
             : null;
         let errorMessages = null;
         if (this.state.error[0] !== undefined) {
-            errorMessages = this.state.error.map(error => <Text key={`${error.trim()}`} style={styles.errorStyle}>{error}</Text>);
+            errorMessages = this.state.error.map((error) => <Text key={`${error.trim()}`} style={styles.errorStyle}>{error}</Text>);
         }
         const message = this.state.message
             ? <Text style={styles.centeredText}>{this.state.message}</Text>
@@ -76,7 +76,7 @@ class EditNameEmailScreen extends React.Component {
                             autoCapitalize="none"
                             autoCorrect={false}
                             keyboardType="email-address"
-                            onChangeText={text => this.setState({ emailInput: text })}
+                            onChangeText={(text) => this.setState({ emailInput: text })}
                             value={this.state.emailInput}
                         />
                     </Item>
@@ -85,7 +85,7 @@ class EditNameEmailScreen extends React.Component {
                         <Input
                             autoCapitalize="none"
                             autoCorrect={false}
-                            onChangeText={text => this.setState({ nameInput: text })}
+                            onChangeText={(text) => this.setState({ nameInput: text })}
                             value={this.state.nameInput}
                         />
                     </Item>

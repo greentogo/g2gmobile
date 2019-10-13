@@ -74,8 +74,7 @@ class CommunityBoxes extends React.Component {
                             from a landfill
                         </Text>
                     </View>
-                )
-                }
+                )}
                 {this.state.totalUserBoxesReturned && (
                     <View style={{ backgroundColor: this.state.background, ...styles.communityBoxesView }}>
                         <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>
@@ -92,8 +91,7 @@ class CommunityBoxes extends React.Component {
                             <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>s</Text>
                         </View>
                     </View>
-                )
-                }
+                )}
             </View>
         );
     }

@@ -50,18 +50,18 @@ class SubmissionScreen extends React.Component {
         const maxReturnableBoxes = this.state.selectedSubscription.max_boxes - this.state.selectedSubscription.available_boxes;
         if (this.state.locationData.service === 'IN') {
             if (this.state.boxCount < maxReturnableBoxes) {
-                this.setState(prevState => ({ boxCount: prevState.boxCount + 1 }));
+                this.setState((prevState) => ({ boxCount: prevState.boxCount + 1 }));
             }
         } else if (this.state.locationData.service === 'OUT') {
             if (this.state.boxCount < this.state.selectedSubscription.available_boxes) {
-                this.setState(prevState => ({ boxCount: prevState.boxCount + 1 }));
+                this.setState((prevState) => ({ boxCount: prevState.boxCount + 1 }));
             }
         }
     }
 
     subtract = () => {
         if (this.state.boxCount > 1) {
-            this.setState(prevState => ({ boxCount: prevState.boxCount - 1 }));
+            this.setState((prevState) => ({ boxCount: prevState.boxCount - 1 }));
         }
     }
 
@@ -178,10 +178,10 @@ class SubmissionScreen extends React.Component {
                     <Picker
                         mode="dialog"
                         selectedValue={this.state.subscriptionId}
-                        onValueChange={itemValue => this.subscriptionChange(itemValue)}
+                        onValueChange={(itemValue) => this.subscriptionChange(itemValue)}
                     >
                         {
-                            this.state.subscriptions.map(subscription => (
+                            this.state.subscriptions.map((subscription) => (
                                 <Picker.Item
                                     key={`${subscription.id}`}
                                     label={`${subscription.name} (${subscription.available_boxes}/${subscription.max_boxes})`}

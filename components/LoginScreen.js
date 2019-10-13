@@ -40,7 +40,7 @@ class LoginScreen extends React.Component {
         };
     }
 
-    switchType = type => () => {
+    switchType = (type) => () => {
         this.setState({ type, error: [], msg: null });
     }
 
@@ -132,7 +132,7 @@ class LoginScreen extends React.Component {
             : null;
         let errorMessages = null;
         if (this.state.error[0] !== undefined) {
-            errorMessages = this.state.error.map(error => <Text key={`${error.trim()}`} style={styles.errorStyle}>{error}</Text>);
+            errorMessages = this.state.error.map((error) => <Text key={`${error.trim()}`} style={styles.errorStyle}>{error}</Text>);
         }
         if (this.state.redirectToWeb) {
             const uri = this.state.redirectToWeb;
@@ -222,7 +222,7 @@ class LoginScreen extends React.Component {
                                         autoCorrect={false}
                                         keyboardType="email-address"
                                         style={styles.loginInputStyle}
-                                        onChangeText={text => this.setState({ username: text })}
+                                        onChangeText={(text) => this.setState({ username: text })}
                                         value={this.state.username}
                                     />
                                 </Item>
@@ -233,7 +233,7 @@ class LoginScreen extends React.Component {
                                         secureTextEntry
                                         onSubmitEditing={this.attemptLogin}
                                         style={styles.loginInputStyle}
-                                        onChangeText={text => this.setState({ password: text })}
+                                        onChangeText={(text) => this.setState({ password: text })}
                                     />
                                 </Item>
                                 {errorMessages}
@@ -255,7 +255,7 @@ class LoginScreen extends React.Component {
                                         secureTextEntry={false}
                                         autoCorrect={false}
                                         style={styles.loginInputStyle}
-                                        onChangeText={text => this.setState({ username: text })}
+                                        onChangeText={(text) => this.setState({ username: text })}
                                     />
                                 </Item>
                                 {this.state.error.username ? <Text style={styles.errorStyle}>{this.state.error.username}</Text> : <Text />}
@@ -267,7 +267,7 @@ class LoginScreen extends React.Component {
                                         autoCorrect={false}
                                         keyboardType="email-address"
                                         style={styles.loginInputStyle}
-                                        onChangeText={text => this.setState({ email: text })}
+                                        onChangeText={(text) => this.setState({ email: text })}
                                     />
                                 </Item>
                                 {this.state.error.email ? <Text style={styles.errorStyle}>{this.state.error.email}</Text> : <Text />}
@@ -279,7 +279,7 @@ class LoginScreen extends React.Component {
                                         autoCorrect={false}
                                         keyboardType="email-address"
                                         style={styles.loginInputStyle}
-                                        onChangeText={text => this.setState({ email2: text })}
+                                        onChangeText={(text) => this.setState({ email2: text })}
                                     />
                                 </Item>
                                 {this.state.error.email2 ? <Text style={styles.errorStyle}>{this.state.error.email2}</Text> : <Text />}
@@ -288,7 +288,7 @@ class LoginScreen extends React.Component {
                                     <Input
                                         secureTextEntry
                                         style={styles.loginInputStyle}
-                                        onChangeText={text => this.setState({ password1: text })}
+                                        onChangeText={(text) => this.setState({ password1: text })}
                                     />
                                 </Item>
                                 {this.state.error.password1 ? <Text style={styles.errorStyle}>{this.state.error.password1}</Text> : <Text />}
@@ -298,7 +298,7 @@ class LoginScreen extends React.Component {
                                         secureTextEntry
                                         onSubmitEditing={this.attemptSignUp}
                                         style={styles.loginInputStyle}
-                                        onChangeText={text => this.setState({ password2: text })}
+                                        onChangeText={(text) => this.setState({ password2: text })}
                                     />
                                 </Item>
                                 {this.state.error.password2 ? <Text style={styles.errorStyle}>{this.state.error.password2}</Text> : <Text />}
@@ -317,7 +317,7 @@ class LoginScreen extends React.Component {
                                     autoCorrect={false}
                                     keyboardType="email-address"
                                     style={styles.loginInputStyle}
-                                    onChangeText={text => this.setState({ username: text })}
+                                    onChangeText={(text) => this.setState({ username: text })}
                                     onSubmitEditing={this.attemptPasswordReset}
                                     value={this.state.username}
                                 />

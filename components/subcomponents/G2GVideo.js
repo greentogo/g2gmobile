@@ -42,13 +42,13 @@ class G2GVideo extends React.Component {
     }
 
     handlePlayAndPause = () => {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
             shouldPlay: !prevState.shouldPlay,
         }));
     }
 
     handleVolume = () => {
-        this.setState(prevState => ({
+        this.setState((prevState) => ({
             mute: !prevState.mute,
         }));
     }
