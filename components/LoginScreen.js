@@ -38,13 +38,17 @@ class LoginScreen extends React.Component {
             type: 'login',
             redirectToWeb: false,
         };
+        this.attemptLogin = this.attemptLogin.bind(this);
+        this.attemptSignUp = this.attemptSignUp.bind(this);
+        this.attemptPasswordReset = this.attemptPasswordReset.bind(this);
+        this.goToNewSubscription = this.goToNewSubscription.bind(this);
     }
 
     switchType = (type) => () => {
         this.setState({ type, error: [], msg: null });
     }
 
-    attemptLogin = async () => {
+    async attemptLogin() {
         if (this.state.username && this.state.password) {
             this.setState({ error: [], loading: true });
             const body = {
@@ -80,7 +84,7 @@ class LoginScreen extends React.Component {
         }
     }
 
-    attemptSignUp = async () => {
+    async attemptSignUp() {
         this.setState({ error: [], loading: true }, async () => {
             const body = {
                 username: this.state.username,
@@ -105,7 +109,7 @@ class LoginScreen extends React.Component {
         });
     }
 
-    attemptPasswordReset = async () => {
+    async attemptPasswordReset() {
         this.setState({ loading: true }, async () => {
             const body = {
                 userString: this.state.username,
@@ -124,6 +128,10 @@ class LoginScreen extends React.Component {
                 }
             }
         });
+    }
+
+    goToNewSubscription() {
+        this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/new/' });
     }
 
     render() {
@@ -188,7 +196,7 @@ class LoginScreen extends React.Component {
                     <TouchableOpacity style={styles.loginButton} onPress={this.switchType('login')}>
                         <Text style={styles.boldWhiteText}>Go to Login</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.loginButton} onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/new/' }); }}>
+                    <TouchableOpacity style={styles.loginButton} onPress={this.goToNewSubscription}>
                         <Text style={styles.boldWhiteText}>Purchase a subscription</Text>
                     </TouchableOpacity>
                 </View>

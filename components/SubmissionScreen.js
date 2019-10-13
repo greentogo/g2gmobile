@@ -39,6 +39,7 @@ class SubmissionScreen extends React.Component {
         this.subtract = this.subtract.bind(this);
         this.subscriptionChange = this.subscriptionChange.bind(this);
         this.submit = this.submit.bind(this);
+        this.goToNewSubscription = this.goToNewSubscription.bind(this);
     }
 
     async componentDidMount() {
