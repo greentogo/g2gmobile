@@ -33,11 +33,11 @@ class AppStore {
         }, 0)
     }
 
-    @action setAuthToken(token) {
+    @action async setAuthToken(token) {
         // console.log('setting authToken', token)
         axios.defaults.headers.common.Authorization = `Token ${token}`;
         this.authToken = token;
-        simpleStore.save('authToken', token);
+        await simpleStore.save('authToken', token);
     }
 
     @action clearAuthToken() {
@@ -60,12 +60,7 @@ class AppStore {
     @action async getUserData() {
         // Get the user data after successful login
         try {
-            const config = {
-                headers: {
-                    Authorization: `Token ${this.authToken}`,
-                },
-            };
-            const response = await axios.get('/me/', config);
+            const response = await axios.get('/me/');
             return this.setUserData(response.data.data);
         } catch (error) {
             axios.log('stores.js getUserData', error);

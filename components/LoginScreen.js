@@ -53,10 +53,10 @@ class LoginScreen extends React.Component {
             };
             try {
                 const loginResponse = await axios.post('/auth/login/', body);
+                await this.props.store.setAuthToken(loginResponse.data.auth_token);
                 const meResponse = await axios.get('/me/');
                 this.setState({ loading: false });
                 this.props.store.setUserData(meResponse.data.data);
-                this.props.store.setAuthToken(loginResponse.data.auth_token);
             } catch (error) {
                 if (error.response && error.response.data && error.response.data.non_field_errors) {
                     this.setState({ loading: false, error: error.response.data.non_field_errors });
