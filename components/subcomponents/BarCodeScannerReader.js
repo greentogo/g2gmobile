@@ -36,13 +36,14 @@ class BarCodeScannerReader extends React.Component {
         this.checkCameraPermissions = this.checkCameraPermissions.bind(this);
         this.checkCode = this.checkCode.bind(this);
         this.handleCodeSubmit = this.handleCodeSubmit.bind(this);
+        this.handleBarCodeRead = this.handleBarCodeRead.bind(this);
     }
 
     async componentDidMount() {
         await this.checkCameraPermissions();
     }
 
-    handleBarCodeRead = (data) => {
+    handleBarCodeRead(data) {
         if (!this.state.barCodeScanned) {
             const barcodeUrl = JSON.stringify(data.data);
             this.setState({ barCodeScanned: true, flashMode: 'off', error: undefined }, async () => {
