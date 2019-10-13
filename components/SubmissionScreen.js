@@ -35,6 +35,10 @@ class SubmissionScreen extends React.Component {
             boxCount: 1,
             locationData: this.props.navigation.state.params.locationData,
         };
+        this.add = this.add.bind(this);
+        this.subtract = this.subtract.bind(this);
+        this.subscriptionChange = this.subscriptionChange.bind(this);
+        this.submit = this.submit.bind(this);
     }
 
     async componentDidMount() {
@@ -46,7 +50,7 @@ class SubmissionScreen extends React.Component {
         });
     }
 
-    add = () => {
+    add() {
         const availableBoxes = this.state.selectedSubscription.available_boxes;
         const maxReturnableBoxes = this.state.selectedSubscription.max_boxes - availableBoxes;
         const { service } = this.state.locationData;
@@ -56,13 +60,13 @@ class SubmissionScreen extends React.Component {
         }
     }
 
-    subtract = () => {
+    subtract() {
         if (this.state.boxCount > 1) {
             this.setState((prevState) => ({ boxCount: prevState.boxCount - 1 }));
         }
     }
 
-    subscriptionChange = (subscriptionId) => {
+    subscriptionChange(subscriptionId) {
         let boxCount = 1;
         let error = false;
         let selectedSubscription;
@@ -90,7 +94,7 @@ class SubmissionScreen extends React.Component {
         });
     }
 
-    submit = () => {
+    submit() {
         // uncomment to skip
         // this.props.navigation.navigate('containerSuccessScreen', { boxCount: this.state.boxCount, locationData: this.state.locationData });
         if (!this.state.loadingSubmit) {
@@ -110,6 +114,10 @@ class SubmissionScreen extends React.Component {
                 axios.log('SubmissionScreen.js Submit Tag', error);
             }
         }
+    }
+
+    goToNewSubscription() {
+        this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/new/' });
     }
 
     render() {
@@ -137,7 +145,7 @@ class SubmissionScreen extends React.Component {
         if (this.state.subscriptions.length === 0) {
             return (
                 <View style={styles.container}>
-                    <Button light full onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/new/' }); }}>
+                    <Button light full onPress={this.goToNewSubscription}>
                         <Text style={styles.boldCenteredText}>
                             Your account has no subscriptions. Tap here to add a subscription.
                         </Text>

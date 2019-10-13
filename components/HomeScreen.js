@@ -26,29 +26,29 @@ class HomeScreen extends React.Component {
         super(props);
         this.props.appStore.getUserData();
         this.props.appStore.clearAndGetResturantData();
+        this.goToMap = this.goToMap.bind(this);
+        this.goToScanQRCode = this.goToScanQRCode.bind(this);
+        this.goToAccount = this.goToAccount.bind(this);
+        this.logOut = this.logOut.bind(this);
     }
 
     componentDidMount() {
         registerForPushNotificationsAsync(this.props.appStore);
     }
 
-    goToMap = () => {
+    goToMap() {
         this.props.navigation.navigate('map');
     }
 
-    goToScanQRCode = () => {
+    goToScanQRCode() {
         this.props.navigation.navigate('scanQRCode');
     }
 
-    goToReturn = () => {
-        this.props.navigation.navigate('returnBox');
-    }
-
-    goToAccount = () => {
+    goToAccount() {
         this.props.navigation.navigate('account');
     }
 
-    logOut = () => {
+    logOut() {
         this.props.appStore.clearAuthToken();
     }
 

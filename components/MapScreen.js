@@ -32,6 +32,7 @@ class MapScreen extends React.Component {
             resturants: [],
             currentLocation: false,
         };
+        this.getCurrentLocation = this.getCurrentLocation.bind(this);
     }
 
     async componentDidMount() {
@@ -58,7 +59,6 @@ class MapScreen extends React.Component {
         }));
     }
 
-    // switchService = type => () => { this.setState({ mapType: type }); };
     switchService = (type, titleText) => () => {
         this.setState({ mapType: type });
         const { setParams } = this.props.navigation;
@@ -138,7 +138,8 @@ class MapScreen extends React.Component {
                                         />
                                     </Flashing>
                                 </MapView.Marker>
-                            )}
+                            )
+                        }
                         {markers}
                     </MapView>
                     <View style={styles.bottomFixed}>

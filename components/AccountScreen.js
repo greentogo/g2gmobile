@@ -25,11 +25,27 @@ class AccountScreen extends React.Component {
         this.state = {
             redirectToWeb: false,
         };
+        this.goToNameAndEmail = this.goToNameAndEmail.bind(this);
+        this.goToUpdatePaymentMethod = this.goToUpdatePaymentMethod.bind(this);
+        this.goToEditSubscriptions = this.goToEditSubscriptions.bind(this);
+        this.goToChangePassword = this.goToChangePassword.bind(this);
     }
 
 
-    goToNameAndEmail = () => {
+    goToNameAndEmail() {
         this.props.navigation.navigate('editnameemail');
+    }
+
+    goToUpdatePaymentMethod() {
+        this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/account/change_payment_method/' });
+    }
+
+    goToEditSubscriptions() {
+        this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/' });
+    }
+
+    goToChangePassword() {
+        this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/account/change_password/' });
     }
 
     render() {
@@ -58,17 +74,17 @@ class AccountScreen extends React.Component {
                     <ListMenuItem
                         icon="credit-card"
                         text="Update payment method"
-                        onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/account/change_payment_method/' }); }}
+                        onPress={this.goToUpdatePaymentMethod}
                     />
                     <ListMenuItem
                         icon="inbox"
                         text="View/Edit Subscriptions"
-                        onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/subscriptions/' }); }}
+                        onPress={this.goToEditSubscriptions}
                     />
                     <ListMenuItem
                         icon="lock"
                         text="Change Password"
-                        onPress={() => { this.setState({ redirectToWeb: 'https://app.durhamgreentogo.com/account/change_password/' }); }}
+                        onPress={this.goToChangePassword}
                     />
                 </List>
                 <SubscriptionBanner />
