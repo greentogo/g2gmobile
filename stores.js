@@ -101,6 +101,30 @@ class AppStore {
         return data;
     }
 
+    @action async attemptOfflineTags() {
+        if (this.offlineTags && this.offlineTags.length && !this.attemptingTags) {
+            const failedTags = [];
+            this.attemptingTags = true;
+            await this.offlineTags.reduce(async (chain, options) => {
+                await chain;
+                try {
+                    return await axios(options);
+                } catch (error) {
+                    axios.log('attemptOfflineTags', error);
+                    if (error.code === 'ECONNABORTED') {
+                        failedTags.push(options);
+                    }
+                    return undefined;
+                }
+            }, Promise.resolve());
+            this.offlineTags = failedTags;
+            simpleStore.save('offlineTags', this.offlineTags);
+            this.attemptingTags = false;
+            return null;
+        }
+        return null;
+    }
+
     @action addOfflineTag(options) {
         this.offlineTags.push(options);
         simpleStore.save('offlineTags', this.offlineTags);
