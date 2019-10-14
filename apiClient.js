@@ -9,7 +9,7 @@ const host = __DEV__ ? NGROKHOST || prodHost : prodHost;
 
 const instance = axios.create({
     baseURL: `${host}/api/v1`,
-    timeout: 10000,
+    timeout: 5000,
     headers: {
         Accept: 'application/json',
     },
