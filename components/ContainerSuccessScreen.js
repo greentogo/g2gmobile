@@ -33,6 +33,7 @@ class ContainerSuccessScreen extends React.Component {
             time: new Date(),
         };
         this.props.appStore.getUserData();
+        this.props.appStore.attemptOfflineTags();
     }
 
     rateApp = (rating) => () => {

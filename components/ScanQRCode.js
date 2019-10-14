@@ -42,6 +42,7 @@ class ScanQRCode extends React.Component {
         this.handleCodeSubmit = this.handleCodeSubmit.bind(this);
         this.handleBarCodeRead = this.handleBarCodeRead.bind(this);
         this.navigateNext = this.navigateNext.bind(this);
+        this.props.appStore.attemptOfflineTags();
     }
 
     async componentDidMount() {

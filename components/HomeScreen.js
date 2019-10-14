@@ -26,6 +26,7 @@ class HomeScreen extends React.Component {
         super(props);
         this.props.appStore.getUserData();
         this.props.appStore.getResturantData();
+        this.props.appStore.attemptOfflineTags();
         this.goToMap = this.goToMap.bind(this);
         this.goToScanQRCode = this.goToScanQRCode.bind(this);
         this.goToAccount = this.goToAccount.bind(this);
