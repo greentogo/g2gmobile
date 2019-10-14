@@ -11,6 +11,10 @@ class AppStore {
 
     @observable resturants = null;
 
+    @observable attemptingTags = false;
+
+    @observable offlineTags = [];
+
     constructor() {
         simpleStore.get('authToken').then((token) => {
             this.setAuthToken(token);
@@ -22,6 +26,9 @@ class AppStore {
         simpleStore.get('resturants').then((resturants) => {
             this.resturants = resturants;
         });
+        simpleStore.get('offlineTags').then((offlineTags) => {
+            this.offlineTags = offlineTags;
+        });
     }
 
     reduceBoxes(subscriptions, type) {
@@ -30,7 +37,7 @@ class AppStore {
                 return sum + subscription[type];
             }
             return sum;
-        }, 0)
+        }, 0);
     }
 
     @action async setAuthToken(token) {
@@ -92,6 +99,15 @@ class AppStore {
         }
         simpleStore.save('user', data);
         return data;
+    }
+
+    @action addOfflineTag(options) {
+        this.offlineTags.push(options);
+        simpleStore.save('offlineTags', this.offlineTags);
+        const { subscription, action: tagOption, number_of_boxes } = options.data;
+        const index = this.user.subscriptions.findIndex((sub) => sub.id === subscription);
+        const { available_boxes } = this.user.subscriptions[index];
+        this.user.subscriptions[index].available_boxes = tagOption === 'OUT' ? available_boxes - number_of_boxes : available_boxes + number_of_boxes;
     }
 }
 

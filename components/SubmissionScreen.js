@@ -98,22 +98,30 @@ class SubmissionScreen extends React.Component {
     submit() {
         // uncomment to skip
         // this.props.navigation.navigate('containerSuccessScreen', { boxCount: this.state.boxCount, locationData: this.state.locationData });
+        const options = {
+            method: 'post',
+            url: '/tag/',
+            data: {
+                subscription: this.state.subscriptionId,
+                location: this.state.locationData.code,
+                action: this.state.locationData.service,
+                number_of_boxes: this.state.boxCount,
+            },
+        };
         if (!this.state.loadingSubmit) {
-            try {
-                this.setState({ loadingSubmit: true }, async () => {
-                    const body = {
-                        subscription: this.state.subscriptionId,
-                        location: this.state.locationData.code,
-                        action: this.state.locationData.service,
-                        number_of_boxes: this.state.boxCount,
-                    };
-                    await axios.post('/tag/', body);
+            this.setState({ loadingSubmit: true }, async () => {
+                try {
+                    await axios(options);
                     this.props.navigation.replace('containerSuccessScreen', { boxCount: this.state.boxCount, locationData: this.state.locationData });
-                });
-            } catch (error) {
-                this.setState({ loadingSubmit: false });
-                axios.log('SubmissionScreen.js Submit Tag', error);
-            }
+                } catch (error) {
+                    axios.log('SubmissionScreen.js Submit Tag', error);
+                    this.setState({ loadingSubmit: false });
+                    if (error.code === 'ECONNABORTED' && this.props.appStore.resturants) {
+                        this.props.appStore.addOfflineTag(options);
+                        this.props.navigation.replace('containerSuccessScreen', { boxCount: this.state.boxCount, locationData: this.state.locationData });
+                    }
+                }
+            });
         }
     }
 
