@@ -84,7 +84,14 @@ class ScanQRCode extends React.Component {
                 this.setState({ barCodeScanned: false, error: 'Invalid Code' });
             }
         } catch (error) {
-            if (!error.response || !error.response.status || error.response.status !== 404) {
+            if (error.code === 'ECONNABORTED' && this.props.appStore.resturants) {
+                const locationData = this.props.appStore.resturants.find((location) => location.code === code);
+                if (locationData) {
+                    this.navigateNext(locationData);
+                } else {
+                    this.setState({ barCodeScanned: false, error: 'Invalid Code' });
+                }
+            } else if (!error.response || !error.response.status || error.response.status !== 404) {
                 this.setState({ barCodeScanned: false, error: 'Error reading code' });
                 axios.log('ScanQRCode.js', error);
             } else {
