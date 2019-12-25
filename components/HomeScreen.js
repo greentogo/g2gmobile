@@ -29,6 +29,7 @@ class HomeScreen extends React.Component {
         this.props.appStore.attemptOfflineTags();
         this.goToMap = this.goToMap.bind(this);
         this.goToScanQRCode = this.goToScanQRCode.bind(this);
+        this.goToGroupOrders = this.goToGroupOrders.bind(this);
         this.goToAccount = this.goToAccount.bind(this);
         this.logOut = this.logOut.bind(this);
     }
@@ -43,6 +44,10 @@ class HomeScreen extends React.Component {
 
     goToScanQRCode() {
         this.props.navigation.navigate('scanQRCode');
+    }
+
+    goToGroupOrders() {
+        this.props.navigation.navigate('grouporders');
     }
 
     goToAccount() {
@@ -68,6 +73,16 @@ class HomeScreen extends React.Component {
                             text="Check In/Out container"
                             onPress={this.goToScanQRCode}
                         />
+                        {this.props.appStore && this.props.appStore.user && this.props.appStore.user.is_corporate_user
+                            && (
+                                <ListMenuItem
+                                    icon="group"
+                                    color={styles.primaryCream}
+                                    backgroundColor="green"
+                                    text="Group Orders"
+                                    onPress={this.goToGroupOrders}
+                                />
+                            )}
                         <ListMenuItem
                             icon="map"
                             color={styles.primaryCream}
