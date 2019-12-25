@@ -6,6 +6,8 @@ import { createAppContainer } from 'react-navigation';
 import { createStackNavigator, createBottomTabNavigator } from 'react-navigation-stack';
 import styles from '../styles';
 import LoginScreen from './LoginScreen';
+import GroupOrderScreen from './GroupOrderScreen';
+import GroupOrdersScreen from './GroupOrdersScreen';
 import HomeScreen from './HomeScreen';
 import MapScreen from './MapScreen';
 import ScanQRCode from './ScanQRCode';
@@ -23,6 +25,8 @@ const RootStack = createStackNavigator(
         scanQRCode: ScanQRCode,
         submission: SubmissionScreen,
         containerSuccessScreen: ContainerSuccessScreen,
+        grouporder: GroupOrderScreen,
+        grouporders: GroupOrdersScreen,
         account: AccountScreen,
         subscription: SubscriptionScreen,
         editnameemail: EditNameEmailScreen,
