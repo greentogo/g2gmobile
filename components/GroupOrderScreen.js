@@ -14,6 +14,7 @@ import {
     Button,
     Content,
 } from 'native-base';
+import { StackActions } from 'react-navigation';
 import {
     TouchableOpacity,
 } from 'react-native';
@@ -28,16 +29,15 @@ class GroupOrderScreen extends React.Component {
         super(props);
         this.state = {
             new: true,
-            editing: false,
+            error: undefined,
             loading: false,
             checked_in: false,
             checked_out: false,
             searchString: '',
             count: 1,
             date: new Date(),
-            expected_checkout: undefined,
             location: {},
-
+            subscription: {},
         };
         this.add = this.add.bind(this);
         this.subtract = this.subtract.bind(this);
@@ -45,9 +45,10 @@ class GroupOrderScreen extends React.Component {
         this.buttonText = this.buttonText.bind(this);
         this.setDate = this.setDate.bind(this);
         this.setRestaurant = this.setRestaurant.bind(this);
+        this.delete = this.delete.bind(this);
         if (this.props.navigation.state.params.new) {
             this.state.new = true;
-            this.state.editing = false;
+            this.state.subscription = this.props.appStore.user.subscriptions.find((sub) => sub.corporate_code && sub.is_active);
         }
         if (this.props.navigation.state.params.id) {
             const orderData = this.props.appStore.user.group_orders.find((order) => order.id === this.props.navigation.state.params.id);
@@ -75,8 +76,9 @@ class GroupOrderScreen extends React.Component {
     }
 
     submit() {
-        // uncomment to skip
-        // this.props.navigation.navigate('containerSuccessScreen', { boxCount: this.state.boxCount, locationData: this.state.locationData });
+        if (this.state.deleting) {
+            return this.setState({ deleting: false, error: undefined });
+        }
         const { date } = this.state;
         const month = date.getMonth() + 1;
         const day = date.getDate();
@@ -91,21 +93,29 @@ class GroupOrderScreen extends React.Component {
                 count: this.state.count,
             },
         };
-        this.setState({ loading: true }, async () => {
+        return this.setState({ loading: true }, async () => {
             try {
                 await axios(options);
                 this.setState({ loading: false });
+                this.props.navigation.dispatch(StackActions.pop({ n: 1 }));
+                return this.props.navigation.dispatch(StackActions.replace({
+                    routeName: 'grouporders',
+                    params: { success: 'Group Order successfully added!' },
+                }));
             } catch (error) {
-                this.setState({ loading: false });
+                return this.setState({ loading: false, error: 'Unable to process order, please try again!' });
             }
         });
     }
 
     buttonText() {
-        if (this.state.new) {
-            return 'Send Order';
+        if (this.state.deleting) {
+            return 'Cancel';
         }
-        return 'Update Order';
+        if (this.state.new) {
+            return 'Submit Order';
+        }
+        return 'Update';
     }
 
     setDate(event, date) {
@@ -117,17 +127,42 @@ class GroupOrderScreen extends React.Component {
         this.setState({ location: resturant, searchString: '' });
     }
 
+    async delete() {
+        if (this.state.deleting) {
+            return this.setState({ loading: true }, async () => {
+                try {
+                    const options = {
+                        method: 'delete',
+                        url: `/group/${this.state.id}`,
+                    };
+                    await axios(options);
+                    this.setState({ loading: false });
+                    this.props.navigation.dispatch(StackActions.pop({ n: 1 }));
+                    return this.props.navigation.dispatch(StackActions.replace({
+                        routeName: 'grouporders',
+                        params: { success: 'Deleted Order!' },
+                    }));
+                } catch (error) {
+                    return this.setState({ loading: false, deleting: false, error: 'Unable to process deletion, please try again!' });
+                }
+            });
+        }
+        return this.setState({ deleting: true, error: 'Are you sure you want to delete?' });
+    }
+
     static navigationOptions = {
         title: 'Group Order',
     };
 
     render() {
         const buttonText = this.buttonText();
-        const { date, searchString } = this.state;
-        const checkOutLocations = this.props.appStore.resturants.filter((location) => location.service === 'OUT');
-        const filteredResturants = searchString && searchString.length > 0 ? checkOutLocations.filter((location) => location.name.toLowerCase().includes(searchString.toLowerCase())) : checkOutLocations;
-        const pickerItems = filteredResturants.map((location) => (<Picker.Item label={location.name} value={location.code} />));
+        const deleteButtonText = this.state.deleting ? 'Confirm' : 'Delete';
+        const { date, searchString, location } = this.state;
+        const checkOutLocations = this.props.appStore.resturants.filter((loc) => loc.service === 'OUT');
+        const filteredResturants = searchString && searchString.length > 0 ? checkOutLocations.filter((loc) => loc.name.toLowerCase().includes(searchString.toLowerCase())) : checkOutLocations;
+        const pickerItems = filteredResturants.map((loc) => (<Picker.Item label={loc.name} value={loc.code} />));
         const dateString = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        const missingData = !date || !location.code;
         return (
             <Container>
                 <View style={this.state.loading && styles.overlayLoading}>
@@ -199,10 +234,21 @@ class GroupOrderScreen extends React.Component {
                         display="default"
                         onChange={this.setDate}
                     />
+                    {this.state.error && <Text style={styles.errorStyle}>{this.state.error}</Text>}
                     <View style={styles.centeredRow}>
+                        {!this.state.new && (
+                            <TouchableOpacity
+                                style={styles.deleteButton}
+                                onPress={this.delete}
+                            >
+                                <Text style={styles.submissionSubmitTextStyle}>
+                                    {deleteButtonText}
+                                </Text>
+                            </TouchableOpacity>
+                        )}
                         <TouchableOpacity
-                            style={this.state.error || this.state.loading ? styles.submissionSubmitButtonBlocked : styles.submissionSubmitButton}
-                            onPress={this.state.error || this.state.loading ? null : this.submit}
+                            style={missingData || this.state.loading ? styles.submissionSubmitButtonBlocked : styles.submissionSubmitButton}
+                            onPress={missingData || this.state.loading ? null : this.submit}
                         >
                             <Text style={styles.submissionSubmitTextStyle}>
                                 {buttonText}

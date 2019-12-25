@@ -3,6 +3,7 @@ import { inject, observer } from 'mobx-react';
 import {
     Content,
     List,
+    Text,
 } from 'native-base';
 import styles from '../styles';
 import ListMenuItem from './subcomponents/ListMenuItem';
@@ -12,8 +13,12 @@ import ListMenuItem from './subcomponents/ListMenuItem';
 class GroupOrdersScreen extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            success: this.props.navigation && this.props.navigation.state && this.props.navigation.state.params ? this.props.navigation.state.params.success : false,
+        };
         this.goToNewGroupOrder = this.goToNewGroupOrder.bind(this);
         this.goToGroupOrder = this.goToGroupOrder.bind(this);
+        this.props.appStore.getUserData();
     }
 
     goToNewGroupOrder() {
@@ -41,6 +46,7 @@ class GroupOrdersScreen extends React.Component {
             : '';
         return (
             <Content style={styles.container}>
+                {this.state.success && <Text style={styles.boldCenteredText}>{this.state.success}</Text>}
                 <List>
                     <ListMenuItem
                         icon="add"

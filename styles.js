@@ -192,6 +192,14 @@ const styles = {
         // borderWidth: 1,
         // borderColor: '#fff',
     },
+    deleteButton: {
+        paddingRight: 20,
+        paddingLeft: 20,
+        paddingTop: 20,
+        paddingBottom: 20,
+        backgroundColor: 'red',
+        borderRadius: 10,
+    },
     submissionSubmitButtonBlocked: {
         paddingRight: 20,
         paddingLeft: 20,
