@@ -25,6 +25,19 @@ const styles = {
         opacity: 0.6,
         backgroundColor: 'black',
     },
+    overlayLoading: {
+        flex: 1,
+        position: 'absolute',
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        zIndex: 50,
+        alignItems: 'center',
+        justifyContent: 'center',
+        opacity: 0.6,
+        backgroundColor: 'black',
+    },
     qrCodeScanner: {
         color: 'gold',
         opacity: 0.6,
@@ -232,6 +245,9 @@ const styles = {
         width: 35,
         marginRight: 3,
         marginLeft: 10,
+    },
+    groupOrderSearchBar: {
+        backgroundColor: primaryColor,
     },
     space: {
         paddingTop: 30,
