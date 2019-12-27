@@ -84,8 +84,8 @@ class GroupOrderScreen extends React.Component {
         const day = date.getDate();
         const year = date.getFullYear();
         const options = {
-            method: 'post',
-            url: '/group/',
+            method: this.state.new ? 'post' : 'put',
+            url: `/group/${this.state.new ? '' : this.state.id}`,
             data: {
                 subscription_id: this.state.subscription.id,
                 location_code: this.state.location.code,
@@ -100,7 +100,7 @@ class GroupOrderScreen extends React.Component {
                 this.props.navigation.dispatch(StackActions.pop({ n: 1 }));
                 return this.props.navigation.dispatch(StackActions.replace({
                     routeName: 'grouporders',
-                    params: { success: 'Group Order successfully added!' },
+                    params: { success: `Group Order successfully ${this.state.new ? 'added' : 'updated'}!` },
                 }));
             } catch (error) {
                 return this.setState({ loading: false, error: 'Unable to process order, please try again!' });
