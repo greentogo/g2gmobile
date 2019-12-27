@@ -148,14 +148,14 @@ class GroupOrderScreen extends React.Component {
                     this.props.navigation.dispatch(StackActions.pop({ n: 1 }));
                     return this.props.navigation.dispatch(StackActions.replace({
                         routeName: 'grouporders',
-                        params: { success: 'Deleted Order!' },
+                        params: { success: 'Canceled Order!' },
                     }));
                 } catch (error) {
                     return this.setState({ loading: false, deleting: false, error: 'Unable to process deletion, please try again!' });
                 }
             });
         }
-        return this.setState({ deleting: true, error: 'Are you sure you want to delete?' });
+        return this.setState({ deleting: true, error: 'Are you sure you want to cancel?' });
     }
 
     async checkInOut() {
@@ -184,7 +184,7 @@ class GroupOrderScreen extends React.Component {
 
     render() {
         const buttonText = this.buttonText();
-        const deleteButtonText = this.state.deleting ? 'Confirm' : 'Delete';
+        const deleteButtonText = this.state.deleting ? 'Confirm' : 'Cancel';
         const { date, searchString, location } = this.state;
         const checkOutLocations = this.props.appStore.resturants.filter((loc) => loc.service === 'OUT');
         const filteredResturants = searchString && searchString.length > 0 ? checkOutLocations.filter((loc) => loc.name.toLowerCase().includes(searchString.toLowerCase())) : checkOutLocations;
