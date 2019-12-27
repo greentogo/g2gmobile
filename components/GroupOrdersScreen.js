@@ -38,7 +38,8 @@ class GroupOrdersScreen extends React.Component {
             ? this.props.appStore.user.group_orders.map((order) => (
                 <ListMenuItem
                     key={`${order.location.name} - ${order.expected_checkout}`}
-                    icon="update"
+                    icon={order.checked_out ? 'warning' : 'update'}
+                    color={order.checked_out ? 'orange' : ''}
                     text={`${order.location.name} - ${order.expected_checkout}`}
                     onPress={() => this.goToGroupOrder(order.id)}
                 />
