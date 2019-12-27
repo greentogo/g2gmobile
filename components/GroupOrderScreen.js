@@ -29,6 +29,7 @@ class GroupOrderScreen extends React.Component {
         super(props);
         this.state = {
             new: true,
+            editDate: false,
             error: undefined,
             loading: false,
             checked_in: false,
@@ -46,6 +47,8 @@ class GroupOrderScreen extends React.Component {
         this.setDate = this.setDate.bind(this);
         this.setRestaurant = this.setRestaurant.bind(this);
         this.delete = this.delete.bind(this);
+        this.checkInOut = this.checkInOut.bind(this);
+        this.toggleDate = this.toggleDate.bind(this);
         if (this.props.navigation.state.params.new) {
             this.state.new = true;
             this.state.subscription = this.props.appStore.user.subscriptions.find((sub) => sub.corporate_code && sub.is_active);
@@ -127,6 +130,10 @@ class GroupOrderScreen extends React.Component {
         this.setState({ location: resturant, searchString: '' });
     }
 
+    toggleDate() {
+        this.setState((prevState) => ({ editDate: !prevState.editDate }));
+    }
+
     async delete() {
         if (this.state.deleting) {
             return this.setState({ loading: true }, async () => {
@@ -148,6 +155,26 @@ class GroupOrderScreen extends React.Component {
             });
         }
         return this.setState({ deleting: true, error: 'Are you sure you want to delete?' });
+    }
+
+    async checkInOut() {
+        return this.setState({ loading: true }, async () => {
+            try {
+                const options = {
+                    method: 'post',
+                    url: `/${this.state.checked_out ? 'in' : 'out'}/group/${this.state.id}`,
+                };
+                await axios(options);
+                this.setState({ loading: false });
+                this.props.navigation.dispatch(StackActions.pop({ n: 1 }));
+                return this.props.navigation.dispatch(StackActions.replace({
+                    routeName: 'containerSuccessScreen',
+                    params: { boxCount: this.state.count, locationData: this.state.location },
+                }));
+            } catch (error) {
+                return this.setState({ loading: false, deleting: false, error: 'Backend failure, please try again!' });
+            }
+        });
     }
 
     static navigationOptions = {
@@ -172,23 +199,29 @@ class GroupOrderScreen extends React.Component {
                     <Text style={styles.boldCenteredText}>
                         Group Order Request
                     </Text>
+                    {this.state.checked_in || this.state.checked_out ? (
+                        <View style={styles.centeredRow}>
+                            <Text style={styles.submissionBoxCountStyle}>{this.state.count}</Text>
+                        </View>
+                    ) : (
+                            <View style={styles.centeredRow}>
+                                <Button
+                                    success
+                                    onPress={this.subtract}
+                                >
+                                    <Text style={styles.submissionAddSubIcon}>-</Text>
+                                </Button>
+                                <Text style={styles.submissionBoxCountStyle}>{this.state.count}</Text>
+                                <Button
+                                    success
+                                    onPress={this.add}
+                                >
+                                    <Text style={styles.submissionAddSubIcon}>+</Text>
+                                </Button>
+                            </View>
+                        )}
                     <View style={styles.centeredRow}>
-                        <Button
-                            success
-                            onPress={this.subtract}
-                        >
-                            <Text style={styles.submissionAddSubIcon}>-</Text>
-                        </Button>
-                        <Text style={styles.submissionBoxCountStyle}>{this.state.count}</Text>
-                        <Button
-                            success
-                            onPress={this.add}
-                        >
-                            <Text style={styles.submissionAddSubIcon}>+</Text>
-                        </Button>
-                    </View>
-                    <View style={styles.centeredRow}>
-                        <Item inlineLabel>
+                        <Item>
                             <Label>
                                 <Text>Restaurant</Text>
                             </Label>
@@ -214,47 +247,66 @@ class GroupOrderScreen extends React.Component {
                                 placeholder="Select Resturant"
                                 selectedValue={this.state.location.code}
                                 onValueChange={this.setRestaurant}
+                                enabled={!this.state.checked_in && !this.state.checked_out}
                             >
                                 {pickerItems}
                             </Picker>
                         </Item>
                     </View>
                     <View style={styles.centeredRow}>
-                        <Item inlineLabel>
-                            <Label>
-                                <Text>Date</Text>
-                            </Label>
-                            <Text>{dateString}</Text>
+                        <Item>
+                            <TouchableOpacity onPress={this.toggleDate}>
+                                <Label>
+                                    <Text>Date</Text>
+                                </Label>
+                                <Text>{dateString}</Text>
+                            </TouchableOpacity>
                         </Item>
                     </View>
-                    <DateTimePicker
-                        value={this.state.date}
-                        mode="date"
-                        is24Hour={false}
-                        display="default"
-                        onChange={this.setDate}
-                    />
-                    {this.state.error && <Text style={styles.errorStyle}>{this.state.error}</Text>}
+                    {(!this.state.checked_in && !this.state.checked_out && this.state.editDate) && (
+                        <DateTimePicker
+                            value={this.state.date}
+                            mode="date"
+                            is24Hour={false}
+                            display="default"
+                            onChange={this.setDate}
+                        />
+                    )}
                     <View style={styles.centeredRow}>
                         {!this.state.new && (
                             <TouchableOpacity
-                                style={styles.deleteButton}
-                                onPress={this.delete}
+                                style={styles.submissionSubmitButton}
+                                onPress={this.checkInOut}
                             >
                                 <Text style={styles.submissionSubmitTextStyle}>
-                                    {deleteButtonText}
+                                    {this.state.checked_out ? 'Return Containers' : 'Check Out Boxes'}
                                 </Text>
                             </TouchableOpacity>
                         )}
-                        <TouchableOpacity
-                            style={missingData || this.state.loading ? styles.submissionSubmitButtonBlocked : styles.submissionSubmitButton}
-                            onPress={missingData || this.state.loading ? null : this.submit}
-                        >
-                            <Text style={styles.submissionSubmitTextStyle}>
-                                {buttonText}
-                            </Text>
-                        </TouchableOpacity>
                     </View>
+                    {this.state.error && <Text style={styles.errorStyle}>{this.state.error}</Text>}
+                    {!this.state.checked_out && (
+                        <View style={styles.centeredRow}>
+                            {!this.state.new && (
+                                <TouchableOpacity
+                                    style={styles.deleteButton}
+                                    onPress={this.delete}
+                                >
+                                    <Text style={styles.submissionSubmitTextStyle}>
+                                        {deleteButtonText}
+                                    </Text>
+                                </TouchableOpacity>
+                            )}
+                            <TouchableOpacity
+                                style={missingData || this.state.loading ? styles.submissionSubmitButtonBlocked : styles.submissionSubmitButton}
+                                onPress={missingData || this.state.loading ? null : this.submit}
+                            >
+                                <Text style={styles.submissionSubmitTextStyle}>
+                                    {buttonText}
+                                </Text>
+                            </TouchableOpacity>
+                        </View>
+                    )}
                 </Content>
             </Container>
         );
