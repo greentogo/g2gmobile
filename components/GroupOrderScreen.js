@@ -30,6 +30,7 @@ class GroupOrderScreen extends React.Component {
         this.state = {
             new: true,
             editDate: false,
+            modified: false,
             error: undefined,
             loading: false,
             checked_in: false,
@@ -69,12 +70,12 @@ class GroupOrderScreen extends React.Component {
     }
 
     add() {
-        this.setState((prevState) => ({ count: prevState.count + 1 }));
+        this.setState((prevState) => ({ count: prevState.count + 1, modified: true }));
     }
 
     subtract() {
         if (this.state.count > 1) {
-            this.setState((prevState) => ({ count: prevState.count - 1 }));
+            this.setState((prevState) => ({ count: prevState.count - 1, modified: true }));
         }
     }
 
@@ -122,12 +123,12 @@ class GroupOrderScreen extends React.Component {
     }
 
     setDate(event, date) {
-        this.setState({ date });
+        this.setState({ date, modified: true });
     }
 
     setRestaurant(code) {
         const resturant = this.props.appStore.resturants.find((location) => location.code === code);
-        this.setState({ location: resturant, searchString: '' });
+        this.setState({ location: resturant, searchString: '', modified: true });
     }
 
     toggleDate() {
@@ -298,8 +299,8 @@ class GroupOrderScreen extends React.Component {
                                 </TouchableOpacity>
                             )}
                             <TouchableOpacity
-                                style={missingData || this.state.loading ? styles.submissionSubmitButtonBlocked : styles.submissionSubmitButton}
-                                onPress={missingData || this.state.loading ? null : this.submit}
+                                style={missingData || !this.state.modified || this.state.loading ? styles.submissionSubmitButtonBlocked : styles.submissionSubmitButton}
+                                onPress={missingData || !this.state.modified || this.state.loading ? null : this.submit}
                             >
                                 <Text style={styles.submissionSubmitTextStyle}>
                                     {buttonText}
