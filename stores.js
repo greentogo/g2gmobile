@@ -41,7 +41,7 @@ class AppStore {
     }
 
     @action async setAuthToken(token) {
-        axios.defaults.headers.common.Authorization = `Token ${token}`;
+        token ? axios.defaults.headers.common.Authorization = `Token ${token}` : null;
         this.authToken = token;
         await simpleStore.save('authToken', token);
     }
