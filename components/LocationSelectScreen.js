@@ -11,19 +11,27 @@ import styles from '../styles';
 import ListMenuItem from './subcomponents/ListMenuItem';
 import SubscriptionBanner from './subcomponents/SubscriptionBanner';
 import G2GTitleImage from './subcomponents/G2GTitleImage';
+import axios from '../apiClient';
+
 import G2GVideo from './subcomponents/G2GVideo';
 import registerForPushNotificationsAsync from './subcomponents/pushNotification';
 
 
 @inject('appStore')
 @observer
-class HomeScreen extends React.Component {
-    static navigationOptions = {
-        headerTitle: <G2GTitleImage />,
-    };
-
+class LocationSelectScreen extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            cameraMode: true,
+            error: undefined,
+            codeInput: '',
+            barCodeScanned: false,
+            hasCameraPermission: false,
+            flashMode: 'off',
+            restraunts: null,
+        };
+
         this.props.appStore.getUserData();
         this.props.appStore.getResturantData();
         this.props.appStore.attemptOfflineTags();
@@ -32,15 +40,21 @@ class HomeScreen extends React.Component {
         this.goToGroupOrders = this.goToGroupOrders.bind(this);
         this.goToAccount = this.goToAccount.bind(this);
         this.logOut = this.logOut.bind(this);
-        this.goToLocationSelect = this.goToLocationSelect.bind(this);
+        this.checkCode = this.checkCode.bind(this);
     }
 
-    componentDidMount() {
-        registerForPushNotificationsAsync(this.props.appStore);
+    async componentDidMount() {
+        this.setState({ resturants: this.props.appStore.resturants || await this.props.appStore.getResturantData() });
+        console.log(this.state.restraunts)
     }
+
+    static navigationOptions = {
+        headerTitle: <G2GTitleImage />,
+    };
+
 
     goToLocationSelect() {
-        this.props.navigation.navigate('locationSelect');
+        this.props.navigation.navigate('map');
     }
 
     goToScanQRCode() {
@@ -57,6 +71,34 @@ class HomeScreen extends React.Component {
 
     logOut() {
         this.props.appStore.clearAuthToken();
+    }
+async s
+    async checkCode(code) {
+        const resturants = this.props.appStore.resturants || await this.props.appStore.getResturantData();
+        console.log('restraunts ', resturants);
+        // try {
+        //     const url = `/locations/${code}`;
+        //     const response = await axios.get(url);
+        //     if (response.data && response.data.data && response.data.data.code) {
+        //         this.navigateNext(response.data.data);
+        //     } else {
+        //         this.setState({ barCodeScanned: false, error: 'Invalid Code' });
+        //     }
+        // } catch (error) {
+        //     if (error.code === 'ECONNABORTED' && this.props.appStore.resturants) {
+        //         const locationData = this.props.appStore.resturants.find((location) => location.code === code);
+        //         if (locationData) {
+        //             this.navigateNext(locationData);
+        //         } else {
+        //             this.setState({ barCodeScanned: false, error: 'Invalid Code' });
+        //         }
+        //     } else if (!error.response || !error.response.status || error.response.status !== 404) {
+        //         this.setState({ barCodeScanned: false, error: 'Error reading code' });
+        //         axios.log('ScanQRCode.js', error);
+        //     } else {
+        //         this.setState({ barCodeScanned: false, error: 'Invalid Code' });
+        //     }
+        // }
     }
 
     // Profile, Rewards, Big button for scanning, Map/Locations List, Help
@@ -79,7 +121,7 @@ class HomeScreen extends React.Component {
                             color={styles.primaryCream}
                             backgroundColor="green"
                             text="Check Out container"
-                            onPress={this.goToLocationSelect}
+                            onPress={this.goToScanQRCode}
                         />
                         {this.props.appStore && this.props.appStore.user && this.props.appStore.user.is_corporate_user
                             && (
@@ -91,13 +133,13 @@ class HomeScreen extends React.Component {
                                     onPress={this.goToGroupOrders}
                                 />
                             )}
-                        {/* <ListMenuItem
+                        <ListMenuItem
                             icon="map"
                             color={styles.primaryCream}
                             backgroundColor="red"
                             text="Map of restaurants"
                             onPress={this.goToMap}
-                        /> */}
+                        />
                         <ListMenuItem
                             icon="person"
                             text="Your account"
@@ -118,4 +160,4 @@ class HomeScreen extends React.Component {
     }
 }
 
-export default HomeScreen;
+export default LocationSelectScreen;

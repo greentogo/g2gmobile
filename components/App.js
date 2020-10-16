@@ -16,6 +16,7 @@ import ContainerSuccessScreen from './ContainerSuccessScreen';
 import AccountScreen from './AccountScreen';
 import SubscriptionScreen from './SubscriptionScreen';
 import EditNameEmailScreen from './EditNameEmailScreen';
+import LocationSelectScreen from './LocationSelectScreen';
 // import { MaterialIcons } from '@expo/vector-icons';
 
 const RootStack = createStackNavigator(
@@ -30,6 +31,7 @@ const RootStack = createStackNavigator(
         account: AccountScreen,
         subscription: SubscriptionScreen,
         editnameemail: EditNameEmailScreen,
+        locationSelect: LocationSelectScreen,
     },
     {
         initialRouteName: 'home',
