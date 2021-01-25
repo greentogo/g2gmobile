@@ -7,27 +7,26 @@ import { inject, observer } from 'mobx-react';
 import {
     List,
 } from 'native-base';
+import axios from '../apiClient';
 import styles from '../styles';
 import ListMenuItem from './subcomponents/ListMenuItem';
 import SubscriptionBanner from './subcomponents/SubscriptionBanner';
 import G2GTitleImage from './subcomponents/G2GTitleImage';
-import G2GVideo from './subcomponents/G2GVideo';
 import registerForPushNotificationsAsync from './subcomponents/pushNotification';
-
 
 @inject('appStore')
 @observer
 class HomeScreen extends React.Component {
-    static navigationOptions = {
-        headerTitle: <G2GTitleImage />,
-    };
-
     constructor(props) {
         super(props);
+        this.state = {
+            ...this.props.appStore.user,
+            totalBoxesReturned: false,
+        };
         this.props.appStore.getUserData();
         this.props.appStore.getResturantData();
         this.props.appStore.attemptOfflineTags();
-        // this.goToMap = this.goToMap.bind(this);
+        this.goToMap = this.goToMap.bind(this);
         this.goToScanQRCode = this.goToScanQRCode.bind(this);
         this.goToGroupOrders = this.goToGroupOrders.bind(this);
         this.goToAccount = this.goToAccount.bind(this);
@@ -35,9 +34,27 @@ class HomeScreen extends React.Component {
         this.goToLocationSelect = this.goToLocationSelect.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         registerForPushNotificationsAsync(this.props.appStore);
+        try {
+            // TODO Is this axios call really necessary?
+            const response = await axios.get(`/stats/${this.props.appStore.user.username}/`);
+            if (response.data && response.data.data) {
+                this.setState({
+                    totalBoxesReturned: response.data.data.total_boxes_returned,
+                });
+            }
+        } catch (error) {
+            axios.log('CommunityBoxes.js', error);
+            if ((error.status && error.status === 401) || (error.response && error.response.status && error.response.status === 401)) {
+                this.props.appStore.clearAuthToken();
+            }
+        }
     }
+
+    static navigationOptions = {
+        headerTitle: <G2GTitleImage />,
+    };
 
     goToLocationSelect() {
         this.props.navigation.navigate('locationSelect');
@@ -53,6 +70,10 @@ class HomeScreen extends React.Component {
 
     goToAccount() {
         this.props.navigation.navigate('account');
+    }
+
+    goToMap() {
+        this.props.navigation.navigate('map');
     }
 
     logOut() {
@@ -71,15 +92,22 @@ class HomeScreen extends React.Component {
                             icon="swap-horiz"
                             color={styles.primaryCream}
                             backgroundColor="green"
-                            text="Check In container"
-                            onPress={this.goToScanQRCode}
+                            text="Check-Out Container(s)"
+                            onPress={this.goToLocationSelect}
                         />
                         <ListMenuItem
                             icon="swap-horiz"
                             color={styles.primaryCream}
                             backgroundColor="green"
-                            text="Check Out container"
-                            onPress={this.goToLocationSelect}
+                            text="Return Container"
+                            onPress={this.goToScanQRCode}
+                        />
+                        <ListMenuItem
+                            icon="map"
+                            color={styles.primaryCream}
+                            backgroundColor="red"
+                            text="Map of restaurants"
+                            onPress={this.goToMap}
                         />
                         {this.props.appStore && this.props.appStore.user && this.props.appStore.user.is_corporate_user
                             && (
@@ -91,13 +119,6 @@ class HomeScreen extends React.Component {
                                     onPress={this.goToGroupOrders}
                                 />
                             )}
-                        {/* <ListMenuItem
-                            icon="map"
-                            color={styles.primaryCream}
-                            backgroundColor="red"
-                            text="Map of restaurants"
-                            onPress={this.goToMap}
-                        /> */}
                         <ListMenuItem
                             icon="person"
                             text="Your account"
