@@ -1,5 +1,6 @@
 import React from 'react';
-import { ScreenOrientation } from 'expo';
+// import { ScreenOrientation } from 'expo';
+// import * as ScreenOrientation from 'expo-screen-orientation';
 import Constants from 'expo-constants';
 import { observer, Provider } from 'mobx-react';
 import { createAppContainer } from 'react-navigation';
@@ -107,7 +108,7 @@ class App extends React.Component {
     // }
 
     async componentDidMount() {
-        await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT_UP);
+        // await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT_UP);
     }
 
     render() {

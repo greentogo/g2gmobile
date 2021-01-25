@@ -630,7 +630,7 @@ export default class VideoPlayer extends React.Component {
                         backgroundColor: 'black',
                     }}>
                     <Video
-                        source={require('../../assets/icons/how-2-gtg.mp4')}
+                        // source={require('../../assets/icons/how-2-gtg.mp4')}
                         // source={{ uri: 'https://535c3fc5.ngrok.io/static/how-2-g2g.mp4' }}
                         ref={component => {
                             this._playbackInstance = component;

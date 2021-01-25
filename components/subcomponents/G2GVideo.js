@@ -5,9 +5,9 @@ import {
     Dimensions,
 } from 'react-native';
 import { inject, observer } from 'mobx-react';
-import { ScreenOrientation } from 'expo';
-import { Video } from 'expo-av';
-import VideoPlayer from './VideoPlayer';
+// import { ScreenOrientation } from 'expo';
+// import * as ScreenOrientation from 'expo-screen-orientation';
+
 
 @inject('appStore')
 @observer
@@ -29,7 +29,7 @@ class G2GVideo extends React.Component {
     }
 
     async componentDidMount() {
-        await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT_UP); // Use This to get it to work: // ScreenOrientation.lockAsync(ScreenOrientation.Orientation.ALL);
+        // await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT_UP); // Use This to get it to work: // ScreenOrientation.lockAsync(ScreenOrientation.Orientation.ALL);
         Dimensions.addEventListener(
             'change',
             this.orientationChangeHandler.bind(this),
@@ -37,7 +37,7 @@ class G2GVideo extends React.Component {
     }
 
     async componentWillUnmount() {
-        await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT);
+        // await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT);
         Dimensions.removeEventListener('change', this.orientationChangeHandler);
     }
 
@@ -53,13 +53,13 @@ class G2GVideo extends React.Component {
         }));
     }
 
-    switchToLandscape = async () => {
-        await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.LANDSCAPE);
-    }
+    // switchToLandscape = async () => {
+    //     await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.LANDSCAPE);
+    // }
 
-    switchToPortrait = async () => {
-        await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT);
-    }
+    // switchToPortrait = async () => {
+    //     await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT);
+    // }
 
     async orientationChangeHandler(dims) {
         const { width, height } = dims.window;
@@ -79,7 +79,7 @@ class G2GVideo extends React.Component {
 
     render() {
         const win = Dimensions.get('window');
-        let body = (
+        const body = (
             <Image
                 source={require('../../assets/icons/VideoHolder.png')}
                 style={{
@@ -90,29 +90,29 @@ class G2GVideo extends React.Component {
             />
         );
         if (this.state.videoStarted) {
-            body = (
-                <VideoPlayer
-                    videoProps={{
-                        shouldPlay: this.state.shouldPlay,
-                        resizeMode: Video.RESIZE_MODE_CONTAIN,
-                        isMuted: false,
-                        style: {
-                            alignSelf: 'stretch',
-                            width: win.width,
-                            height: (win.width / 2),
-                        },
-                        ref: (component) => {
-                            this.playbackInstance = component;
-                        },
-                    }}
-                    currentRoute={this.props.appStore.currentRoute}
-                    showControlsOnLoad
-                    isPortrait={this.state.isPortrait}
-                    switchToLandscape={this.switchToLandscape}
-                    switchToPortrait={this.switchToPortrait}
-                    playFromPositionMillis={0}
-                />
-            );
+            // body = (
+            // <VideoPlayer
+            //     videoProps={{
+            //         shouldPlay: this.state.shouldPlay,
+            //         resizeMode: Video.RESIZE_MODE_CONTAIN,
+            //         isMuted: false,
+            //         style: {
+            //             alignSelf: 'stretch',
+            //             width: win.width,
+            //             height: (win.width / 2),
+            //         },
+            //         ref: (component) => {
+            //             this.playbackInstance = component;
+            //         },
+            //     }}
+            //     currentRoute={this.props.appStore.currentRoute}
+            //     showControlsOnLoad
+            //     isPortrait={this.state.isPortrait}
+            //     switchToLandscape={this.switchToLandscape}
+            //     switchToPortrait={this.switchToPortrait}
+            //     playFromPositionMillis={0}
+            // />
+            // );
         }
         return (
             <TouchableOpacity onPress={() => {
