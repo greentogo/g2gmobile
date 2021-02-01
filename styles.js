@@ -254,6 +254,18 @@ const styles = {
         marginRight: 3,
         marginLeft: 10,
     },
+    homepageBoxImg: {
+        height: 230,
+        width: 200,
+        marginTop: 30,
+        alignSelf: 'center',
+    },
+    homepageBox: {
+        backgroundColor: 'white',
+        borderBottomWidth: 0.5,
+        borderColor: lightGrey,
+        height: 500,
+    },
     groupOrderSearchBar: {
         backgroundColor: primaryColor,
     },

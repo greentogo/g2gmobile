@@ -1,11 +1,10 @@
 import React from 'react';
 import {
-    Linking,
+    Linking, View, ScrollView,
 } from 'react-native';
 import { WebView } from 'react-native-webview';
 import { inject, observer } from 'mobx-react';
 import {
-    Content,
     List,
 } from 'native-base';
 import styles from '../styles';
@@ -64,32 +63,35 @@ class AccountScreen extends React.Component {
             );
         }
         return (
-            <Content style={styles.container}>
-                <List>
-                    <ListMenuItem
-                        icon="person"
-                        text="View/Edit Name and Email"
-                        onPress={this.goToNameAndEmail}
-                    />
-                    <ListMenuItem
-                        icon="credit-card"
-                        text="Update payment method"
-                        onPress={this.goToUpdatePaymentMethod}
-                    />
-                    <ListMenuItem
-                        icon="inbox"
-                        text="View/Edit Subscriptions"
-                        onPress={this.goToEditSubscriptions}
-                    />
-                    <ListMenuItem
-                        icon="lock"
-                        text="Change Password"
-                        onPress={this.goToChangePassword}
-                    />
-                </List>
+            <View style={styles.container}>
+                <ScrollView alwaysBounceVertical={false}>
+                    <List>
+                        <ListMenuItem
+                            icon="person"
+                            text="View/Edit Name and Email"
+                            onPress={this.goToNameAndEmail}
+                        />
+                        <ListMenuItem
+                            icon="credit-card"
+                            text="Update payment method"
+                            onPress={this.goToUpdatePaymentMethod}
+                        />
+                        <ListMenuItem
+                            icon="inbox"
+                            text="View/Edit Subscriptions"
+                            onPress={this.goToEditSubscriptions}
+                        />
+                        <ListMenuItem
+                            icon="lock"
+                            text="Change Password"
+                            onPress={this.goToChangePassword}
+                        />
+                    </List>
+                    <CommunityBoxes />
+                </ScrollView>
                 <SubscriptionBanner />
-                <CommunityBoxes />
-            </Content>
+
+            </View>
         );
     }
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     View,
-    ScrollView,
+    ScrollView, Image,
 } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import {
@@ -13,6 +13,7 @@ import ListMenuItem from './subcomponents/ListMenuItem';
 import SubscriptionBanner from './subcomponents/SubscriptionBanner';
 import G2GTitleImage from './subcomponents/G2GTitleImage';
 import registerForPushNotificationsAsync from './subcomponents/pushNotification';
+import CommunityBoxes from './subcomponents/CommunityBoxes';
 
 @inject('appStore')
 @observer
@@ -85,8 +86,17 @@ class HomeScreen extends React.Component {
     render() {
         return (
             <View style={{ ...styles.container, paddingBottom: 50 }}>
+                <View style={styles.homepageBox}>
+
+                    <Image
+                        source={require('../assets/icons/Box_Imagery_FrontPage.png')}
+                        style={styles.homepageBoxImg}
+                    />
+                    <CommunityBoxes />
+
+                </View>
+
                 <ScrollView>
-                    {/* <G2GVideo /> */}
                     <List>
                         <ListMenuItem
                             icon="swap-horiz"

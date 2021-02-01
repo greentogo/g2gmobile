@@ -49,34 +49,16 @@ class CommunityBoxes extends React.Component {
 
     render() {
         return (
-            <View>
+            <View style={{ flex: 1, paddingHorizontal: 30 }}>
                 {this.state.totalBoxesReturned && (
-                    <View style={{ backgroundColor: this.state.background, ...styles.communityBoxesView }}>
-                        <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>
-                            Our community
-                        </Text>
-                        <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>
-                            has saved
-                        </Text>
-                        <View style={styles.centeredRowNoPadding}>
-                            <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>
-                                {this.state.totalBoxesReturned}
-                            </Text>
-                            <Image
-                                source={require('../../assets/icons/GTG-Box-App.png')}
-                                style={styles.communityBoxesBoxImg}
-                            />
-                            <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>
-                                s
-                            </Text>
-                        </View>
-                        <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>
-                            from a landfill
+                    <View style={{ ...styles.communityBoxesView }}>
+                        <Text style={{ ...styles.communityBoxesText }}>
+                            Your community has prevented <Text style={{ ...styles.communityBoxesText, color: 'green' }}>{this.state.totalBoxesReturned}</Text> containers from the landfill.
                         </Text>
                     </View>
                 )}
-                {this.state.totalUserBoxesReturned && (
-                    <View style={{ backgroundColor: this.state.background, ...styles.communityBoxesView }}>
+                {/* {this.state.totalUserBoxesReturned && (
+                    <View style={{ ...styles.communityBoxesView }}>
                         <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>
                             You{'\''}ve saved
                         </Text>
@@ -91,7 +73,7 @@ class CommunityBoxes extends React.Component {
                             <Text style={{ color: this.state.color, ...styles.communityBoxesText }}>s</Text>
                         </View>
                     </View>
-                )}
+                )} */}
             </View>
         );
     }
