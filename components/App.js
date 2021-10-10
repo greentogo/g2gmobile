@@ -1,5 +1,6 @@
 import React from 'react';
-import { ScreenOrientation } from 'expo';
+// import { ScreenOrientation } from 'expo';
+// import * as ScreenOrientation from 'expo-screen-orientation';
 import Constants from 'expo-constants';
 import { observer, Provider } from 'mobx-react';
 import { createAppContainer } from 'react-navigation';
@@ -16,6 +17,7 @@ import ContainerSuccessScreen from './ContainerSuccessScreen';
 import AccountScreen from './AccountScreen';
 import SubscriptionScreen from './SubscriptionScreen';
 import EditNameEmailScreen from './EditNameEmailScreen';
+import LocationSelectScreen from './LocationSelectScreen';
 // import { MaterialIcons } from '@expo/vector-icons';
 
 const RootStack = createStackNavigator(
@@ -30,6 +32,7 @@ const RootStack = createStackNavigator(
         account: AccountScreen,
         subscription: SubscriptionScreen,
         editnameemail: EditNameEmailScreen,
+        locationSelect: LocationSelectScreen,
     },
     {
         initialRouteName: 'home',
@@ -101,11 +104,11 @@ class App extends React.Component {
     // constructor(props) {
     //     super(props);
     //     this.props.appStore.getUserData();
-    //     this.props.appStore.getResturantData();
+    //     this.props.appStore.getRestaurantData();
     // }
 
     async componentDidMount() {
-        await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT_UP);
+        // await ScreenOrientation.lockAsync(ScreenOrientation.Orientation.PORTRAIT_UP);
     }
 
     render() {

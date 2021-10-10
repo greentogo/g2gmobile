@@ -1,45 +1,65 @@
 import React from 'react';
 import {
     View,
-    ScrollView,
+    ScrollView, Image, Text,
 } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import {
     List,
 } from 'native-base';
+import axios from '../apiClient';
 import styles from '../styles';
 import ListMenuItem from './subcomponents/ListMenuItem';
 import SubscriptionBanner from './subcomponents/SubscriptionBanner';
 import G2GTitleImage from './subcomponents/G2GTitleImage';
-import G2GVideo from './subcomponents/G2GVideo';
 import registerForPushNotificationsAsync from './subcomponents/pushNotification';
-
+import CommunityBoxes from './subcomponents/CommunityBoxes';
 
 @inject('appStore')
 @observer
 class HomeScreen extends React.Component {
-    static navigationOptions = {
-        headerTitle: <G2GTitleImage />,
-    };
-
     constructor(props) {
         super(props);
+        this.state = {
+            ...this.props.appStore.user,
+            totalBoxesReturned: false,
+        };
         this.props.appStore.getUserData();
-        this.props.appStore.getResturantData();
+        this.props.appStore.getRestaurantData();
         this.props.appStore.attemptOfflineTags();
+        this.props.appStore.getBoxesReturned();
         this.goToMap = this.goToMap.bind(this);
         this.goToScanQRCode = this.goToScanQRCode.bind(this);
         this.goToGroupOrders = this.goToGroupOrders.bind(this);
         this.goToAccount = this.goToAccount.bind(this);
         this.logOut = this.logOut.bind(this);
+        this.goToLocationSelect = this.goToLocationSelect.bind(this);
     }
 
-    componentDidMount() {
+    async componentDidMount() {
         registerForPushNotificationsAsync(this.props.appStore);
+        try {
+            // TODO Is this axios call really necessary?
+            const response = await axios.get(`/stats/derekalanrowe/`);
+            if (response.data && response.data.data) {
+                this.setState({
+                    totalBoxesReturned: response.data.data.total_boxes_returned,
+                });
+            }
+        } catch (error) {
+            axios.log('CommunityBoxes.js', error);
+            if ((error.status && error.status === 401) || (error.response && error.response.status && error.response.status === 401)) {
+                this.props.appStore.clearAuthToken();
+            }
+        }
     }
 
-    goToMap() {
-        this.props.navigation.navigate('map');
+    static navigationOptions = {
+        headerTitle: <G2GTitleImage />,
+    };
+
+    goToLocationSelect() {
+        this.props.navigation.navigate('locationSelect');
     }
 
     goToScanQRCode() {
@@ -54,6 +74,10 @@ class HomeScreen extends React.Component {
         this.props.navigation.navigate('account');
     }
 
+    goToMap() {
+        this.props.navigation.navigate('map');
+    }
+
     logOut() {
         this.props.appStore.clearAuthToken();
     }
@@ -63,15 +87,41 @@ class HomeScreen extends React.Component {
     render() {
         return (
             <View style={{ ...styles.container, paddingBottom: 50 }}>
+                <View style={styles.homepageBox}>
+
+                    <Image
+                        source={require('../assets/icons/Box_Imagery_FrontPage.png')}
+                        style={styles.homepageBoxImg}
+                    />
+                   <View style={{ ...styles.communityBoxesView }}>
+                        <Text style={{ ...styles.communityBoxesText }}>
+                            Your community has prevented <Text style={{ ...styles.communityBoxesText, color: 'green' }}>{this.state.totalBoxesReturned}</Text> containers from the landfill.
+                        </Text>
+                    </View>
+                </View>
+
                 <ScrollView>
-                    <G2GVideo />
                     <List>
                         <ListMenuItem
                             icon="swap-horiz"
                             color={styles.primaryCream}
                             backgroundColor="green"
-                            text="Check In/Out container"
+                            text="Check-Out Container(s)"
+                            onPress={this.goToLocationSelect}
+                        />
+                        <ListMenuItem
+                            icon="swap-horiz"
+                            color={styles.primaryCream}
+                            backgroundColor="green"
+                            text="Return Container"
                             onPress={this.goToScanQRCode}
+                        />
+                        <ListMenuItem
+                            icon="map"
+                            color={styles.primaryCream}
+                            backgroundColor="red"
+                            text="Map of restaurants"
+                            onPress={this.goToMap}
                         />
                         {this.props.appStore && this.props.appStore.user && this.props.appStore.user.is_corporate_user
                             && (
@@ -83,13 +133,6 @@ class HomeScreen extends React.Component {
                                     onPress={this.goToGroupOrders}
                                 />
                             )}
-                        <ListMenuItem
-                            icon="map"
-                            color={styles.primaryCream}
-                            backgroundColor="red"
-                            text="Map of restaurants"
-                            onPress={this.goToMap}
-                        />
                         <ListMenuItem
                             icon="person"
                             text="Your account"

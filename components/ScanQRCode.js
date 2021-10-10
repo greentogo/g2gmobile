@@ -12,7 +12,6 @@ import * as Permissions from 'expo-permissions';
 import {
     Text,
     Container,
-    Content,
     Spinner,
 } from 'native-base';
 import axios from '../apiClient';
@@ -85,8 +84,8 @@ class ScanQRCode extends React.Component {
                 this.setState({ barCodeScanned: false, error: 'Invalid Code' });
             }
         } catch (error) {
-            if (error.code === 'ECONNABORTED' && this.props.appStore.resturants) {
-                const locationData = this.props.appStore.resturants.find((location) => location.code === code);
+            if (error.code === 'ECONNABORTED' && this.props.appStore.restaurants) {
+                const locationData = this.props.appStore.restaurants.find((location) => location.code === code);
                 if (locationData) {
                     this.navigateNext(locationData);
                 } else {
@@ -144,8 +143,7 @@ class ScanQRCode extends React.Component {
             );
         }
         return (
-            <Container style={{ flex: 1 }}>
-                <Content contentContainerStyle={styles.overlay}>
+            <Container style={{ flex: 1, justifyContent:'space-evenly', alignItems:'center' }}>
                     <Text style={styles.errorStyle}>{this.state.error}</Text>
                     <TextInput
                         style={styles.barCodeInput}
@@ -164,7 +162,6 @@ class ScanQRCode extends React.Component {
                         </Text>
                     </TouchableOpacity>
                     {!this.state.hasCameraPermission && (<Text>No camera view. Please give GreenToGo permission to access your camera so we can read QR codes!</Text>)}
-                </Content>
                 <View style={styles.loginScreenButtonBar}>
                     <TouchableOpacity style={styles.loginButton} onPress={this.toggleCameraMode}>
                         <Text style={styles.boldWhiteText}>Use Camera</Text>

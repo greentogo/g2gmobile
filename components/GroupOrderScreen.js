@@ -127,8 +127,8 @@ class GroupOrderScreen extends React.Component {
     }
 
     setRestaurant(code) {
-        const resturant = this.props.appStore.resturants.find((location) => location.code === code);
-        this.setState({ location: resturant, searchString: '', modified: true });
+        const restaurant = this.props.appStore.restaurants.find((location) => location.code === code);
+        this.setState({ location: restaurant, searchString: '', modified: true });
     }
 
     toggleDate() {
@@ -186,9 +186,9 @@ class GroupOrderScreen extends React.Component {
         const buttonText = this.buttonText();
         const deleteButtonText = this.state.deleting ? 'Confirm' : 'Cancel';
         const { date, searchString, location } = this.state;
-        const checkOutLocations = this.props.appStore.resturants.filter((loc) => loc.service === 'OUT');
-        const filteredResturants = searchString && searchString.length > 0 ? checkOutLocations.filter((loc) => loc.name.toLowerCase().includes(searchString.toLowerCase())) : checkOutLocations;
-        const pickerItems = filteredResturants.map((loc) => (<Picker.Item label={loc.name} value={loc.code} />));
+        const checkOutLocations = this.props.appStore.restaurants.filter((loc) => loc.service === 'OUT');
+        const filteredRestaurants = searchString && searchString.length > 0 ? checkOutLocations.filter((loc) => loc.name.toLowerCase().includes(searchString.toLowerCase())) : checkOutLocations;
+        const pickerItems = filteredRestaurants.map((loc) => (<Picker.Item label={loc.name} value={loc.code} />));
         const dateString = date.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
         const missingData = !date || !location.code;
         return (
@@ -245,7 +245,7 @@ class GroupOrderScreen extends React.Component {
                                 )}
                                 mode="dropdown"
                                 style={{ width: undefined }}
-                                placeholder="Select Resturant"
+                                placeholder="Select restaurant"
                                 selectedValue={this.state.location.code}
                                 onValueChange={this.setRestaurant}
                                 enabled={!this.state.checked_in && !this.state.checked_out}
