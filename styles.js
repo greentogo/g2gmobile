@@ -264,7 +264,7 @@ const styles = {
         backgroundColor: 'white',
         borderBottomWidth: 0.5,
         borderColor: lightGrey,
-        height: 500,
+        height: 420,
     },
     groupOrderSearchBar: {
         backgroundColor: primaryColor,

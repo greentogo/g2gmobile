@@ -9,11 +9,15 @@ class AppStore {
 
     @observable currentRoute = 'home';
 
-    @observable resturants = null;
+    @observable restaurants = null;
 
     @observable attemptingTags = false;
 
     @observable offlineTags = [];
+
+    @observable totalUserBoxesReturned = false;
+
+    @observable totalBoxesReturned = false;
 
     constructor() {
         simpleStore.get('authToken').then((token) => {
@@ -23,8 +27,8 @@ class AppStore {
         simpleStore.get('user').then((user) => {
             this.user = user;
         });
-        simpleStore.get('resturants').then((resturants) => {
-            this.resturants = resturants;
+        simpleStore.get('restaurants').then((restaurants) => {
+            this.restaurants = restaurants;
         });
         simpleStore.get('offlineTags').then((offlineTags) => {
             this.offlineTags = offlineTags;
@@ -76,19 +80,25 @@ class AppStore {
         }
     }
 
-    @action async getResturantData() {
+    @action async getRestaurantData() {
         try {
             const response = await axios.get('/restaurants/');
-            this.resturants = response.data.data;
-            simpleStore.save('resturants', response.data.data);
+            this.restaurants = response.data.data;
+            simpleStore.save('restaurants', response.data.data);
             return response.data.data;
         } catch (error) {
-            axios.log('stores.js getResturantData', error);
-            if (error.code === 'ECONNABORTED' && this.resturants) {
-                return this.resturants;
+            axios.log('stores.js getRestaurantData', error);
+            if (error.code === 'ECONNABORTED' && this.restaurants) {
+                return this.restaurants;
             }
             return [];
         }
+    }
+
+    @action async getBoxesReturned() {
+            const response = await axios.get(`/stats/derekalanrowe/`);
+            this.totalUserBoxesReturned = response.data.data.total_user_boxes_returned;
+            this.totalBoxesReturned = response.data.data.total_boxes_returned;
     }
 
     @action async setUserData(data) {

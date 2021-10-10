@@ -1,7 +1,7 @@
 import React from 'react';
 import {
     View,
-    ScrollView, Image,
+    ScrollView, Image, Text,
 } from 'react-native';
 import { inject, observer } from 'mobx-react';
 import {
@@ -25,8 +25,9 @@ class HomeScreen extends React.Component {
             totalBoxesReturned: false,
         };
         this.props.appStore.getUserData();
-        this.props.appStore.getResturantData();
+        this.props.appStore.getRestaurantData();
         this.props.appStore.attemptOfflineTags();
+        this.props.appStore.getBoxesReturned();
         this.goToMap = this.goToMap.bind(this);
         this.goToScanQRCode = this.goToScanQRCode.bind(this);
         this.goToGroupOrders = this.goToGroupOrders.bind(this);
@@ -39,7 +40,7 @@ class HomeScreen extends React.Component {
         registerForPushNotificationsAsync(this.props.appStore);
         try {
             // TODO Is this axios call really necessary?
-            const response = await axios.get(`/stats/${this.props.appStore.user.username}/`);
+            const response = await axios.get(`/stats/derekalanrowe/`);
             if (response.data && response.data.data) {
                 this.setState({
                     totalBoxesReturned: response.data.data.total_boxes_returned,
@@ -92,8 +93,11 @@ class HomeScreen extends React.Component {
                         source={require('../assets/icons/Box_Imagery_FrontPage.png')}
                         style={styles.homepageBoxImg}
                     />
-                    <CommunityBoxes />
-
+                   <View style={{ ...styles.communityBoxesView }}>
+                        <Text style={{ ...styles.communityBoxesText }}>
+                            Your community has prevented <Text style={{ ...styles.communityBoxesText, color: 'green' }}>{this.state.totalBoxesReturned}</Text> containers from the landfill.
+                        </Text>
+                    </View>
                 </View>
 
                 <ScrollView>

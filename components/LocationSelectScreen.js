@@ -1,9 +1,9 @@
 import React from 'react';
 import {
-    View, Text, ScrollView, Picker, Button,
+    View, Text, ScrollView, Picker, TouchableOpacity 
 } from 'react-native';
 import { inject, observer } from 'mobx-react';
-// import { Button, List } from 'native-base';
+import { Button, List } from 'native-base';
 import styles from '../styles';
 import ListMenuItem from './subcomponents/ListMenuItem';
 import SubscriptionBanner from './subcomponents/SubscriptionBanner';
@@ -18,7 +18,6 @@ import registerForPushNotificationsAsync from './subcomponents/pushNotification'
 @observer
 class LocationSelectScreen extends React.Component {
     static navigationOptions = {
-        headerTitle: <G2GTitleImage />,
     };
 
     constructor(props) {
@@ -34,7 +33,7 @@ class LocationSelectScreen extends React.Component {
         };
 
         this.props.appStore.getUserData();
-        this.props.appStore.getResturantData();
+        this.props.appStore.getRestaurantData();
         this.props.appStore.attemptOfflineTags();
         this.goToScanQRCode = this.goToScanQRCode.bind(this);
         this.handleCodeSubmit = this.handleCodeSubmit.bind(this);
@@ -42,8 +41,8 @@ class LocationSelectScreen extends React.Component {
     }
 
     async componentDidMount() {
-        const resturants = this.props.appStore.resturants || await this.props.appStore.getResturantData();
-        const CheckoutLocations = resturants.filter((e) => e.service = 'OUT');
+        const restaurants = this.props.appStore.restaurants || await this.props.appStore.getRestaurantData();
+        const CheckoutLocations = restaurants.filter((e) => e.service === 'OUT');
         this.setState({ CheckoutLocations }, () => {
             console.log('CheckoutLocations', this.state.CheckoutLocations);
         });
@@ -74,7 +73,7 @@ class LocationSelectScreen extends React.Component {
                 this.setState({ barCodeScanned: false, error: 'Invalid Code' });
             }
         } catch (error) {
-            if (error.code === 'ECONNABORTED' && this.props.appStore.resturants) {
+            if (error.code === 'ECONNABORTED' && this.props.appStore.restaurants) {
                 const locationData = this.state.CheckoutLocations.find((location) => location.code === code);
                 if (locationData) {
                     this.navigateNext(locationData);
@@ -96,21 +95,28 @@ class LocationSelectScreen extends React.Component {
 
     render() {
         return (
-            <View style={{ ...styles.container, paddingBottom: 50 }}>
-                <ScrollView>
-                    <Picker
-                        selectedValue={this.state.selectedLocation}
-                        style={{ height: 50, width: 400 }}
-                        onValueChange={(itemValue, itemIndex) => this.setState({ selectedLocation: itemValue }, () => {
-                            console.log('selectedLocation', this.state.selectedLocation);
-                        })}
+            <View style={{ ...styles.container, paddingBottom: 50}}>
+            <View style={{height:100, justifyContent:'center'}}>
+              <Text style={{ ...styles.communityBoxesText }}> Choose Restaurant </Text>
+            </View>
+                <Picker
+                    selectedValue={this.state.selectedLocation}
+                    onValueChange={(itemValue, itemIndex) => this.setState({ selectedLocation: itemValue }, () => {
+                        console.log('selectedLocation', this.state.selectedLocation);
+                    })}
                     >{
-                            this.state.CheckoutLocations.map((v) => <Picker.Item label={v.name} value={v.code} />)
-                        }
-                    </Picker>
-                </ScrollView>
-                <Button onPress={this.handleCodeSubmit} title="Checkout Container" />
+                        this.state.CheckoutLocations.map((v) => <Picker.Item label={v.name} value={v.code} />)
+                    }
+                </Picker>
+                <View style={styles.centeredRow, {height:200, alignItems:'center'}}>
+                    <Button success onPress={this.handleCodeSubmit}>
+                        <Text style={styles.submissionSubmitTextStyle}> Next </Text>
+                    </Button>
+                </View>
                 <View style={styles.bottomFixed}>
+                    <TouchableOpacity style={{justifyContent:"center", alignItems:'center', flex:1}} onPress={this.goToScanQRCode}>
+                        <Text style={{color:"Black", fontSize:20, paddingBottom:10}}> Or click to scan QR code </Text>
+                    </TouchableOpacity>                    
                     <SubscriptionBanner />
                 </View>
             </View>

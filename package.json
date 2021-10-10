@@ -35,7 +35,8 @@
     "react-navigation": "^4.0.10",
     "react-navigation-stack": "^1.9.4",
     "react-timer-mixin": "^0.13.4",
-    "expo-screen-orientation": "~2.0.0"
+    "expo-screen-orientation": "~2.0.0",
+    "expo-device": "~2.3.0"
   },
   "scripts": {
     "start": "expo start -c",
@@ -51,7 +52,7 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.16.0",
-    "expo-cli": "^3.3.0",
+    "expo-cli": "^3.28.6",
     "ngrok": "^3.2.5"
   }
 }

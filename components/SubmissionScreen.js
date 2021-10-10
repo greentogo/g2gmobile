@@ -18,9 +18,6 @@ import styles from '../styles';
 class SubmissionScreen extends React.Component {
     static navigationOptions = ({ navigation }) => ({
         title: 'Check In/Out',
-        headerLeft: (
-            <TouchableOpacity><Text style={styles.popToTopStyle} onPress={() => navigation.popToTop()}>X</Text></TouchableOpacity>
-        ),
     });
 
     constructor(props) {
@@ -116,7 +113,7 @@ class SubmissionScreen extends React.Component {
                 } catch (error) {
                     axios.log('SubmissionScreen.js Submit Tag', error);
                     this.setState({ loadingSubmit: false });
-                    if (error.code === 'ECONNABORTED' && this.props.appStore.resturants) {
+                    if (error.code === 'ECONNABORTED' && this.props.appStore.restaurants) {
                         this.props.appStore.addOfflineTag(options);
                         this.props.navigation.replace('containerSuccessScreen', { boxCount: this.state.boxCount, locationData: this.state.locationData });
                     }

@@ -29,7 +29,7 @@ class MapScreen extends React.Component {
         this.state = {
             mapType: 'OUT',
             error: false,
-            resturants: [],
+            restaurants: [],
             currentLocation: false,
         };
         this.getCurrentLocation = this.getCurrentLocation.bind(this);
@@ -38,8 +38,8 @@ class MapScreen extends React.Component {
     async componentDidMount() {
         try {
             this.getCurrentLocation();
-            const resturants = this.props.appStore.resturants || await this.props.appStore.getResturantData();
-            this.setState({ resturants });
+            const restaurants = this.props.appStore.restaurants || await this.props.appStore.getRestaurantData();
+            this.setState({ restaurants });
         } catch (error) {
             this.setState({ error: true });
             axios.log('MapScreen.js componentDidMount', error);
@@ -75,20 +75,20 @@ class MapScreen extends React.Component {
         if (this.state.error) {
             return (
                 <View style={styles.loadingContainer}>
-                    <Text style={styles.errorStyle}>Sorry, we are unable to retrieve resturant data, please try again later.</Text>
+                    <Text style={styles.errorStyle}>Sorry, we are unable to retrieve restaurant data, please try again later.</Text>
                 </View>
             );
         }
-        const markers = this.state.resturants.reduce((accumulator, resturant) => {
-            if (resturant.address && resturant.latitude && resturant.longitude && resturant.service === this.state.mapType) {
+        const markers = this.state.restaurants.reduce((accumulator, restaurant) => {
+            if (restaurant.address && restaurant.latitude && restaurant.longitude && restaurant.service === this.state.mapType) {
                 accumulator.push(
                     <MapView.Marker
                         coordinate={{
-                            latitude: resturant.latitude,
-                            longitude: resturant.longitude,
+                            latitude: restaurant.latitude,
+                            longitude: restaurant.longitude,
                         }}
-                        key={`${resturant.latitude}${resturant.longitude}${resturant.name.replace(/\s/g, '')}${resturant.service}`}
-                        ref={this[`callout-${resturant.latitude}${resturant.longitude}${resturant.name.replace(/\s/g, '')}${resturant.service}`]}
+                        key={`${restaurant.latitude}${restaurant.longitude}${restaurant.name.replace(/\s/g, '')}${restaurant.service}`}
+                        ref={this[`callout-${restaurant.latitude}${restaurant.longitude}${restaurant.name.replace(/\s/g, '')}${restaurant.service}`]}
                     >
                         {Platform.OS === 'ios' && (
                             <ImageBackground
@@ -98,10 +98,10 @@ class MapScreen extends React.Component {
                         )}
                         <MapView.Callout
                             style={{ width: 300, zIndex: 9999 }}
-                            onPress={this.goToLocation(resturant.latitude, resturant.longitude, resturant.name)}
+                            onPress={this.goToLocation(restaurant.latitude, restaurant.longitude, restaurant.name)}
                         >
-                            <Text numberOfLines={1} style={styles.mapCalloutTitle}>{resturant.name}</Text>
-                            <Text numberOfLines={1} style={styles.mapCalloutText}>{resturant.address}</Text>
+                            <Text numberOfLines={1} style={styles.mapCalloutTitle}>{restaurant.name}</Text>
+                            <Text numberOfLines={1} style={styles.mapCalloutText}>{restaurant.address}</Text>
                             <Text numberOfLines={1} style={styles.mapCalloutDirections}>Tap for directions!</Text>
                         </MapView.Callout>
                     </MapView.Marker>,
@@ -145,8 +145,8 @@ class MapScreen extends React.Component {
                         <TouchableOpacity onPress={this.switchService('OUT', 'Participating Restaurants')}>
                             <Text style={styles.subscriptionBanner}>Participating Restaurants</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={this.switchService('IN', 'Return A Box')}>
-                            <Text style={styles.subscriptionBanner}>Return Box</Text>
+                        <TouchableOpacity onPress={this.switchService('IN', 'Return Stations')}>
+                            <Text style={styles.subscriptionBanner}>Return Stations</Text>
                         </TouchableOpacity>
                     </View>
                 </View>

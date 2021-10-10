@@ -53,7 +53,7 @@ class CommunityBoxes extends React.Component {
                 {this.state.totalBoxesReturned && (
                     <View style={{ ...styles.communityBoxesView }}>
                         <Text style={{ ...styles.communityBoxesText }}>
-                            Your community has prevented <Text style={{ ...styles.communityBoxesText, color: 'green' }}>{this.state.totalBoxesReturned}</Text> containers from the landfill.
+                            You've prevented <Text style={{ ...styles.communityBoxesText, color: 'green' }}>{this.state.totalUserBoxesReturned}</Text> containers from the landfill.
                         </Text>
                     </View>
                 )}
